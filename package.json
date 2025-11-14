@@ -1,0 +1,13 @@
+{
+  "name": "zenith-payments",
+  "version": "1.0.0",
+  "imports": {
+    "#client/*": "./root/client/*",
+    "#server/*": "./root/server/*",
+    "#shared/*": "./root/shared/*",
+    "#config/*": "./root/config/*",
+    "#zpayments/server/*": "./server/*",
+    "#zpayments/shared/*": "./shared/*",
+    "#zpayments/client/*": "./client/*"
+  }
+}
