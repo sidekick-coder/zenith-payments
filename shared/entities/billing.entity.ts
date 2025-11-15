@@ -10,8 +10,8 @@ export const STATUS = [
         color: 'var(--color-yellow-500)',
     },
     {
-        id: 'completed',
-        label: $t('Completed'),
+        id: 'approved',
+        label: $t('Approved'),
         color: 'var(--color-green-500)',
     },
     {
@@ -32,7 +32,7 @@ export default class Billing extends compose(BaseEntity, Timestamp, SoftDelete) 
     public id: number
     public user_id: number
     public amount: number
-    public status: 'pending' | 'completed' | 'failed' | 'refunded'
+    public status: 'pending' | 'success' | 'failed' | 'refunded'
 
     public user?: User
 

@@ -5,7 +5,7 @@ export interface BillingTable extends TimestampTable, SoftDeleteTable {
     id: Generated<number>
     user_id: number
     amount: number
-    status: 'pending' | 'completed' | 'failed' | 'refunded'
+    status: 'pending' | 'approved' | 'failed' | 'refunded'
 }
 
 declare module '#server/contracts/database.contract' {

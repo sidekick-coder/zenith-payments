@@ -1,12 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { toast } from 'vue-sonner'
 import type { ComponentExposed } from 'vue-component-type-helpers'
 import { format } from 'date-fns'
 import DataTable, { defineColumns } from '#client/components/DataTable.vue'
 import { $t } from '#shared/lang.ts'
 import AppLayout from '#client/layouts/AppLayout.vue'
-import { $fetch } from '#client/utils/fetcher.ts'
 import ClientOnly from '#client/components/ClientOnly.vue'
 import Button from '#client/components/Button.vue'
 import Icon from '#client/components/Icon.vue'
@@ -17,7 +15,6 @@ import Billing from '#zpayments/shared/entities/billing.entity.ts'
 
 const loading = ref(false)
 const tableRef = ref<ComponentExposed<typeof DataTable>>()
-const deletingItems = ref<number[]>([])
 
 const columns = defineColumns<Billing>([
     {
@@ -66,39 +63,10 @@ const fields = defineFormFields({
         type: 'number',
         step: '0.01'
     },
-    status: {
-        component: 'select',
-        label: $t('Status'),
-        options: Billing.STATUS,
-        labelKey: 'label',
-        valueKey: 'id'
-    }
 })
 
 function load(){
     tableRef.value?.load()
-}
-
-function reset() {
-    tableRef.value?.reset()
-}
-
-async function destroy(id: number) {
-    deletingItems.value.push(id)
-
-    const [error] = await $fetch.try(`/api/zpayments/billings/${id}`, {
-        method: 'DELETE', 
-    })
-
-    if (error) {
-        deletingItems.value = []
-        return
-    }
-
-    setTimeout(() => {
-        toast.success($t('Deleted successfully.'))
-        reset()
-    }, 1000)
 }
 </script>
 
@@ -164,33 +132,64 @@ async function destroy(id: number) {
 
             <template #row-actions="{ row }">
                 <div class="flex items-center gap-2 justify-end">
-                    <DialogForm 
-                        :fetch="`/api/zpayments/billings/${row.id}`"
-                        :title="$t('Edit')"
-                        :description="$t('Fill in the details below to edit')"
-                        :schema="schemas.billing.update"
-                        :fields="{
-                            status: fields.status
-                        }"
-                        :values="row"
-                        method="PUT"
-                        @submit="load"
-                    >
-                        <Button
-                            size="icon"
-                            variant="ghost"
-                        >
-                            <Icon name="Edit" />
-                        </Button>
-                    </DialogForm>
-
                     <AlertButton 
-                        variant="ghost"
+                        v-if="row.status === 'pending'"
                         size="sm"
-                        :loading="deletingItems.includes(row.id)"
-                        @confirm="destroy(row.id)"
+                        class="bg-green-600 hover:bg-green-700"
+                        :title="$t('Approve Billing')"
+                        :description="$t('Mark this billing as approved and process the payment')"
+                        :fetch="`/api/zpayments/billings/${row.id}/approve`"
+                        @fetched="load"
                     >
-                        <Icon name="trash" />
+                        {{ $t('Approve') }}
+                    </AlertButton>
+                    
+                    <AlertButton 
+                        v-if="row.status === 'pending'"
+                        size="sm"
+                        class="bg-red-600 hover:bg-red-700"
+                        :title="$t('Fail Billing')"
+                        :description="$t('Mark this billing as failed and cancel the payment')"
+                        :fetch="`/api/zpayments/billings/${row.id}/fail`"
+                        @fetched="load"
+                    >
+                        {{ $t('Fail') }}
+                    </AlertButton>
+                    
+                    <AlertButton 
+                        v-if="row.status === 'success'"
+                        size="sm"
+                        class="bg-blue-600 hover:bg-blue-700"
+                        :title="$t('Refund Billing')"
+                        :description="$t('Process a refund for this successful billing')"
+                        :fetch="`/api/zpayments/billings/${row.id}/refund`"
+                        @fetched="load"
+                    >
+                        {{ $t('Refund') }}
+                    </AlertButton>
+                    
+                    <AlertButton 
+                        v-if="row.status !== 'pending'"
+                        size="sm"
+                        class="bg-orange-600 hover:bg-orange-700"
+                        :title="$t('Reopen Billing')"
+                        :description="$t('Reopen this billing and set it back to pending status')"
+                        :fetch="`/api/zpayments/billings/${row.id}/reopen`"
+                        @fetched="load"
+                    >
+                        {{ $t('Reopen') }}
+                    </AlertButton>
+                    
+                    <AlertButton 
+                        variant="destructive"
+                        size="sm"
+                        fetch-method="DELETE"
+                        :title="$t('Delete Billing')"
+                        :description="$t('Permanently delete this billing record. This action cannot be undone.')"
+                        :fetch="`/api/zpayments/billings/${row.id}`"
+                        @fetched="load"
+                    >
+                        {{ $t('Delete') }}
                     </AlertButton>
                 </div>
             </template>

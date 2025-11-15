@@ -5,12 +5,12 @@ import schemas from '#zpayments/shared/validators/index.ts'
 import Billing from '#zpayments/server/entities/billing.entity.ts'
 import User from '#server/entities/user.entity.ts'
 import { undeleted } from '#server/queries/index.ts'
+import payment from '#zpayments/server/facades/payment.ts'
 
 const router = rootRouter.prefix('/api/zpayments/billings')
     .use(authMiddleware)
     .group()
 
-// GET all billings
 router.get('/', async ({ acl, query }) => {
     acl.authorize('read', 'Billing')
 
@@ -18,11 +18,11 @@ router.get('/', async ({ acl, query }) => {
     const limit = Number(query.limit) || 10
 
     const pagination = await Billing.paginate({
+        page,
+        limit,
         query: qb => qb.selectAll()
             .where(undeleted)
             .orderBy('created_at', 'desc'),
-        page,
-        limit
     })
 
     if (pagination.items.length) {
@@ -38,7 +38,6 @@ router.get('/', async ({ acl, query }) => {
     return pagination
 })
 
-// GET billing by id
 router.get('/:id', async ({ params, acl }) => {
     
     const billing = await Billing.find(params.id)
@@ -52,36 +51,55 @@ router.get('/:id', async ({ params, acl }) => {
     return billing
 })
 
-// POST create billing
+
 router.post('/', async ({ body, acl }) => {
     
     const payload = validator.validate(body, schemas.billing.create)
 
     acl.authorize('create', 'Billing', payload)
     
-    const billing = await Billing.create(payload)
+    const billing = await Billing.create({
+        user_id: payload.user_id,
+        amount: payload.amount,
+        status: 'pending',
+    })
     
     return billing
 })
 
-// PUT update billing
-router.put('/:id', async ({ params, body, acl }) => {    
-    const payload = validator.validate(body, schemas.billing.update)
-    
-    const billing = await Billing.find(params.id)
 
+router.post('/:id/approve', async ({ params, acl }) => {
+    const billing = await Billing.findOrFail(params.id)
+    
     acl.authorize('update', billing)
-    
-    if (!billing) {
-        throw new Error('Billing not found')
-    }
-    
-    const updatedBilling = await Billing.updateById(params.id, payload)
-    
-    return updatedBilling
+
+    await payment.billing.approve(billing)
 })
 
-// DELETE billing
+router.post('/:id/fail', async ({ params, acl }) => {
+    const billing = await Billing.findOrFail(params.id)
+    
+    acl.authorize('update', billing)
+
+    await payment.billing.fail(billing)
+})
+
+router.post('/:id/reopen', async ({ params, acl }) => {
+    const billing = await Billing.findOrFail(params.id)
+    
+    acl.authorize('update', billing)
+
+    await payment.billing.reopen(billing)
+})
+
+router.post('/:id/refund', async ({ params, acl }) => {
+    const billing = await Billing.findOrFail(params.id)
+    
+    acl.authorize('update', billing)
+
+    await payment.billing.refund(billing)
+})
+
 router.delete('/:id', async ({ params, acl }) => {    
     const billing = await Billing.find(params.id)
 
