@@ -3,6 +3,8 @@ import validator from '#shared/services/validator.service.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
 import Billing from '#zpayments/server/entities/billing.entity.ts'
+import User from '#server/entities/user.entity.ts'
+import { undeleted } from '#server/queries/index.ts'
 
 const router = rootRouter.prefix('/api/zpayments/billings')
     .use(authMiddleware)
@@ -16,10 +18,22 @@ router.get('/', async ({ acl, query }) => {
     const limit = Number(query.limit) || 10
 
     const pagination = await Billing.paginate({
-        query: qb => qb.orderBy('created_at', 'desc'),
+        query: qb => qb.selectAll()
+            .where(undeleted)
+            .orderBy('created_at', 'desc'),
         page,
         limit
     })
+
+    if (pagination.items.length) {
+        const users = await User.list({
+            query: qb => qb.selectAll().where('id', 'in', pagination.items.map(b => b.user_id))
+        })
+
+        pagination.items.forEach(billing => {
+            billing.user = users.find(u => u.id === billing.user_id)
+        })
+    }
 
     return pagination
 })

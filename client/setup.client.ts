@@ -24,9 +24,18 @@ export default defineClientSetup(({ router, menu }) => {
 
     menu.add({
         id: 'zpayments-gateways',
+        label: $t('Billings'),
+        to: '/admin/zpayments/billings',
+        icon: 'DollarSign',
+        group: $t('Payments'),
+    })
+    
+    menu.add({
+        id: 'zpayments-gateways',
         label: $t('Gateways'),
         to: '/admin/zpayments/gateways',
         icon: 'credit-card',
         group: $t('Payments'),
     })
+
 })
