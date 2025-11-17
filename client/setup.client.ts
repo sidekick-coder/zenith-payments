@@ -23,10 +23,26 @@ export default defineClientSetup(({ router, menu }) => {
     })
 
     menu.add({
-        id: 'zpayments-gateways',
+        id: 'zpayments-billings',
         label: $t('Billings'),
         to: '/admin/zpayments/billings',
         icon: 'DollarSign',
+        group: $t('Payments'),
+    })
+
+    menu.add({
+        id: 'zpayments-subscriptions',
+        label: $t('Subscriptions'),
+        to: '/admin/zpayments/subscriptions',
+        icon: 'repeat',
+        group: $t('Payments'),
+    })
+
+    menu.add({
+        id: 'zpayments-plans',
+        label: $t('Plans'),
+        to: '/admin/zpayments/plans',
+        icon: 'package',
         group: $t('Payments'),
     })
     

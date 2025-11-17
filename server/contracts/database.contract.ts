@@ -9,8 +9,25 @@ export interface BillingTable extends TimestampTable, SoftDeleteTable {
     status: 'pending' | 'approved' | 'failed' | 'refunded'
 }
 
-declare module '#server/contracts/database.contract' {
+export interface SubscriptionTable extends TimestampTable, SoftDeleteTable {
+    id: Generated<number>
+    user_id: number
+    amount: number
+    status: 'active' | 'inactive' | 'cancelled' | 'suspended'
+}
+
+export interface PlanTable extends TimestampTable, SoftDeleteTable {
+    id: Generated<number>
+    name: string
+    description: string | null
+    amount: number
+    status: 'active' | 'inactive' | 'archived'
+}
+
+declare module '#server/contracts/database.contract.ts' {
     export interface Database  {
         zpayments__billings: BillingTable
+        zpayments__subscriptions: SubscriptionTable
+        zpayments__plans: PlanTable
     }
 }
