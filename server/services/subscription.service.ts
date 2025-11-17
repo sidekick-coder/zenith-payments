@@ -1,4 +1,3 @@
-import BaseException from '#server/exceptions/base.ts'
 import emmitter from '#server/facades/emmitter.facade.ts'
 import logger from '#server/facades/logger.facade.ts'
 import Subscription from '#zpayments/server/entities/subscription.entity.ts'
@@ -6,65 +5,49 @@ import Subscription from '#zpayments/server/entities/subscription.entity.ts'
 interface HandlerCallback {
     (subscription: Subscription): Promise<void> | void
 }
-
-type Handler = Record<string, HandlerCallback>
-
 export default class SubscriptionService {
     public logger = logger.child({ label: 'subscription' })
     // public handlers = new Map<string, Handler>()
 
-    // public async activate(subscription: Subscription){
-    //     await Subscription.updateById(subscription.id, {
-    //         status: 'active'
-    //     })
+    public async activate(subscription: Subscription){
+        await Subscription.updateById(subscription.id, {
+            status: 'active'
+        })
         
-    //     const updated = await Subscription.findOrFail(subscription.id)
+        const updated = await Subscription.findOrFail(subscription.id)
 
-    //     emmitter.emit('zpayments:subscription:activated', updated)
+        emmitter.emit('zpayments:subscription:activated', updated)
 
-    //     const handler = this.handlers.get(subscription.purpose)
+        return updated
+    }
 
-    //     if (!handler?.activated) {
-    //         this.logger.info(`No activated handler for purpose "${subscription.purpose}"`)
-    //         return
-    //     }
+    public async deactivate(subscription: Subscription){
+        await Subscription.updateById(subscription.id, {
+            status: 'inactive'
+        })
         
-    //     await handler.activated(updated)
-    // }   
+        const updated = await Subscription.findOrFail(subscription.id)
 
-    // public handle(purpose: string, status: 'approved' | 'failed' | 'refunded' | 'reopened', callback: HandlerCallback) {
-    //     let handler = this.handlers.get(purpose)
+        emmitter.emit('zpayments:subscription:deactivated', updated)
 
-    //     if (!handler) {
-    //         handler = {}
-    //     }
+        return updated
+    }
 
-    //     if (handler[status] && handler[status] === callback) {
-    //         return
-    //     }
-        
-    //     if (handler[status] && handler[status] !== callback) {
-    //         throw new BaseException(`Handler for purpose "${purpose}" and status "${status}" is already registered.`)
-    //     }
+    public onActivated(callback: HandlerCallback) {
+        emmitter.on('zpayments:subscription:activated', callback, {
+            unique: true,
+        })
+    }
 
-    //     handler[status] = callback
+    public onDeactivated(callback: HandlerCallback) {
+        emmitter.on('zpayments:subscription:deactivated', callback, {
+            unique: true,
+        })
+    }
 
-    //     this.handlers.set(purpose, handler)
-    // }
-
-    // public onApproved(purpose: string, callback: HandlerCallback) {
-    //     this.handle(purpose, 'approved', callback)
-    // }
-
-    // public onFail(purpose: string, callback: HandlerCallback) {
-    //     this.handle(purpose, 'failed', callback)
-    // }
-
-    // public onRefund(purpose: string, callback: HandlerCallback) {
-    //     this.handle(purpose, 'refunded', callback)
-    // }
-
-    // public onReopen(purpose: string, callback: HandlerCallback) {
-    //     this.handle(purpose, 'reopened', callback)
-    // }
+    public onRenewed(callback: HandlerCallback) {
+        emmitter.on('zpayments:subscription:renewed', callback, {
+            unique: true,
+        })
+    }
 }

@@ -1,3 +1,4 @@
+import payment from '#zpayments/server/facades/payment.ts'
 import rootRouter from '#server/facades/router.facade.ts'
 import validator from '#shared/services/validator.service.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
@@ -99,13 +100,7 @@ router.post('/:id/activate', async ({ params, acl }) => {
     
     acl.authorize('update', subscription)
 
-    await Subscription.updateById(subscription.id, {
-        status: 'active'
-    })
-    
-    const updatedSubscription = await Subscription.findOrFail(subscription.id)
-    
-    return updatedSubscription
+    return payment.subscription.activate(subscription)
 })
 
 router.post('/:id/deactivate', async ({ params, acl }) => {
@@ -113,13 +108,7 @@ router.post('/:id/deactivate', async ({ params, acl }) => {
     
     acl.authorize('update', subscription)
 
-    await Subscription.updateById(subscription.id, {
-        status: 'inactive'
-    })
-    
-    const updatedSubscription = await Subscription.findOrFail(subscription.id)
-    
-    return updatedSubscription
+    return payment.subscription.deactivate(subscription)
 })
 
 router.post('/:id/cancel', async ({ params, acl }) => {
