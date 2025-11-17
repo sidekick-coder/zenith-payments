@@ -24,10 +24,26 @@ export interface PlanTable extends TimestampTable, SoftDeleteTable {
     status: 'active' | 'inactive' | 'archived'
 }
 
+export interface GatewayEntityTable extends TimestampTable, SoftDeleteTable {
+    id: Generated<number>
+    gateway: string
+    entity_id: string
+    entity_type: string
+}
+
+export interface GatewayEntityMetaTable extends TimestampTable, SoftDeleteTable {
+    id: Generated<number>
+    gateway_entity_id: number
+    name: string
+    value: string
+}
+
 declare module '#server/contracts/database.contract' {
     export interface Database  {
         zpayments__billings: BillingTable
         zpayments__subscriptions: SubscriptionTable
         zpayments__plans: PlanTable
+        zpayments__gateway_entities: GatewayEntityTable
+        zpayments__gateway_entity_metas: GatewayEntityMetaTable
     }
 }
