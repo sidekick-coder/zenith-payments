@@ -31,8 +31,9 @@ export default class Billing extends compose(BaseEntity, Timestamp, SoftDelete) 
 
     public id: number
     public user_id: number
+    public purpose: string
     public amount: number
-    public status: 'pending' | 'success' | 'failed' | 'refunded'
+    public status: 'pending' | 'approved' | 'failed' | 'refunded'
 
     public user?: User
 

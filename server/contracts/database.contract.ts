@@ -5,6 +5,7 @@ export interface BillingTable extends TimestampTable, SoftDeleteTable {
     id: Generated<number>
     user_id: number
     amount: number
+    purpose: string
     status: 'pending' | 'approved' | 'failed' | 'refunded'
 }
 

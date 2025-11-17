@@ -57,6 +57,10 @@ const fields = defineFormFields({
         valueKey: 'id',
         subtitleKey: 'email'
     },
+    purpose: {
+        component: 'text-field',
+        label: $t('Purpose'),
+    },
     amount: {
         component: 'text-field',
         label: $t('Amount'),
@@ -157,7 +161,7 @@ function load(){
                     </AlertButton>
                     
                     <AlertButton 
-                        v-if="row.status === 'success'"
+                        v-if="row.status === 'approved'"
                         size="sm"
                         class="bg-blue-600 hover:bg-blue-700"
                         :title="$t('Refund Billing')"

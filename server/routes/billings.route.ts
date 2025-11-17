@@ -61,6 +61,7 @@ router.post('/', async ({ body, acl }) => {
     const billing = await Billing.create({
         user_id: payload.user_id,
         amount: payload.amount,
+        purpose: payload.purpose,
         status: 'pending',
     })
     

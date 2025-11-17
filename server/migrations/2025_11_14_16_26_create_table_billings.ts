@@ -9,6 +9,7 @@ export async function up(db: Kysely<any>): Promise<void> {
             .references('users.id')
             .onDelete('cascade')
         )
+        .addColumn('purpose', 'varchar(255)', col => col.notNull())
         .addColumn('amount', 'integer', col => col.notNull())
         .addColumn('status', 'varchar(50)', col => col.notNull().defaultTo('pending'))
         .addTimestampColumns()
