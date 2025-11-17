@@ -1,4 +1,3 @@
-import BaseException from '#server/exceptions/base.ts'
 import emmitter from '#server/facades/emmitter.facade.ts'
 import logger from '#server/facades/logger.facade.ts'
 import Billing from '#zpayments/server/entities/billing.entity.ts'
@@ -7,11 +6,8 @@ interface HandlerCallback {
     (billing: Billing): Promise<void> | void
 }
 
-type Handler = Record<string, HandlerCallback>
-
 export default class BillingService {
     public logger = logger.child({ label: 'billing' })
-    public handlers = new Map<string, Handler>()
 
     public async approve(billing: Billing){
         await Billing.updateById(billing.id, {
@@ -22,14 +18,7 @@ export default class BillingService {
 
         emmitter.emit('zpayments:billing:approved', updated)
 
-        const handler = this.handlers.get(billing.purpose)
-
-        if (!handler?.approved) {
-            this.logger.info(`No approved handler for purpose "${billing.purpose}"`)
-            return
-        }
-        
-        await handler.approved(updated)
+        return updated
     }
 
     public async fail(billing: Billing){
@@ -41,14 +30,7 @@ export default class BillingService {
 
         emmitter.emit('zpayments:billing:failed', updated)
 
-        const handler = this.handlers.get(billing.purpose)
-
-        if (!handler?.failed) {
-            this.logger.info(`No failed handler for purpose "${billing.purpose}"`)
-            return
-        }
-        
-        await handler.failed(updated)
+        return updated
     }
 
     public async refund(billing: Billing){
@@ -60,14 +42,7 @@ export default class BillingService {
 
         emmitter.emit('zpayments:billing:refunded', updated)
 
-        const handler = this.handlers.get(billing.purpose)
-
-        if (!handler?.refunded) {
-            this.logger.info(`No refunded handler for purpose "${billing.purpose}"`)
-            return
-        }
-        
-        await handler.refunded(updated)
+        return updated
     }
 
     public async reopen(billing: Billing){
@@ -79,54 +54,30 @@ export default class BillingService {
 
         emmitter.emit('zpayments:billing:reopened', updated)
 
-        const handler = this.handlers.get(billing.purpose)
-
-        if (!handler) {
-            this.logger.info(`No handler for purpose "${billing.purpose}"`)
-            return
-        }
-        
-        if (!handler.reopened) {
-            this.logger.info(`No reopen handler for purpose "${billing.purpose}"`)
-            return
-        }
-        
-        await handler.reopened(updated)
+        return updated
     }
 
-    public handle(purpose: string, status: 'approved' | 'failed' | 'refunded' | 'reopened', callback: HandlerCallback) {
-        let handler = this.handlers.get(purpose)
-
-        if (!handler) {
-            handler = {}
-        }
-
-        if (handler[status] && handler[status] === callback) {
-            return
-        }
-        
-        if (handler[status] && handler[status] !== callback) {
-            throw new BaseException(`Handler for purpose "${purpose}" and status "${status}" is already registered.`)
-        }
-
-        handler[status] = callback
-
-        this.handlers.set(purpose, handler)
+    public onApproved(callback: HandlerCallback) {
+        emmitter.on('zpayments:billing:approved', callback, {
+            unique: true,
+        })
     }
 
-    public onApproved(purpose: string, callback: HandlerCallback) {
-        this.handle(purpose, 'approved', callback)
+    public onFailed(callback: HandlerCallback) {
+        emmitter.on('zpayments:billing:failed', callback, {
+            unique: true,
+        })
     }
 
-    public onFail(purpose: string, callback: HandlerCallback) {
-        this.handle(purpose, 'failed', callback)
+    public onRefunded(callback: HandlerCallback) {
+        emmitter.on('zpayments:billing:refunded', callback, {
+            unique: true,
+        })
     }
 
-    public onRefund(purpose: string, callback: HandlerCallback) {
-        this.handle(purpose, 'refunded', callback)
-    }
-
-    public onReopen(purpose: string, callback: HandlerCallback) {
-        this.handle(purpose, 'reopened', callback)
+    public onReopened(callback: HandlerCallback) {
+        emmitter.on('zpayments:billing:reopened', callback, {
+            unique: true,
+        })
     }
 }
