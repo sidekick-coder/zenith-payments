@@ -9,5 +9,8 @@
     "#zpayments/server/*": "./server/*",
     "#zpayments/shared/*": "./shared/*",
     "#zpayments/client/*": "./client/*"
+  },
+  "dependencies": {
+    "stripe": "^12.14.0"
   }
 }

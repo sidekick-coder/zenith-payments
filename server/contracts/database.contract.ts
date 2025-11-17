@@ -24,7 +24,7 @@ export interface PlanTable extends TimestampTable, SoftDeleteTable {
     status: 'active' | 'inactive' | 'archived'
 }
 
-declare module '#server/contracts/database.contract.ts' {
+declare module '#server/contracts/database.contract' {
     export interface Database  {
         zpayments__billings: BillingTable
         zpayments__subscriptions: SubscriptionTable

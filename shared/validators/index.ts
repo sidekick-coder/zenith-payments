@@ -1,6 +1,7 @@
 import * as gateway from './gateway.validator.ts'
 import * as billing from './billing.validator.ts'
 import * as plan from './plan.validator.ts'
+import * as subscription from './subscription.validator.ts'
 import root from '#shared/validators/index.ts'
 
 const schemas = {
@@ -8,6 +9,7 @@ const schemas = {
     gateway,
     billing,
     plan,
+    subscription,
 }
 
 export default schemas
