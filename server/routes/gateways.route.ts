@@ -1,3 +1,4 @@
+import payment from '../facades/payment.ts'
 import rootRouter from '#server/facades/router.facade.ts'
 import validator from '#shared/services/validator.service.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
@@ -12,17 +13,10 @@ const router = rootRouter.prefix('/api/zpayments/gateways')
 // GET all gateways
 router.get('/', async ({ acl }) => {
     acl.authorize('read', 'gateways')
-
-    const gatewaysConfig = config.get('zpayments.gateways', {})
     
-    const gateways = [] as GatewayConfig[]
+    const gateways = await payment.gateways.list()
 
-    for (const [id, gateway] of Object.entries<any>(gatewaysConfig)) {
-        gateways.push(GatewayConfig.from({
-            id,
-            ...gateway
-        }))
-    }
+    console.log('Gateways:', gateways)
 
     return {
         items: gateways,

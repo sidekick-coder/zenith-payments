@@ -18,6 +18,7 @@ import FormTextField from '#client/components/FormTextField.vue'
 import FormSelect from '#client/components/FormSelect.vue'
 import FormTextarea from '#client/components/FormTextarea.vue'
 import Button from '#client/components/Button.vue'
+import PlanGatewayLinks from '#zpayments/client/components/PlanGatewayLinks.vue'
 import { $t } from '#shared/lang.ts'
 import { $fetch } from '#client/utils/fetcher.ts'
 import type Plan from '#zpayments/shared/entities/plan.entity.ts'
@@ -28,7 +29,6 @@ const id = computed(() => route.params.id as string)
 
 const plan = ref<Plan | null>(null)
 const gateways = ref<any[]>([])
-const gatewayEntities = ref<any[]>([])
 const saving = ref(false)
 
 const statusOptions = [
@@ -91,23 +91,8 @@ async function loadGateways() {
     gateways.value = response.items || []
 }
 
-async function loadGatewayEntities() {
-    const [error, response] = await $fetch.try(`/api/zpayments/plans/${id.value}/gateway-links`, {
-        method: 'GET'
-    })
-
-    if (error) {
-        console.error('Failed to load gateway entities')
-        console.error(error)
-        return
-    }
-
-    gatewayEntities.value = response.items || []
-}
-
 await loadPlan()
 await loadGateways()
-await loadGatewayEntities()
 
 const tab = computed({
     get: () => (route.query.tab as string) || 'gateway-links',
@@ -232,57 +217,10 @@ const onSubmit = handleSubmit(async (formValues) => {
                     </TabsList>
                     
                     <TabsContent value="gateway-links">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>{{ $t('Linked Gateways') }}</CardTitle>
-                                <CardDescription>{{ $t('Payment gateways linked to this plan') }}</CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div
-                                    v-if="gatewayEntities.length === 0"
-                                    class="text-center text-muted-foreground py-8"
-                                >
-                                    {{ $t('No gateway links found') }}
-                                </div>
-                                <div
-                                    v-else
-                                    class="space-y-4"
-                                >
-                                    <div
-                                        v-for="entity in gatewayEntities"
-                                        :key="entity.id"
-                                        class="border rounded-lg p-4"
-                                    >
-                                        <div class="space-y-2">
-                                            <div>
-                                                <div class="text-sm font-medium text-muted-foreground">
-                                                    {{ $t('Gateway') }}
-                                                </div>
-                                                <div class="text-base">
-                                                    {{ entity.gateway }}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="text-sm font-medium text-muted-foreground">
-                                                    {{ $t('External ID') }}
-                                                </div>
-                                                <div class="text-base font-mono text-sm">
-                                                    {{ entity.entity_id }}
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <div class="text-sm font-medium text-muted-foreground">
-                                                    {{ $t('Created At') }}
-                                                </div>
-                                                <div class="text-base">
-                                                    {{ formatDate(entity.created_at) }}
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </CardContent>
-                        </Card>
+                        <PlanGatewayLinks
+                            :plan-id="id"
+                            :gateways="gateways"
+                        />
                     </TabsContent>
                 </Tabs>
             </div>

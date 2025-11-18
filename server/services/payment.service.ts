@@ -1,13 +1,16 @@
 import BillingService from './billing.service.ts'
+import GatewayService from './gateway.service.ts'
 import SubscriptionService from './subscription.service.ts'
 
 export default class PaymentService {
-    public billing: BillingService
-    public subscription: SubscriptionService
+    public billings: BillingService
+    public subscriptions: SubscriptionService
+    public gateways: GatewayService
 
     constructor() {
-        this.billing = new BillingService()
-        this.subscription = new SubscriptionService()
+        this.billings = new BillingService()
+        this.subscriptions = new SubscriptionService()
+        this.gateways = new GatewayService()
     }
 
 }

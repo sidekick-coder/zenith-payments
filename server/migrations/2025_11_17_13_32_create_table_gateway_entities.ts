@@ -6,11 +6,14 @@ export async function up(db: Kysely<any>): Promise<void> {
     await db.schema.createTable(table)
         .addIdColumn()
         .addColumn('gateway', 'varchar(100)', col => col.notNull())
-        .addColumn('entity_id', 'varchar(255)', col => col.notNull())
-        .addColumn('entity_type', 'varchar(100)', col => col.notNull())
+        .addColumn('external_id', 'varchar(255)', col => col.notNull())
+        .addColumn('name', 'varchar(255)', col => col.notNull())
+        .addColumn('description', 'text')
+        .addColumn('type', 'varchar(100)', col => col.notNull())
+        .addColumn('raw', 'text', col => col.notNull().defaultTo('{}'))
         .addTimestampColumns()
         .addSoftDeleteColumn()
-        .addUniqueConstraint('gateway_entity_unique', ['gateway', 'entity_id', 'entity_type', 'deleted_at'])
+        .addUniqueConstraint('gateway_entity_unique', ['gateway', 'external_id', 'type', 'deleted_at'])
         .execute()
 }
 

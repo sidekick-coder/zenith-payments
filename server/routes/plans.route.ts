@@ -1,9 +1,12 @@
+import payment from '../facades/payment.ts'
+import GatewayEntityAssignment from '../entities/gatewayEntityAssignment.entity.ts'
 import rootRouter from '#server/facades/router.facade.ts'
 import validator from '#shared/services/validator.service.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
 import Plan from '#zpayments/server/entities/plan.entity.ts'
 import { undeleted } from '#server/queries/index.ts'
+import GatewayEntity from '#zpayments/server/entities/gatewayEntity.entity.ts'
 
 const router = rootRouter.prefix('/api/zpayments/plans')
     .use(authMiddleware)
@@ -86,4 +89,53 @@ router.delete('/:id', async ({ params, acl }) => {
     await plan.softDelete()
     
     return plan
+})
+
+router.post('/:id/links', async ({ params, body, acl }) => {
+    const plan = await Plan.findOrFail(params.id)
+
+    acl.authorize('update', plan)
+
+    const payload = validator.validate(body, v => v.object({
+        gateway: v.string(),
+    }))
+
+    const gateway = await payment.gateways.find(payload.gateway)
+
+    if (!gateway.plans) {
+        throw new Error('Gateway does not support plans')
+    }
+
+    await gateway.plans.link(plan)
+
+    return { success: true }
+
+
+})
+
+router.get('/:id/links', async ({ params, acl }) => {
+    const plan = await Plan.findOrFail(params.id)
+
+    acl.authorize('read', plan)
+
+    const assigned = await GatewayEntityAssignment.list({
+        query: qb => qb
+            .selectAll()
+            .where('assignable_type', '=', 'Plan')
+            .where('assignable_id', '=', params.id)
+            .where(undeleted)
+    })
+
+    if (!assigned.length) {
+        return { items: [] }
+    }
+
+    const links = await GatewayEntity.list({
+        query: qb => qb
+            .selectAll()
+            .where('id', 'in', assigned.map(a => a.gateway_entity_id))
+            .where(undeleted)
+    })
+
+    return { items: links }
 })

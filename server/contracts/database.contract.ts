@@ -27,8 +27,11 @@ export interface PlanTable extends TimestampTable, SoftDeleteTable {
 export interface GatewayEntityTable extends TimestampTable, SoftDeleteTable {
     id: Generated<number>
     gateway: string
-    entity_id: string
-    entity_type: string
+    external_id: string
+    name: string
+    description: string | null
+    type: string
+    raw: string
 }
 
 export interface GatewayEntityMetaTable extends TimestampTable, SoftDeleteTable {
@@ -38,6 +41,13 @@ export interface GatewayEntityMetaTable extends TimestampTable, SoftDeleteTable 
     value: string
 }
 
+export interface GatewayEntityAssignmentTable extends TimestampTable, SoftDeleteTable {
+    id: Generated<number>
+    gateway_entity_id: number
+    assignable_id: string
+    assignable_type: string
+}
+
 declare module '#server/contracts/database.contract' {
     export interface Database  {
         zpayments__billings: BillingTable
@@ -45,5 +55,6 @@ declare module '#server/contracts/database.contract' {
         zpayments__plans: PlanTable
         zpayments__gateway_entities: GatewayEntityTable
         zpayments__gateway_entity_metas: GatewayEntityMetaTable
+        zpayments__gateway_entity_assignments: GatewayEntityAssignmentTable
     }
 }

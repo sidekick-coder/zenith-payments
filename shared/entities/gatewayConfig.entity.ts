@@ -11,13 +11,27 @@ export const GATEWAY_OPTIONS = [
                 label: 'API Key',
             }
         }
+    },
+    {
+        id: 'mercadopago',
+        label: 'MercadoPago',
+        config_fields: {
+            public_key: { 
+                component: 'text-field',
+                label: 'Public Key'
+            },
+            access_token: { 
+                component: 'text-field',
+                label: 'Access Token'
+            }
+        }
     }
 ]
 
 export default class GatewayConfig extends compose(BaseEntity) {
     public static GATEWAY_OPTIONS = GATEWAY_OPTIONS
 
-    public id: number
+    public id: string
     public name: string
     public description: string
     public gateway: string
