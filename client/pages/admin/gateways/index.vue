@@ -1,13 +1,11 @@
 <script setup lang="ts">
-import { watch, ref } from 'vue'
+import { ref } from 'vue'
 import { toast } from 'vue-sonner'
 import type { ComponentExposed } from 'vue-component-type-helpers'
-import { format } from 'date-fns'
 import DataTable, { defineColumns } from '#client/components/DataTable.vue'
 import { $t } from '#shared/lang.ts'
 import AppLayout from '#client/layouts/AppLayout.vue'
 import { $fetch } from '#client/utils/fetcher.ts'
-import { tryCatch } from '#shared/utils/tryCatch.ts'
 import ClientOnly from '#client/components/ClientOnly.vue'
 import Button from '#client/components/Button.vue'
 import Icon from '#client/components/Icon.vue'
@@ -25,7 +23,7 @@ const columns = defineColumns<GatewayConfig>([
         id: 'id',
         label: 'ID',
         field: 'id',
-        width: 50,
+        width: 200,
     },
     {
         id: 'name',
@@ -50,6 +48,8 @@ const fields = defineFormFields({
         component: 'select',
         label: $t('Gateway'),
         options: GatewayConfig.GATEWAY_OPTIONS,
+        labelKey: 'label',
+        valueKey: 'id',
     },
     name: {
         component: 'text-field',

@@ -156,27 +156,15 @@ function load(){
 
             <template #row-actions="{ row }">
                 <div class="flex items-center gap-2 justify-end">
-                    <ClientOnly>
-                        <DialogForm 
-                            :fetch="`/api/zpayments/plans/${row.id}`"
-                            method="PUT"
-                            :title="$t('Edit Plan')"
-                            :description="$t('Update the plan details below')"
-                            :schema="schemas.plan.update"
-                            :fields="fields"
-                            :values="row"
-                            @submit="load"
-                        >
-                            <Button
-                                size="sm"
-                                variant="ghost"
-                            >
-                                <Icon
-                                    name="Edit"
-                                />
-                            </Button>
-                        </DialogForm>
-                    </ClientOnly>
+                    <Button
+                        size="sm"
+                        variant="ghost"
+                        :to="`/admin/zpayments/plans/${row.id}`"
+                    >
+                        <Icon
+                            name="Eye"
+                        />
+                    </Button>
                     
                     <AlertButton 
                         variant="ghost"
