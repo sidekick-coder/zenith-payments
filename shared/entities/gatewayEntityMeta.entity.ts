@@ -4,7 +4,7 @@ import { compose } from '#shared/utils/compose.ts'
 
 export default class GatewayEntityMeta extends compose(BaseEntity, Timestamp, SoftDelete) {
     public id: number
-    public gateway_entity_id: number
+    public entity_id: number
     public name: string
     public value: string
 

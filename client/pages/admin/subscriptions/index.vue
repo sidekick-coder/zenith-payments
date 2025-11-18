@@ -78,7 +78,6 @@ const fields = defineFormFields({
         labelKey: 'name',
         valueKey: 'id',
         'onUpdate:selected-object': (plan: any) => {
-            console.log('selected plan', plan)
             if (plan && formRef.value) {
                 formRef.value.setFieldValue('amount', plan.amount)
             }

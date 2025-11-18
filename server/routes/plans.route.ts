@@ -7,6 +7,8 @@ import schemas from '#zpayments/shared/validators/index.ts'
 import Plan from '#zpayments/server/entities/plan.entity.ts'
 import { undeleted } from '#server/queries/index.ts'
 import GatewayEntity from '#zpayments/server/entities/gatewayEntity.entity.ts'
+import { tryCatch } from '#shared/utils/tryCatch.ts'
+import BaseException from '#server/exceptions/base.ts'
 
 const router = rootRouter.prefix('/api/zpayments/plans')
     .use(authMiddleware)
@@ -91,28 +93,6 @@ router.delete('/:id', async ({ params, acl }) => {
     return plan
 })
 
-router.post('/:id/links', async ({ params, body, acl }) => {
-    const plan = await Plan.findOrFail(params.id)
-
-    acl.authorize('update', plan)
-
-    const payload = validator.validate(body, v => v.object({
-        gateway: v.string(),
-    }))
-
-    const gateway = await payment.gateways.find(payload.gateway)
-
-    if (!gateway.plans) {
-        throw new Error('Gateway does not support plans')
-    }
-
-    await gateway.plans.link(plan)
-
-    return { success: true }
-
-
-})
-
 router.get('/:id/links', async ({ params, acl }) => {
     const plan = await Plan.findOrFail(params.id)
 
@@ -130,12 +110,73 @@ router.get('/:id/links', async ({ params, acl }) => {
         return { items: [] }
     }
 
-    const links = await GatewayEntity.list({
+    const pagination = await GatewayEntity.paginate({
         query: qb => qb
             .selectAll()
-            .where('id', 'in', assigned.map(a => a.gateway_entity_id))
+            .where('id', 'in', assigned.map(a => a.entity_id))
             .where(undeleted)
     })
 
-    return { items: links }
+    return pagination
+})
+
+router.post('/:id/links', async ({ params, body, acl }) => {
+    const plan = await Plan.findOrFail(params.id)
+
+    acl.authorize('update', plan)
+
+    const payload = validator.validate(body, v => v.object({
+        gateway: v.string(),
+        external_id: v.string(),
+    }))
+
+    const gateway = await payment.gateways.find(payload.gateway)
+
+    if (!gateway.plans) {
+        throw new Error('Gateway does not support plans')
+    }
+
+    const [error, entity] = await tryCatch(() => gateway.plans!.find(payload.external_id))
+
+    if (error) {
+        throw new BaseException('Failed to find plan in gateway', 400)
+    }
+
+    const assigned = await GatewayEntityAssignment.firstOrCreate({
+        debug: true,
+        select: qb => qb.selectAll()
+            .where('entity_id', '=', entity.id)
+            .where('assignable_type', '=', 'Plan')
+            .where('assignable_id', '=', plan.id.toString()),
+        values: {
+            entity_id: entity.id,
+            assignable_type: 'Plan',
+            assignable_id: plan.id.toString(),
+        }
+    })
+
+    return {
+        assigned,
+        entity 
+    }
+})
+
+router.post('/:id/unsync', async ({ params, body, acl }) => {
+    const plan = await Plan.findOrFail(params.id)
+
+    acl.authorize('update', plan)
+
+    const payload = validator.validate(body, v => v.object({
+        gateway: v.string(),
+    }))
+
+    const gateway = await payment.gateways.find(payload.gateway)
+
+    if (!gateway.plans) {
+        throw new Error('Gateway does not support plans')
+    }
+
+    await gateway.plans.unsync(plan)
+
+    return { success: true }
 })

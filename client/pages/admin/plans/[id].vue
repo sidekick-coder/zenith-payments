@@ -22,13 +22,13 @@ import PlanGatewayLinks from '#zpayments/client/components/PlanGatewayLinks.vue'
 import { $t } from '#shared/lang.ts'
 import { $fetch } from '#client/utils/fetcher.ts'
 import type Plan from '#zpayments/shared/entities/plan.entity.ts'
+import TextField from '#client/components/TextField.vue'
 
 const route = useRoute()
 const router = useRouter()
 const id = computed(() => route.params.id as string)
 
 const plan = ref<Plan | null>(null)
-const gateways = ref<any[]>([])
 const saving = ref(false)
 
 const statusOptions = [
@@ -77,22 +77,8 @@ async function loadPlan() {
     })
 }
 
-async function loadGateways() {
-    const [error, response] = await $fetch.try('/api/zpayments/gateways', {
-        method: 'GET'
-    })
-
-    if (error) {
-        console.error('Failed to load gateways')
-        console.error(error)
-        return
-    }
-
-    gateways.value = response.items || []
-}
 
 await loadPlan()
-await loadGateways()
 
 const tab = computed({
     get: () => (route.query.tab as string) || 'gateway-links',
@@ -175,23 +161,17 @@ const onSubmit = handleSubmit(async (formValues) => {
                                 :options="statusOptions"
                             />
 
-                            <div>
-                                <div class="text-sm font-medium text-muted-foreground">
-                                    {{ $t('Created At') }}
-                                </div>
-                                <div class="text-base">
-                                    {{ formatDate(plan.created_at) }}
-                                </div>
-                            </div>
+                            <TextField
+                                :label="$t('Created At')"
+                                :model-value="formatDate(plan.created_at)"
+                                readonly
+                            />
 
-                            <div>
-                                <div class="text-sm font-medium text-muted-foreground">
-                                    {{ $t('Updated At') }}
-                                </div>
-                                <div class="text-base">
-                                    {{ formatDate(plan.updated_at) }}
-                                </div>
-                            </div>
+                            <TextField
+                                :label="$t('Updated At')"
+                                :model-value="formatDate(plan.updated_at)"
+                                readonly
+                            />
                         </CardContent>
                         <CardFooter class="flex justify-end">
                             <Button
@@ -217,10 +197,7 @@ const onSubmit = handleSubmit(async (formValues) => {
                     </TabsList>
                     
                     <TabsContent value="gateway-links">
-                        <PlanGatewayLinks
-                            :plan-id="id"
-                            :gateways="gateways"
-                        />
+                        <PlanGatewayLinks :plan-id="id" />
                     </TabsContent>
                 </Tabs>
             </div>

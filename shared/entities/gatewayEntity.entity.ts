@@ -5,8 +5,11 @@ import { compose } from '#shared/utils/compose.ts'
 export default class GatewayEntity extends compose(BaseEntity, Timestamp, SoftDelete) {
     public id: number
     public gateway: string
-    public entity_id: string
-    public entity_type: string
+    public external_id: string
+    public name: string
+    public description: string | null
+    public type: string
+    public raw: string
 
     public metas?: GatewayEntityMeta[]
 }

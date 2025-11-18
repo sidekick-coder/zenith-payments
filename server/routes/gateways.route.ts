@@ -4,7 +4,6 @@ import validator from '#shared/services/validator.service.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
 import config from '#server/facades/config.facade.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
-import GatewayConfig from '#zpayments/shared/entities/gatewayConfig.entity.ts'
 
 const router = rootRouter.prefix('/api/zpayments/gateways')
     .use(authMiddleware)
@@ -15,8 +14,6 @@ router.get('/', async ({ acl }) => {
     acl.authorize('read', 'gateways')
     
     const gateways = await payment.gateways.list()
-
-    console.log('Gateways:', gateways)
 
     return {
         items: gateways,
@@ -79,8 +76,6 @@ router.put('/:id', async ({ params, body, acl }) => {
         ...payload,
         updatedAt: new Date().toISOString()
     }
-
-    console.log('Updated Gateway:', gateways[params.id])
     
     config.set(`zpayments.gateways.${params.id}`, gateways[params.id])
     

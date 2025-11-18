@@ -36,14 +36,14 @@ export interface GatewayEntityTable extends TimestampTable, SoftDeleteTable {
 
 export interface GatewayEntityMetaTable extends TimestampTable, SoftDeleteTable {
     id: Generated<number>
-    gateway_entity_id: number
+    entity_id: number
     name: string
     value: string
 }
 
 export interface GatewayEntityAssignmentTable extends TimestampTable, SoftDeleteTable {
     id: Generated<number>
-    gateway_entity_id: number
+    entity_id: number
     assignable_id: string
     assignable_type: string
 }

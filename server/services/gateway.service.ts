@@ -1,5 +1,5 @@
-import MercadoPago from '../gateways/mercado-pago.gateway.ts'
-import type Gateway from '../entities/gateway.entity.ts'
+import type Gateway from '../gateways/gateway.gateway.ts'
+import MercadoPago from '../strategies/mercado-pago.strategy.ts'
 import config from '#server/facades/config.facade.ts'
 import logger from '#server/facades/logger.facade.ts'
 import GatewayConfig from '#zpayments/shared/entities/gatewayConfig.entity.ts'

@@ -1,5 +1,5 @@
-import type GatewayPayment from './gatewayPayments.entity.ts'
-import type GatewayPlan from './gatewayPlans.entity.ts'
+import type GatewayPlan from './gatewayPlans.gateway.ts'
+import type GatewayPayment from './gatewayPayments.gateway.ts'
 import type GatewayConfig from '#zpayments/shared/entities/gatewayConfig.entity.ts'
 
 export default class Gateway {

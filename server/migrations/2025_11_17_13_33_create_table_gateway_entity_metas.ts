@@ -5,7 +5,7 @@ const table = 'zpayments__gateway_entity_metas'
 export async function up(db: Kysely<any>): Promise<void> {
     await db.schema.createTable(table)
         .addIdColumn()
-        .addColumn('gateway_entity_id', 'integer', col => col.notNull()
+        .addColumn('entity_id', 'integer', col => col.notNull()
             .references('zpayments__gateway_entities.id')
             .onDelete('cascade')
         )
@@ -13,7 +13,7 @@ export async function up(db: Kysely<any>): Promise<void> {
         .addColumn('value', 'text', col => col.notNull())
         .addTimestampColumns()
         .addSoftDeleteColumn()
-        .addUniqueConstraint('gateway_entity_meta_name', ['gateway_entity_id', 'name', 'deleted_at'])
+        .addUniqueConstraint('gateway_entity_meta_name', ['entity_id', 'name', 'deleted_at'])
         .execute()
 }
 
