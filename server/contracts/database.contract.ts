@@ -12,8 +12,9 @@ export interface BillingTable extends TimestampTable, SoftDeleteTable {
 export interface SubscriptionTable extends TimestampTable, SoftDeleteTable {
     id: Generated<number>
     user_id: number
+    plan_id: number
     amount: number
-    status: 'active' | 'inactive' | 'cancelled' | 'suspended'
+    status: 'pending' | 'active' | 'inactive' | 'cancelled' | 'suspended'
 }
 
 export interface PlanTable extends TimestampTable, SoftDeleteTable {

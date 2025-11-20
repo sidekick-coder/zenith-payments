@@ -1,5 +1,6 @@
 import payment from '../facades/payment.ts'
 import GatewayEntityAssignment from '../entities/gatewayEntityAssignment.entity.ts'
+import Subscription from '../entities/subscription.entity.ts'
 import rootRouter from '#server/facades/router.facade.ts'
 import validator from '#shared/services/validator.service.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
@@ -9,14 +10,13 @@ import { undeleted } from '#server/queries/index.ts'
 import GatewayEntity from '#zpayments/server/entities/gatewayEntity.entity.ts'
 import { tryCatch } from '#shared/utils/tryCatch.ts'
 import BaseException from '#server/exceptions/base.ts'
+import logger from '#server/facades/logger.facade.ts'
 
 const router = rootRouter.prefix('/api/zpayments/plans')
     .use(authMiddleware)
     .group()
 
-router.get('/', async ({ acl, query }) => {
-    acl.authorize('read', 'Plan')
-
+router.get('/', async ({ query }) => {
     const page = Number(query.page) || 1
     const limit = Number(query.limit) || 10
 
@@ -161,10 +161,8 @@ router.post('/:id/links', async ({ params, body, acl }) => {
     }
 })
 
-router.post('/:id/unsync', async ({ params, body, acl }) => {
+router.post('/:id/subscribe', async ({ params, body, user }) => {
     const plan = await Plan.findOrFail(params.id)
-
-    acl.authorize('update', plan)
 
     const payload = validator.validate(body, v => v.object({
         gateway: v.string(),
@@ -172,11 +170,49 @@ router.post('/:id/unsync', async ({ params, body, acl }) => {
 
     const gateway = await payment.gateways.find(payload.gateway)
 
-    if (!gateway.plans) {
-        throw new Error('Gateway does not support plans')
+    if (!gateway.subscriptions) {
+        throw new Error('Gateway does not support subscriptions')
     }
 
-    await gateway.plans.unsync(plan)
+    let subscription = await Subscription.findOne({
+        query: qb => qb.selectAll()
+            .where('user_id', '=', user.id)
+            .where(undeleted)
+    })
 
-    return { success: true }
+    if (subscription) {
+        throw new Error('User already has an active subscription')
+    }
+
+    const [error, response] = await tryCatch(() => gateway.subscriptions!.create({
+        user,
+        plan,
+    }))
+
+    if (error) {
+        logger.error('Failed to create subscription in gateway', {
+            error,
+            userId: user.id,
+            planId: plan.id 
+        })
+        throw new BaseException('Failed to create subscription in gateway', 400)
+    }
+    
+    subscription = await Subscription.create({
+        user_id: user.id,
+        plan_id: plan.id,
+        status: 'pending',
+        amount: plan.amount,
+    })
+
+    await GatewayEntityAssignment.create({
+        entity_id: response.entity.id,
+        assignable_type: 'Subscription',
+        assignable_id: subscription.id.toString(),
+    })
+
+    return {
+        subscription,
+        checkoutUrl: response.checkoutUrl,
+    }
 })
