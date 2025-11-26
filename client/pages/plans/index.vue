@@ -153,7 +153,7 @@ loadPlans()
                         <Button
                             class="w-full"
                             :disabled="subscribing[plan.id]"
-                            @click="subscribe(plan)"
+                            :href="`/api/zpayments/plans/${plan.id}/subscribe`"
                         >
                             <Icon
                                 v-if="subscribing[plan.id]"

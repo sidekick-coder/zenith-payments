@@ -16,6 +16,10 @@ export const GATEWAY_OPTIONS = [
         id: 'mercadopago',
         label: 'MercadoPago',
         config_fields: {
+            publicKey: { 
+                component: 'text-field',
+                label: 'Public Key'
+            },
             accessToken: { 
                 component: 'text-field',
                 label: 'Access Token'

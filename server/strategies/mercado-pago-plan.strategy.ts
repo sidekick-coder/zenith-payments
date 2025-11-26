@@ -2,17 +2,30 @@ import { MercadoPagoConfig, PreApprovalPlan } from 'mercadopago'
 import GatewayEntity from '../entities/gatewayEntity.entity.ts'
 import GatewayEntityAssignment from '../entities/gatewayEntityAssignment.entity.ts'
 import GatewayPlan from '../gateways/gatewayPlans.gateway.ts'
+import env from '#server/env.ts'
 
 export default class MercadoPagoPlan extends GatewayPlan {
     public id: string
     public client: MercadoPagoConfig
     public preApprovalPlan: PreApprovalPlan
+    public publicKey: string
     
-    constructor(id: string, client: MercadoPagoConfig) {
+    constructor(id: string, client: MercadoPagoConfig, publicKey: string) {
         super()
         this.id = id
         this.client = client
+        this.publicKey = publicKey
         this.preApprovalPlan = new PreApprovalPlan(this.client)
+    }
+
+    public createSubscribeURL: GatewayPlan['createSubscribeURL'] = async (plan) => {
+        const url = new URL(env.APP_URL + '/zpayments/mercado-pago/subscribe')
+
+        url.searchParams.set('gateway_id', this.id)
+        url.searchParams.set('plan_id', plan.id.toString())
+        url.searchParams.set('public_key', this.publicKey)
+
+        return url.toString()
     }
 
     public find: GatewayPlan['find'] = async (id) => {

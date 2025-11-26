@@ -31,11 +31,8 @@ router.get('/', async ({ query }) => {
     return pagination
 })
 
-router.get('/:id', async ({ params, acl }) => {
-    
+router.get('/:id', async ({ params }) => {    
     const plan = await Plan.find(params.id)
-    
-    acl.authorize('read', plan)
     
     if (!plan) {
         throw new Error('Plan not found')
@@ -161,58 +158,17 @@ router.post('/:id/links', async ({ params, body, acl }) => {
     }
 })
 
-router.post('/:id/subscribe', async ({ params, body, user }) => {
+router.get('/:id/subscribe', async ({ params, response }) => {
     const plan = await Plan.findOrFail(params.id)
 
-    const payload = validator.validate(body, v => v.object({
-        gateway: v.string(),
-    }))
+    const gateway = await payment.gateways.find('mercadopago')
 
-    const gateway = await payment.gateways.find(payload.gateway)
-
-    if (!gateway.subscriptions) {
-        throw new Error('Gateway does not support subscriptions')
+    if (!gateway.plans) {
+        response.redirect('/error?message=Gateway%20does%20not%20support%20plans')
+        return
     }
 
-    let subscription = await Subscription.findOne({
-        query: qb => qb.selectAll()
-            .where('user_id', '=', user.id)
-            .where(undeleted)
-    })
+    const subscribeUrl = await gateway.plans.createSubscribeURL(plan)
 
-    if (subscription) {
-        throw new Error('User already has an active subscription')
-    }
-
-    const [error, response] = await tryCatch(() => gateway.subscriptions!.create({
-        user,
-        plan,
-    }))
-
-    if (error) {
-        logger.error('Failed to create subscription in gateway', {
-            error,
-            userId: user.id,
-            planId: plan.id 
-        })
-        throw new BaseException('Failed to create subscription in gateway', 400)
-    }
-    
-    subscription = await Subscription.create({
-        user_id: user.id,
-        plan_id: plan.id,
-        status: 'pending',
-        amount: plan.amount,
-    })
-
-    await GatewayEntityAssignment.create({
-        entity_id: response.entity.id,
-        assignable_type: 'Subscription',
-        assignable_id: subscription.id.toString(),
-    })
-
-    return {
-        subscription,
-        checkoutUrl: response.checkoutUrl,
-    }
+    response.redirect(subscribeUrl)
 })

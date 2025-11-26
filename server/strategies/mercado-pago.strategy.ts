@@ -12,7 +12,7 @@ export default class MercadoPago extends Gateway {
     constructor(data: GatewayConfig) {
         super(data)
         this.client = new MercadoPagoConfig({ accessToken: this.config.accessToken })
-        this.plans = new MercadoPagoPlan(this.id, this.client)
+        this.plans = new MercadoPagoPlan(this.id, this.client, this.config.publicKey)
         this.subscriptions = new MercadoPagoSubscription(this.id, this.client)
     }
 }
