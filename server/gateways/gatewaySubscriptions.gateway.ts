@@ -13,6 +13,12 @@ export interface GatewaySubscriptionResponse {
 }
 
 export default class GatewaySubscription {
+    public sync() {
+        const error = new Error('Method not implemented.')
+
+        throw error
+    }
+    
     public list(){
         const error = new Error('Method not implemented.')
 

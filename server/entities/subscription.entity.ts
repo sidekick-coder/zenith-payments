@@ -1,7 +1,9 @@
+import { sql } from 'kysely'
 import GatewayEntityAssignment from './gatewayEntityAssignment.entity.ts'
 import { Model } from '#server/mixins/model.mixin.ts'
 import Base from '#zpayments/shared/entities/subscription.entity.ts'
 import { composeWith } from '#shared/utils/compose.ts'
+import db from '#server/facades/db.facade.ts'
 
 export default class Subscription extends composeWith(
     Base,
@@ -17,6 +19,20 @@ export default class Subscription extends composeWith(
                 assignable_id: String(this.id),
                 entity_id: entityId,
             }
+        })
+    }
+
+    public static findByGatewayEntityId(entityId: number) {
+        const query = db.selectFrom('zpayments__subscriptions as s')
+            .selectAll('s')
+            .innerJoin('zpayments__gateway_entity_assignments as gea', join => 
+                join.onRef('gea.assignable_id', '=', sql`CAST(s.id AS VARCHAR)`)
+            )
+            .where('gea.entity_id', '=', entityId)
+            .where('gea.assignable_type', '=', 'subscription')
+
+        return this.findOne({
+            query: () => query as any
         })
     }
 }

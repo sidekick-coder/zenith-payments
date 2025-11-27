@@ -5,11 +5,11 @@ const table = 'zpayments__subscriptions'
 export async function up(db: Kysely<any>): Promise<void> {
     await db.schema.createTable(table)
         .addIdColumn()
-        .addColumn('user_id', 'integer', col => col.notNull()
+        .addColumn('user_id', 'integer', col => col
             .references('users.id')
             .onDelete('cascade')
         )
-        .addColumn('plan_id', 'integer', col => col.notNull()
+        .addColumn('plan_id', 'integer', col => col
             .references('zpayments__plans.id')
             .onDelete('cascade')
         )

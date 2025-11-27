@@ -105,4 +105,16 @@ router.delete('/:id', async ({ params, acl }) => {
     return deletedGateway
 })
 
-export default router
+router.post('/:id/subscriptions/sync', async ({ params, acl }) => {
+    const gateway = await payment.gateways.find(params.id)
+
+    acl.authorize('update', 'Gateway', gateway)
+
+    if (!gateway.subscriptions) {
+        throw new Error('Subscriptions not supported for this gateway')
+    }
+
+    await gateway.subscriptions.sync()
+
+    return { success: true }
+})
