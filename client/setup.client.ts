@@ -22,6 +22,13 @@ export default defineClientSetup(({ router, menu }) => {
         }
     })
 
+    router.addRoute({
+        path: '/admin/zpayments/gateways/:id',
+        redirect: to => {
+            return `/admin/zpayments/gateways/${to.params.id}/details`
+        },
+    })
+
     menu.add({
         id: 'zpayments-billings',
         label: $t('Billings'),

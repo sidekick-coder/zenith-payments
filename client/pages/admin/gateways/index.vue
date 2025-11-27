@@ -154,27 +154,14 @@ async function destroy(id: string) {
                             <Icon name="Settings" />
                         </Button>
                     </DialogForm>
-
-                    <DialogForm 
-                        :fetch="`/api/zpayments/gateways/${row.id}`"
-                        :title="$t('Edit')"
-                        :description="$t('Fill in the details below to edit')"
-                        :schema="schemas.gateway.update"
-                        :fields="{
-                            name: fields.name,
-                            description: fields.description,
-                        }"
-                        :values="row"
-                        method="PUT"
-                        @submit="load"
+                    
+                    <Button
+                        size="icon"
+                        variant="ghost"
+                        :to="`/admin/zpayments/gateways/${row.id}`"
                     >
-                        <Button
-                            size="icon"
-                            variant="ghost"
-                        >
-                            <Icon name="Edit" />
-                        </Button>
-                    </DialogForm>
+                        <Icon name="Edit" />
+                    </Button>
 
                     <AlertButton 
                         variant="ghost"
