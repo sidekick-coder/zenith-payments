@@ -61,4 +61,12 @@ export default defineClientSetup(({ router, menu }) => {
         group: $t('Payments'),
     })
 
+    menu.add({
+        id: 'zpayments-gateway-entities',
+        label: $t('Entities'),
+        to: '/admin/zpayments/gateway-entities',
+        icon: 'database',
+        group: $t('Payments'),
+    })
+
 })
