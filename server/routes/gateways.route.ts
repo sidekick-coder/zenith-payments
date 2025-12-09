@@ -4,6 +4,7 @@ import validator from '#shared/services/validator.service.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
 import config from '#server/facades/config.facade.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
+import Pagination from '#shared/entities/pagination.entity.ts'
 
 const router = rootRouter.prefix('/api/zpayments/gateways')
     .use(authMiddleware)
@@ -15,9 +16,13 @@ router.get('/', async ({ acl }) => {
     
     const gateways = await payment.gateways.list()
 
-    return {
+    return new Pagination({
+        page: 1,
+        total: gateways.length,
+        total_pages: 1,
+        per_page: gateways.length,
         items: gateways,
-    }
+    })
 })
 
 // GET gateway by id

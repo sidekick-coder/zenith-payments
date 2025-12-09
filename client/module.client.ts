@@ -9,8 +9,6 @@ import './assets/css/styles.css'
 export default class ZenithPayments extends Module {
     public async onLoad(): Promise<void> {
         const menu = useMenu()
-
-        console.log('Zenith Payments module loaded!')
         
         router.auto(import.meta.glob<any>('./pages/**/*.vue'), {
             strip: ['pages'],
