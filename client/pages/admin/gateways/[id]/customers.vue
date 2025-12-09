@@ -11,8 +11,8 @@ import GatewayEntityTable from '#zpayments/client/components/GatewayEntityTable.
 import Icon from '#client/components/Icon.vue'
 
 const syncing = ref(false)
-const loading = ref(false)
 const tableRef = ref<InstanceType<typeof GatewayEntityTable>>()
+const loading = ref(false)
 const gateway = ref<GatewayConfig>()
 
 async function sync(){
@@ -20,7 +20,7 @@ async function sync(){
 
     syncing.value = true
 
-    const [error] = await $fetch.try(`/api/zpayments/gateways/${gateway.value.id}/subscriptions/sync`, {
+    const [error] = await $fetch.try(`/api/zpayments/gateways/${gateway.value.id}/customers/sync`, {
         method: 'POST'
     })
 
@@ -29,7 +29,7 @@ async function sync(){
         return
     }
 
-    toast.success($t('Subscriptions synced successfully.'))
+    toast.success($t('Customers synced successfully.'))
 
     setTimeout(() => {
         syncing.value = false
@@ -47,10 +47,10 @@ async function load(){
         <Card>
             <CardHeader>
                 <CardTitle>
-                    {{ $t('Subscriptions') }}
+                    {{ $t('Customers') }}
                 </CardTitle>
                 <CardDescription>
-                    {{ $t('Manage subscriptions associated with this gateway.') }}
+                    {{ $t('Manage customers associated with this gateway.') }}
                 </CardDescription>
                 <CardAction class="flex items-center gap-2">
                     <Button
@@ -76,9 +76,8 @@ async function load(){
             <CardContent>
                 <GatewayEntityTable
                     ref="tableRef"
-                    v-model:loading="loading"
                     :gateway-id="gateway?.id"
-                    entity-type="subscription"
+                    entity-type="customer"
                 />
             </CardContent>
         </Card>

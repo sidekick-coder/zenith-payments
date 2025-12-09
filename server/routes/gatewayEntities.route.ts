@@ -18,7 +18,8 @@ router.get('/', async ({ acl, query: routeQuery }) => {
     const payload = validator.validate(routeQuery, v => v.intersect([
         schemas.pagination.schema,
         v.object({
-            gateway_id: v.optional(v.string()),
+            gateway_id: v.nullish(v.string()),
+            type: v.nullish(v.pipe(schemas.url.array(), v.array(v.string()))),
         })
     ]))
 
@@ -29,6 +30,10 @@ router.get('/', async ({ acl, query: routeQuery }) => {
 
     if (payload.gateway_id) {
         query = query.where('ge.gateway', '=', payload.gateway_id)
+    }
+
+    if (payload.type) {
+        query = query.where('ge.type', 'in', payload.type)
     }
 
     const pagination = await GatewayEntity.paginate({

@@ -25,6 +25,10 @@ const menu = [
         to: `/admin/zpayments/gateways/${id.value}/subscriptions`,
     },
     {
+        label: $t('Customers'),
+        to: `/admin/zpayments/gateways/${id.value}/customers`,
+    },
+    {
         label: $t('Configuration'),
         to: `/admin/zpayments/gateways/${id.value}/config`,
     }
@@ -69,7 +73,7 @@ onMounted(load)
                 </Card>
             </div>
             <div class="w-full md:w-6/12 lg:w-8/12 xl:w-9/12">
-                <slot />
+                <slot v-if="gateway" />
             </div>
         </div>
     </AppLayout>

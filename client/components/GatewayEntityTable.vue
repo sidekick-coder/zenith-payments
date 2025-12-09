@@ -4,17 +4,27 @@ import type { ComponentExposed } from 'vue-component-type-helpers'
 import { format } from 'date-fns'
 import DataTable, { defineColumns } from '#client/components/DataTable.vue'
 import { $t } from '#shared/lang.ts'
-import AppLayout from '#client/layouts/AppLayout.vue'
-import Button from '#client/components/Button.vue'
-import Icon from '#client/components/Icon.vue'
 import GatewayEntity from '#zpayments/shared/entities/gatewayEntity.entity.ts'
-import PageTitle from '#client/components/PageTitle.vue'
-import PageSubtitle from '#client/components/PageSubtitle.vue'
 import ObjectInspect from '#client/components/ObjectInspect.vue'
-import GatewayEntityTable from '#zpayments/client/components/GatewayEntityTable.vue'
+import Button from '#client/components/Button.vue'
+
+const props = defineProps({
+    gatewayId: {
+        type: String,
+        default: null
+    },
+    entityType: {
+        type: String,
+        default: null
+    }
+})
 
 const loading = ref(false)
 const tableRef = ref<ComponentExposed<typeof DataTable>>()
+const query = ref<Record<string, any>>({
+    gateway_id: props.gatewayId,
+    type: props.entityType
+})
 
 const columns = defineColumns<GatewayEntity>([
     {
@@ -63,20 +73,29 @@ const columns = defineColumns<GatewayEntity>([
 function load(){
     tableRef.value?.load()
 }
+
+defineExpose({
+    load
+})
 </script>
-
 <template>
-    <AppLayout>
-        <div class="flex flex-col mb-4">
-            <PageTitle>{{ $t('Entities') }}</PageTitle>
-            <PageSubtitle>
-                {{ $t('Data related to gateway') }}
-            </PageSubtitle>
-        </div>
-
-        <GatewayEntityTable
-            ref="tableRef"
-            v-model:loading="loading"
-        />
-    </AppLayout>
+    <DataTable
+        ref="tableRef"
+        v-model:loading="loading"
+        :columns="columns"
+        :serialize="row => GatewayEntity.from(row)"
+        :fetch-query="query"
+        fetch="/api/zpayments/gateway-entities"
+    >
+        <template #row-actions="{ row }">
+            <ObjectInspect
+                :model-value="row.raw"
+                content-class="sm:max-w-[1200px]"
+            >
+                <Button variant="outline">
+                    {{ $t('Data') }}
+                </Button>
+            </ObjectInspect>
+        </template>
+    </DataTable>
 </template>
