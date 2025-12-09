@@ -50,8 +50,6 @@ export default class MercadoPagoSubscription extends GatewaySubscription {
 
             let subscription = await Subscription.findByGatewayEntityId(entity.id)
 
-            
-
             if (!subscription) {
                 subscription = await Subscription.create({
                     user_id: null,
