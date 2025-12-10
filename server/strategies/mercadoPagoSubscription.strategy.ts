@@ -1,10 +1,15 @@
 import { MercadoPagoConfig, PreApproval } from 'mercadopago'
+import { sql  } from 'kysely'
+import type { Insertable } from 'kysely'
 import GatewayEntity from '../entities/gatewayEntity.entity.ts'
 import GatewaySubscription from '../gateways/gatewaySubscriptions.gateway.ts'
 import type { CreateSubscriptionPayload, GatewaySubscriptionResponse } from '../gateways/gatewaySubscriptions.gateway.ts'
 import Subscription from '../entities/subscription.entity.ts'
+import Customer from '../entities/customer.entity.ts'
 import env from '#server/env.ts'
 import logger from '#server/facades/logger.facade.ts'
+import type { Database } from '#server/contracts/database.contract'
+import db from '#server/facades/db.facade.ts'
 
 export default class MercadoPagoSubscription extends GatewaySubscription {
     public id: string
@@ -47,24 +52,43 @@ export default class MercadoPagoSubscription extends GatewaySubscription {
                     raw: JSON.stringify(item),
                 }
             })
+            
+            const payload: Insertable<Database['zpayments__subscriptions']> = {
+                user_id: null,
+                plan_id: null,
+                amount: item.auto_recurring?.transaction_amount || 0,
+                status: item.status === 'authorized' ? 'active' : 'inactive',
+            }
 
+            const payer = await GatewayEntity.findOne({
+                where: eb => eb.and({
+                    gateway: this.id,
+                    type: 'customer',
+                    external_id: String(item.payer_id),
+                })
+            })
+
+            if (payer) {
+                const customer = await Customer.findByGatewayEntityId(payer.id)
+
+                if (customer) {
+                    payload.user_id = customer.id
+                }
+            }
+            
             let subscription = await Subscription.findByGatewayEntityId(entity.id)
 
             if (!subscription) {
-                subscription = await Subscription.create({
-                    user_id: null,
-                    plan_id: null,
-                    amount: item.auto_recurring?.transaction_amount || 0,
-                    status: 'unknown',
-                })
+                subscription = await Subscription.create(payload)
 
-                await subscription.assignEntity(entity.id)
+                await subscription.$entities.attach(entity.id, {
+                    assignable_type: 'subscription',
+                })
             }
 
-            await Subscription.updateById(subscription.id, {
-                amount: item.auto_recurring?.transaction_amount || subscription.amount,
-                status: item.status === 'authorized' ? 'active' : 'inactive',
-            })
+
+
+            await Subscription.updateById(subscription.id, payload)
         }
     }
 

@@ -1,7 +1,7 @@
 import { MercadoPagoConfig } from 'mercadopago'
 import Gateway from '../gateways/gateway.gateway.ts'
 import MercadoPagoPlan from './mercado-pago-plan.strategy.ts'
-import MercadoPagoSubscription from './mercado-pago-subscription.strategy.ts'
+import MercadoPagoSubscription from './mercadoPagoSubscription.strategy.ts'
 import MercadoPagoCustomers from './mercadoPagoCustomers.strategy.ts'
 import type GatewayConfig from '#zpayments/shared/entities/gatewayConfig.entity.ts'
 

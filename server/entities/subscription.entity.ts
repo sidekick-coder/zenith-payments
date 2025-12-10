@@ -5,31 +5,22 @@ import Base from '#zpayments/shared/entities/subscription.entity.ts'
 import { composeWith } from '#shared/utils/compose.ts'
 import db from '#server/facades/db.facade.ts'
 import HasManythroughService from '#server/services/hasManythrough.service.ts'
+import { undeleted } from '#server/queries/softDelete.ts'
 
 export default class Subscription extends composeWith(
     Base,
     Model('zpayments__subscriptions')
 ) {
-    public get entities(){
+    public get $entities(){
         return new HasManythroughService({
-            id: String(this.id),
+            sourceId: String(this.id),
+            
+            targetTable: 'zpayments__gateway_entities',
+            targetPrimaryKey: 'id',
+
             pivotTable: 'zpayments__gateway_entity_assignments',
-            pivoForeignKey: 'assignable_id',
-            table: 'zpayments__gateway_entities',
-            tableForeignKey: 'id',
-        })
-    }
-        
-    public async assignEntity(entityId: number) {
-        await GatewayEntityAssignment.firstOrCreate({
-            select: qb => qb
-                .where('assignable_id', '=', String(this.id))
-                .where('entity_id', '=', entityId),
-            values: {
-                assignable_type: 'subscription',
-                assignable_id: String(this.id),
-                entity_id: entityId,
-            }
+            pivotTargetKey: 'entity_id',
+            pivotSourceKey: 'assignable_id',
         })
     }
 
@@ -41,6 +32,7 @@ export default class Subscription extends composeWith(
             )
             .where('gea.entity_id', '=', entityId)
             .where('gea.assignable_type', '=', 'subscription')
+            .where(undeleted.column('s.deleted_at'))
 
         return this.findOne({
             query: () => query as any
