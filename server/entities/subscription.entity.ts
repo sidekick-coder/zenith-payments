@@ -4,11 +4,22 @@ import { Model } from '#server/mixins/model.mixin.ts'
 import Base from '#zpayments/shared/entities/subscription.entity.ts'
 import { composeWith } from '#shared/utils/compose.ts'
 import db from '#server/facades/db.facade.ts'
+import HasManythroughService from '#server/services/hasManythrough.service.ts'
 
 export default class Subscription extends composeWith(
     Base,
     Model('zpayments__subscriptions')
 ) {
+    public get entities(){
+        return new HasManythroughService({
+            id: String(this.id),
+            pivotTable: 'zpayments__gateway_entity_assignments',
+            pivoForeignKey: 'assignable_id',
+            table: 'zpayments__gateway_entities',
+            tableForeignKey: 'id',
+        })
+    }
+        
     public async assignEntity(entityId: number) {
         await GatewayEntityAssignment.firstOrCreate({
             select: qb => qb
