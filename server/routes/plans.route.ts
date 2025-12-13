@@ -140,7 +140,6 @@ router.post('/:id/links', async ({ params, body, acl }) => {
     }
 
     const assigned = await GatewayEntityAssignment.firstOrCreate({
-        debug: true,
         select: qb => qb.selectAll()
             .where('entity_id', '=', entity.id)
             .where('assignable_type', '=', 'Plan')
