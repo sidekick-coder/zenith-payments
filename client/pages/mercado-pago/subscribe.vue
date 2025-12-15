@@ -4,7 +4,7 @@ import { useRoute } from 'vue-router'
 import { loadMercadoPago } from '@mercadopago/sdk-js'
 import { $fetch } from '#client/utils/fetcher.ts'
 import { tryCatch } from '#shared/utils/tryCatch.ts'
-import { $t } from '#shared/lang.ts'
+
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '#client/components/ui/card'
 import Plan from '#zpayments/shared/entities/plan.entity.ts'
 

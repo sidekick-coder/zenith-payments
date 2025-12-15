@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import type { ComponentExposed } from 'vue-component-type-helpers'
 import { format } from 'date-fns'
 import DataTable, { defineColumns } from '#client/components/DataTable.vue'
-import { $t } from '#shared/lang.ts'
+
 import GatewayEntity from '#zpayments/shared/entities/gatewayEntity.entity.ts'
 import ObjectInspect from '#client/components/ObjectInspect.vue'
 import Button from '#client/components/Button.vue'

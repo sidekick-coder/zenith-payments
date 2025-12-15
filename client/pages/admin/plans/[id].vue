@@ -19,7 +19,7 @@ import FormSelect from '#client/components/FormSelect.vue'
 import FormTextarea from '#client/components/FormTextarea.vue'
 import Button from '#client/components/Button.vue'
 import PlanGatewayLinks from '#zpayments/client/components/PlanGatewayLinks.vue'
-import { $t } from '#shared/lang.ts'
+
 import { $fetch } from '#client/utils/fetcher.ts'
 import type Plan from '#zpayments/shared/entities/plan.entity.ts'
 import TextField from '#client/components/TextField.vue'

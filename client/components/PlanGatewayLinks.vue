@@ -11,7 +11,7 @@ import Button from '#client/components/Button.vue'
 import DataTable, { defineColumns } from '#client/components/DataTable.vue'
 import DialogForm, { defineFormFields } from '#client/components/DialogForm.vue'
 import Icon from '#client/components/Icon.vue'
-import { $t } from '#shared/lang.ts'
+
 import ClientOnly from '#client/components/ClientOnly.vue'
 
 defineProps<{

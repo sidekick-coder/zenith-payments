@@ -1,5 +1,5 @@
 import type User from '#shared/entities/user.entity.ts'
-import { $t } from '#shared/lang.ts'
+
 import { BaseEntity, SoftDelete, Timestamp } from '#shared/mixins/index.ts'
 import { compose } from '#shared/utils/compose.ts'
 

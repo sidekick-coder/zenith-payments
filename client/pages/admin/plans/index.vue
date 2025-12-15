@@ -3,7 +3,7 @@ import { ref } from 'vue'
 import type { ComponentExposed } from 'vue-component-type-helpers'
 import { format } from 'date-fns'
 import DataTable, { defineColumns } from '#client/components/DataTable.vue'
-import { $t } from '#shared/lang.ts'
+
 import AppLayout from '#client/layouts/AppLayout.vue'
 import ClientOnly from '#client/components/ClientOnly.vue'
 import Button from '#client/components/Button.vue'

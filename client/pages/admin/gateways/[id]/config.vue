@@ -11,7 +11,7 @@ import CardDescription from '#client/components/ui/card/CardDescription.vue'
 import CardContent from '#client/components/ui/card/CardContent.vue'
 import CardFooter from '#client/components/ui/card/CardFooter.vue'
 import Button from '#client/components/Button.vue'
-import { $t } from '#shared/lang.ts'
+
 import { $fetch } from '#client/utils/fetcher.ts'
 import type GatewayConfig from '#zpayments/shared/entities/gatewayConfig.entity.ts'
 import FormAutoFieldList from '#client/components/FormAutoFieldList.vue'
