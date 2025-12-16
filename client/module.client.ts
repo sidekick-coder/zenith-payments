@@ -34,7 +34,23 @@ export default class ZenithPayments extends Module {
             label: $t('Products'),
             to: '/admin/zpayments/products',
             icon: 'box',
-            group: $t('Payments'),
+            group: $t('ZPayments'),
+        })
+        
+        menu.add({
+            id: 'zpayments-payments',
+            label: $t('Payments'),
+            to: '/admin/zpayments/payments',
+            icon: 'box',
+            group: $t('ZPayments'),
+        })
+
+        menu.add({
+            id: 'zpayments-orders',
+            label: $t('Orders'),
+            to: '/admin/zpayments/orders',
+            icon: 'box',
+            group: $t('ZPayments'),
         })
     
         menu.add({
@@ -42,7 +58,7 @@ export default class ZenithPayments extends Module {
             label: $t('Gateways'),
             to: '/admin/zpayments/gateways',
             icon: 'credit-card',
-            group: $t('Payments'),
+            group: $t('ZPayments'),
         })
 
         menu.add({
@@ -50,7 +66,7 @@ export default class ZenithPayments extends Module {
             label: $t('Entities'),
             to: '/admin/zpayments/gateway-entities',
             icon: 'database',
-            group: $t('Payments'),
+            group: $t('ZPayments'),
         })
     }
 }
