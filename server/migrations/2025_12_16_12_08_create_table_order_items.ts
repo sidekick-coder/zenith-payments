@@ -9,21 +9,12 @@ export async function up(db: Kysely<any>): Promise<void> {
             .references('zpayments__orders.id')
             .onDelete('cascade')
         )
-        .addColumn('product_id', 'integer', col => col
-            .references('zpayments__products.id')
-            .onDelete('set null')
-        )
-        .addColumn('price_id', 'integer', col => col
-            .references('zpayments__product_prices.id')
-            .onDelete('set null')
-        )
-        .addColumn('subscription_id', 'integer', col => col
-            .references('zpayments__subscriptions.id')
-            .onDelete('set null')
-        )
+        .addColumn('item_type', 'varchar(100)', col => col.notNull())
+        .addColumn('item_id', 'varchar(128)', col => col.notNull())
         .addColumn('quantity', 'integer', col => col.notNull().defaultTo(1))
-        .addColumn('amount', 'integer', col => col.notNull())
+        .addColumn('unit_amount', 'integer', col => col.notNull())
         .addColumn('currency', 'varchar(3)', col => col.notNull())
+        .addUniqueConstraint('order_item_unique', ['order_id', 'item_type', 'item_id'])
         .execute()
 }
 

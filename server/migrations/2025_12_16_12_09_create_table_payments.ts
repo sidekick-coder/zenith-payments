@@ -9,7 +9,7 @@ export async function up(db: Kysely<any>): Promise<void> {
             .references('zpayments__orders.id')
             .onDelete('cascade')
         )
-        .addColumn('gateway_id', 'varchar(255)', col => col.notNull())
+        .addColumn('gateway_id', 'varchar(128)', col => col.notNull())
         .addColumn('status', 'varchar(50)', col => col.notNull())
         .addColumn('amount', 'integer', col => col.notNull())
         .addTimestampColumns()
