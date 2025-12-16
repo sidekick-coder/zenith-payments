@@ -2,6 +2,10 @@ import { MercadoPagoConfig, PreApproval } from 'mercadopago'
 import payment from '../facades/zpayment.ts'
 import GatewayEntityAssignment from '../entities/gatewayEntityAssignment.entity.ts'
 import Subscription from '../entities/subscription.entity.ts'
+import zpayment from '../facades/zpayment.ts'
+import Payment from '../entities/payment.entity.ts'
+import Order from '../entities/order.entity.ts'
+import MercadoPago from '../strategies/mercado-pago.strategy.ts'
 import rootRouter from '#server/facades/router.facade.ts'
 import validator from '#shared/services/validator.service.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
@@ -18,58 +22,54 @@ const router = rootRouter.prefix('/api/zpayments/mercadopago')
     .use(authMiddleware)
     .group()
 
+const unrestricted = rootRouter.prefix('/api/zpayments/mercadopago').group()
 
-router.post('/subscriptions', async ({ body, user, acl }) => {
-    const payload = validator.validate(body, v => v.object({
-        email: v.string(),
-        gateway_id: v.string(),
-        plan_id: v.number(),
-        card_token: v.string(),
-    }))
+unrestricted.get('/success', async ({ query, response }) => {
+    const payment_id = query.payment_id as string
+    const order_id = query.order_id as string
 
-    const plan = await Plan.findOrFail(payload.plan_id)
-    const gateway = await payment.gateways.find(payload.gateway_id)
-    const entity = await plan.findEntityByGatewayId(payload.gateway_id)
+    const payment = await Payment.findOrFail(Number(payment_id))
+    const order = await Order.findOrFail(Number(order_id))
 
-    const client = new MercadoPagoConfig({ accessToken: gateway.config.accessToken })
-    const preApproval = new PreApproval(client)
-
-    const { api_response: _, ...subscription } = await preApproval.create({
-        body: {
-            preapproval_plan_id: entity.external_id,
-            reason: plan.name,
-            payer_email: payload.email,
-            back_url: env.APP_URL + '/api/zpayments/mercadopago/webhooks',
-            card_token_id: payload.card_token,
-            auto_recurring: {
-                frequency: 1,
-                frequency_type: 'months',
-                transaction_amount: plan.amount / 100,
-                currency_id: 'BRL',
-            }
-        }
+    await Payment.updateById(payment.id, {
+        status: 'success',
     })
 
-    if (!subscription.id) {
-        throw new Error('Subscription ID not returned from Mercado Pago')
-    }
-    
-    const subscriptionEntity = await GatewayEntity.findOrCreate({
-        gateway: gateway.id,
-        external_id: subscription.id,
-        name: `Subscription ${subscription.id}`,
-        type: 'subscription',
-        raw: JSON.stringify(subscription),
+    await Order.updateById(order.id, {
+        status: 'success',
     })
 
-    const subscriptionRecord = await Subscription.create({
-        user_id: user.id,
-        plan_id: plan.id,
-        amount: plan.amount,
-        status: subscription.status === 'authorized' ? 'active' : 'pending',
+    const url = new URL(env.APP_URL)
+
+    url.pathname = '/admin/zpayments/payments'
+
+    response.redirect(url.toString())
+})
+
+unrestricted.get('/failure', async ({ query, response }) => {
+    const payment_id = query.external_reference as string
+    const order_id = query.order_id as string
+
+    console.log(query)
+
+    const payment = await Payment.findOrFail(Number(payment_id))
+    const order = await Order.findOrFail(Number(order_id))
+
+    await Payment.updateById(payment.id, {
+        status: 'failed',
     })
 
-    await subscriptionRecord.assignEntity(subscriptionEntity.id)
+    await Order.updateById(order.id, {
+        status: 'failed',
+    })
 
-    return subscriptionRecord
+    const url = new URL(env.APP_URL)
+
+    url.pathname = '/admin/zpayments/payments'
+
+    response.redirect(url.toString())
+})
+
+unrestricted.get('/pending', async ({ query }) => {
+    return query
 })

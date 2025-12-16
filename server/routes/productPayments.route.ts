@@ -12,85 +12,12 @@ import { undeleted } from '#server/queries/index.ts'
 import User from '#server/entities/user.entity.ts'
 import BaseException from '#server/exceptions/base.ts'
 
-const router = rootRouter.prefix('/api/zpayments/products')
+const router = rootRouter.prefix('/api/zpayments/products/:product_id/payments')
     .use(authMiddleware)
     .group()
 
-const publicRouter = rootRouter.prefix('/api/zpayments/products')
-    .group()
-
-router.get('/', async ({ query }) => {
-    const page = Number(query.page) || 1
-    const limit = Number(query.limit) || 10
-
-    const pagination = await Product.paginate({
-        page,
-        limit,
-        query: qb => qb.selectAll()
-            .where(undeleted)
-            .orderBy('created_at', 'desc'),
-    })
-
-    return pagination
-})
-
-router.get('/:id', async ({ params }) => {    
-    const product = await Product.find(params.id)
-    
-    if (!product) {
-        throw new Error('Product not found')
-    }
-    
-    return product
-})
-
-router.post('/', async ({ body, acl }) => {
-    
-    const payload = validator.validate(body, schemas.product.create)
-
-    acl.authorize('create', 'Product', payload)
-    
-    const product = await Product.create({
-        name: payload.name,
-        description: payload.description || null,
-    })
-    
-    return product
-})
-
-router.put('/:id', async ({ params, body, acl }) => {
-    const product = await Product.findOrFail(params.id)
-    
-    acl.authorize('update', product)
-
-    const payload = validator.validate(body, schemas.product.update)
-    
-    await Product.updateById(product.id, {
-        name: payload.name ?? product.name,
-        description: payload.description ?? product.description,
-    })
-
-    product.merge(payload)
-    
-    return product
-})
-
-router.delete('/:id', async ({ params, acl }) => {    
-    const product = await Product.find(params.id)
-
-    acl.authorize('delete', product)
-    
-    if (!product) {
-        throw new Error('Product not found')
-    }
-    
-    await product.softDelete()
-    
-    return product
-})
-
-publicRouter.post('/:id/payments', async ({ params, body, acl }) => {
-    const productId = validator.validate(params, schemas.url.number())
+router.post('/', async ({ params, body }) => {
+    const productId = validator.validate(params.product_id, schemas.url.number())
 
     const payload = validator.validate(body, v => v.object({
         gateway_id: v.string(),
@@ -141,7 +68,7 @@ publicRouter.post('/:id/payments', async ({ params, body, acl }) => {
     })
 
 
-    const result = await gateway.products.pay({
+    return await gateway.products.pay({
         payment,
         order,
         orderItems: [orderItem],

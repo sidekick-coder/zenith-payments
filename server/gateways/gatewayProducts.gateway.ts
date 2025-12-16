@@ -20,7 +20,7 @@ export interface CreateResponse {
     entity: GatewayEntity
     
     /** URL to redirect the user to complete the payment */
-    url: string
+    checkout_url: string
 }
 
 export default class GatewayProducts {

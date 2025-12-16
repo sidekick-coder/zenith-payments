@@ -29,28 +29,23 @@ export default class MercadoPagoProducts extends GatewayProducts {
     }
 
     public pay: GatewayProducts['pay'] = async ({ product, price, user, payment }) => {
+        const baseURL = 'https://parrot-apt-ewe.ngrok-free.app'
 
-        const path = `/api/zpayments/gateways/${this.id}/mercado-pago/notifications`
+        const params = new URLSearchParams()
 
-        const baseUrl = new URL(path, env.APP_URL)
+        params.set('gateway_id', this.id)
+        params.set('payment_id', String(payment.id))
+        params.set('order_id', String(payment.order_id))
 
-        baseUrl.searchParams.set('paymentId', String(payment.id))
-        baseUrl.searchParams.set('userId', String(user.id))
-        baseUrl.searchParams.set('productId', String(product.id))
+        const successUrl = new URL('/api/zpayments/mercadopago/success', baseURL)
+        const failureUrl = new URL('/api/zpayments/mercadopago/failure', baseURL)
+        const pendingUrl = new URL('/api/zpayments/mercadopago/pending', baseURL)
 
-        const successUrl = new URL(baseUrl.toString())
-        
-        successUrl.searchParams.set('status', 'success')
-
-        const failureUrl = new URL(baseUrl.toString())
-        
-        failureUrl.searchParams.set('status', 'failure')
-
-        const pendingUrl = new URL(baseUrl.toString())
-
-        pendingUrl.searchParams.set('status', 'pending')
-        
-
+        for (const [key, value] of params.entries()) {
+            successUrl.searchParams.append(key, value)
+            failureUrl.searchParams.append(key, value)
+            pendingUrl.searchParams.append(key, value)
+        }
 
         const items = [
             {
@@ -62,26 +57,39 @@ export default class MercadoPagoProducts extends GatewayProducts {
             }
         ]
 
-        const response = await this.preference.create({
-            body: {
-                items: items,
-                payer: {
-                    name: user.name,
-                    email: user.email
-                },
-                back_urls: {
-                    success: successUrl.toString(),
-                    failure: failureUrl.toString(),
-                    pending: pendingUrl.toString(),
-                },
-                auto_return: 'approved',
-                external_reference: String(payment.id),
-            }
+        const payload = {
+            items: items,
+            payer: {
+                name: user.name,
+                email: user.email
+            },
+            back_urls: {
+                success: successUrl.toString(),
+                failure: failureUrl.toString(),
+                pending: pendingUrl.toString(),
+            },
+            auto_return: 'approved',
+            external_reference: String(payment.id),
+        }
+
+        const { api_response: _, ...response } = await this.preference.create({
+            body: payload,
+        })
+        
+        const entity = await GatewayEntity.create({
+            external_id: String(response.id),
+            name: 'MercadoPago Preference',
+            type: 'preference',
+            gateway: this.id,
+            raw: JSON.stringify(response),
         })
 
-        console.log(response)
+        await payment.$entities.attach(entity.id)
 
-        throw new Error('Not implemented yet')
+        return {
+            entity,
+            checkout_url: response.init_point,
+        }
     }
 
     

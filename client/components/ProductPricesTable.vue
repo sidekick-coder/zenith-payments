@@ -1,8 +1,7 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref } from 'vue'
 import type { ComponentExposed } from 'vue-component-type-helpers'
 import { format } from 'date-fns'
-import { toast } from 'vue-sonner'
 import DataTable, { defineColumns } from '#client/components/DataTable.vue'
 import ProductPrice from '#zpayments/shared/entities/productPrice.entity.ts'
 import Button from '#client/components/Button.vue'

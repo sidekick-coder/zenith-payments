@@ -22,6 +22,7 @@ import ProductPricesTable from '#zpayments/client/components/ProductPricesTable.
 import { $fetch } from '#client/utils/fetcher.ts'
 import type Product from '#zpayments/shared/entities/product.entity.ts'
 import TextField from '#client/components/TextField.vue'
+import ProductPaymentsTable from '#zpayments/client/components/ProductPaymentsTable.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -179,11 +180,7 @@ const onSubmit = handleSubmit(async (formValues) => {
                     </TabsContent>
 
                     <TabsContent value="payments">
-                        <Card>
-                            <CardContent class="py-8 text-center text-muted-foreground">
-                                {{ $t('Payments feature coming soon') }}
-                            </CardContent>
-                        </Card>
+                        <ProductPaymentsTable :product-id="id" />
                     </TabsContent>
                 </Tabs>
             </div>

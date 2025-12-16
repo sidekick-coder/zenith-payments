@@ -3,6 +3,7 @@ import Gateway from '../gateways/gateway.gateway.ts'
 import MercadoPagoPlan from './mercado-pago-plan.strategy.ts'
 import MercadoPagoSubscription from './mercadoPagoSubscription.strategy.ts'
 import MercadoPagoCustomers from './mercadoPagoCustomers.strategy.ts'
+import MercadoPagoProducts from './mercadoPagoProducts.strategy.ts'
 import type GatewayConfig from '#zpayments/shared/entities/gatewayConfig.entity.ts'
 
 export default class MercadoPago extends Gateway {
@@ -10,6 +11,7 @@ export default class MercadoPago extends Gateway {
     public subscriptions: MercadoPagoSubscription
     public customers: MercadoPagoCustomers
     public client: MercadoPagoConfig
+    public products: MercadoPagoProducts
 
     constructor(data: GatewayConfig) {
         super(data)
@@ -20,5 +22,6 @@ export default class MercadoPago extends Gateway {
             id: this.id,
             client: this.client,
         })
+        this.products = new MercadoPagoProducts(this.id, this.client)
     }
 }

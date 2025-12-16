@@ -25,4 +25,8 @@ export default class Gateway {
         this.gateway = data.gateway
         this.config = data.config
     }
+
+    public is<T extends Gateway>(gatewayClass: new (...args: any[]) => T): this is T {
+        return this instanceof gatewayClass
+    }
 }
