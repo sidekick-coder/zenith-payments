@@ -45,6 +45,7 @@ const columns = defineColumns([
             :fields="fields"
             :columns="columns"
             fetch="/api/zpayments/products"
+            view-to="/admin/zpayments/products/:id"
         />
     </AppLayout>
 </template>
