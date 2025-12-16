@@ -11,11 +11,11 @@ import Button from '#client/components/Button.vue'
 const props = defineProps({
     gatewayId: {
         type: String,
-        default: null
+        default: undefined
     },
     entityType: {
         type: String,
-        default: null
+        default: undefined
     }
 })
 
