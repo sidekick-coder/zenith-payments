@@ -49,6 +49,21 @@ export interface GatewayEntityAssignmentTable extends TimestampTable, SoftDelete
     assignable_type: string
 }
 
+export interface ProductTable extends TimestampTable, SoftDeleteTable {
+    id: Generated<number>
+    name: string
+    description: string | null
+    amount: number
+    currency: string
+}
+
+export interface ProductMetaTable extends TimestampTable, SoftDeleteTable {
+    id: Generated<number>
+    product_id: number
+    name: string
+    value: string | null
+}
+
 declare module '#server/contracts/database.contract' {
     export interface Database  {
         zpayments__billings: BillingTable
@@ -57,5 +72,7 @@ declare module '#server/contracts/database.contract' {
         zpayments__gateway_entities: GatewayEntityTable
         zpayments__gateway_entity_metas: GatewayEntityMetaTable
         zpayments__gateway_entity_assignments: GatewayEntityAssignmentTable
+        zpayments__products: ProductTable
+        zpayments__product_metas: ProductMetaTable
     }
 }
