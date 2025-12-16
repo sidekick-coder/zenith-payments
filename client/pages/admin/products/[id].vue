@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, onMounted, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useForm } from 'vee-validate'
 import * as v from 'valibot'
@@ -58,7 +58,7 @@ async function loadProduct() {
     })
 }
 
-await loadProduct()
+onMounted(loadProduct)
 
 const tab = computed({
     get: () => (route.query.tab as string) || 'prices',

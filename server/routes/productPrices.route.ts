@@ -49,9 +49,8 @@ router.post('/', async ({ body, acl, params }) => {
     acl.authorize('create', 'ProductPrice', payload)
     
     const productPrice = await ProductPrice.create({
+        ...payload,
         product_id: productId,
-        amount: payload.amount,
-        currency: payload.currency,
     })
     
     return productPrice
@@ -64,10 +63,7 @@ router.put('/:id', async ({ params, body, acl }) => {
 
     const payload = validator.validate(body, schemas.productPrice.update)
     
-    await ProductPrice.updateById(productPrice.id, {
-        amount: payload.amount ?? productPrice.amount,
-        currency: payload.currency ?? productPrice.currency,
-    })
+    await ProductPrice.updateById(productPrice.id, payload)
 
     productPrice.merge(payload)
     

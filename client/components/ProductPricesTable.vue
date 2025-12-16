@@ -11,6 +11,8 @@ import AlertButton from '#client/components/AlertButton.vue'
 import DialogForm, { defineFormFields } from '#client/components/DialogForm.vue'
 import { Card, CardAction, CardContent, CardHeader } from '#client/components/ui/card/index.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
+import countries from '#zpayments/shared/data/countries.json'
+import currencies from '#zpayments/shared/data/currencies.json'
 
 const props = defineProps({
     productId: {
@@ -24,14 +26,33 @@ const tableRef = ref<ComponentExposed<typeof DataTable>>()
 const deletingItems = ref<number[]>([])
 
 const fields = defineFormFields({
+    gateway_id: {
+        component: 'select',
+        label: $t('Gateway ID'),
+        fetch: '/api/zpayments/gateways',
+        labelKey: 'name',
+        valueKey: 'id',
+    },
+    country: {
+        component: 'autocomplete',
+        label: $t('Country'),
+        options: countries,
+        labelKey: 'name',
+        valueKey: 'code',
+        clearable: true,
+    },
+    currency: {
+        component: 'autocomplete',
+        label: $t('Currency'),
+        labelKey: 'label',
+        valueKey: 'code',
+        options: currencies,
+        clearable: true,
+    },
     amount: {
         component: 'text-field',
         label: $t('Price'),
         type: 'number',
-    },
-    currency: {
-        component: 'text-field',
-        label: $t('Currency'),
     },
 })
 
@@ -43,6 +64,17 @@ const columns = defineColumns<ProductPrice>([
         width: 50,
     },
     {
+        id: 'gateway_id',
+        label: $t('Gateway ID'),
+        field: 'gateway_id',
+    },
+    {
+        id: 'country',
+        label: $t('Country'),
+        field: 'country',
+        width: 100,
+    },
+    {
         id: 'amount',
         label: $t('Price'),
         field: 'amount',
@@ -51,6 +83,7 @@ const columns = defineColumns<ProductPrice>([
         id: 'currency',
         label: $t('Currency'),
         field: 'currency',
+        width: 100,
     },
     {
         id: 'created_at',
@@ -118,8 +151,8 @@ defineExpose({
                             :title="$t('Edit Price')"
                             :description="$t('Fill in the details below to edit the price')"
                             :schema="schemas.productPrice.update"
-                            :fields="fields"
                             :values="row"
+                            :fields="fields"
                             method="PUT"
                             @submit="load"
                         >

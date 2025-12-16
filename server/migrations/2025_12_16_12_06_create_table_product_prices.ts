@@ -9,6 +9,8 @@ export async function up(db: Kysely<any>): Promise<void> {
             .references('zpayments__products.id')
             .onDelete('cascade')
         )
+        .addColumn('gateway_id', 'varchar(255)')
+        .addColumn('country', 'varchar(2)')
         .addColumn('amount', 'integer', col => col.notNull())
         .addColumn('currency', 'varchar(3)', col => col.notNull())
         .addTimestampColumns()
