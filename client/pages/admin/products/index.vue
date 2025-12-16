@@ -9,11 +9,6 @@ const fields = defineFormFields({
         component: 'text-field',
         label: $t('Name'),
     },
-    amount: {
-        component: 'text-field',
-        label: $t('Amount'),
-        type: 'number',
-    },
 })
 
 const columns = defineColumns([
@@ -26,11 +21,6 @@ const columns = defineColumns([
         id: 'name',
         label: $t('Name'),
         field: 'name',
-    },
-    {
-        id: 'amount',
-        label: $t('Amount'),
-        field: 'amount',
     },
     { id: 'actions' }
 ])

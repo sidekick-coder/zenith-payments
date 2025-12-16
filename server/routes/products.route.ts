@@ -43,8 +43,6 @@ router.post('/', async ({ body, acl }) => {
     const product = await Product.create({
         name: payload.name,
         description: payload.description || null,
-        amount: payload.amount,
-        currency: payload.currency,
     })
     
     return product
@@ -60,8 +58,6 @@ router.put('/:id', async ({ params, body, acl }) => {
     await Product.updateById(product.id, {
         name: payload.name ?? product.name,
         description: payload.description ?? product.description,
-        amount: payload.amount ?? product.amount,
-        currency: payload.currency ?? product.currency,
     })
 
     product.merge(payload)

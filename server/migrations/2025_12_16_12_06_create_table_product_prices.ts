@@ -1,17 +1,16 @@
 import { Kysely } from 'kysely'
 
-const table = 'zpayments__billings'
+const table = 'zpayments__product_prices'
 
 export async function up(db: Kysely<any>): Promise<void> {
     await db.schema.createTable(table)
         .addIdColumn()
-        .addColumn('user_id', 'integer', col => col.notNull()
-            .references('users.id')
+        .addColumn('product_id', 'integer', col => col.notNull()
+            .references('zpayments__products.id')
             .onDelete('cascade')
         )
-        .addColumn('purpose', 'varchar(255)', col => col.notNull())
         .addColumn('amount', 'integer', col => col.notNull())
-        .addColumn('status', 'varchar(50)', col => col.notNull().defaultTo('pending'))
+        .addColumn('currency', 'varchar(3)', col => col.notNull().defaultTo('BRL'))
         .addTimestampColumns()
         .addSoftDeleteColumn()
         .execute()
@@ -20,4 +19,3 @@ export async function up(db: Kysely<any>): Promise<void> {
 export async function down(db: Kysely<any>): Promise<void> {
     await db.schema.dropTable(table).execute()
 }
-

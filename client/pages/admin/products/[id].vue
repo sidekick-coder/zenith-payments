@@ -32,7 +32,6 @@ const saving = ref(false)
 const schema = v.object({
     name: v.pipe(v.string(), v.minLength(2, $t('Name is required'))),
     description: v.optional(v.string()),
-    amount: v.pipe(v.number(), v.minValue(0, $t('Amount must be positive')))
 })
 
 const { handleSubmit, setValues } = useForm({
@@ -54,7 +53,6 @@ async function loadProduct() {
     setValues({
         name: response.name,
         description: response.description || '',
-        amount: response.amount
     })
 }
 
@@ -129,12 +127,6 @@ const onSubmit = handleSubmit(async (formValues) => {
                                 :label="$t('Description')"
                             />
 
-                            <FormTextField
-                                name="amount"
-                                type="number"
-                                :label="$t('Amount')"
-                            />
-
                             <TextField
                                 :label="$t('Created At')"
                                 :model-value="formatDate(product.created_at)"
@@ -166,7 +158,7 @@ const onSubmit = handleSubmit(async (formValues) => {
                 >
                     <TabsList>
                         <TabsTrigger value="metas">
-                            {{ $t('Product Metas') }}
+                            {{ $t('Metas') }}
                         </TabsTrigger>
                         <TabsTrigger value="payments">
                             {{ $t('Payments') }}
