@@ -6,5 +6,4 @@ export default class Product extends compose(BaseEntity, Timestamp, SoftDelete) 
     public name: string
     public description: string | null
     public amount: number
-    public currency: string
 }

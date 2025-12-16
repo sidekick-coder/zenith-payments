@@ -10,22 +10,16 @@ export default class ZenithPayments extends Module {
     public async onLoad(): Promise<void> {
         const menu = useMenu()
         
+        router.auto(import.meta.glob<any>('./pages/admin/**/*.vue'), {
+            strip: ['pages', 'admin'],
+            guards: [authGuard],
+            prefix: '/admin/zpayments',
+        })
+        
         router.auto(import.meta.glob<any>('./pages/**/*.vue'), {
             strip: ['pages'],
-            refine(records){
-                return records.map(r => {
-
-                    if (r.path.startsWith('/admin')) {
-                        r.path = '/admin/zpayments/' + r.path.replace('/admin', '')
-                        r.beforeEnter = [authGuard]
-                        return r
-                    }
-
-                    r.path = '/zpayments/' + r.path
-
-                    return r
-                })
-            }
+            exclude: ['/admin/**'],
+            prefix: '/zpayments',
         })
 
         router.addRoute({
@@ -40,6 +34,14 @@ export default class ZenithPayments extends Module {
             label: $t('Billings'),
             to: '/admin/zpayments/billings',
             icon: 'DollarSign',
+            group: $t('Payments'),
+        })
+
+        menu.add({
+            id: 'zpayments-products',
+            label: $t('Products'),
+            to: '/admin/zpayments/products',
+            icon: 'box',
             group: $t('Payments'),
         })
 
