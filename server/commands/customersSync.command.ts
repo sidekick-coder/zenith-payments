@@ -1,7 +1,7 @@
 
 import { program } from 'commander'
 import { select } from '@inquirer/prompts'
-import payment from '../facades/payment.ts'
+import payment from '../facades/zpayment.ts'
 
 program
     .command('zpayments:customers-sync')

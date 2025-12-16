@@ -1,5 +1,5 @@
 import PaymentService from '#zpayments/server/services/payment.service.ts'
 
-const payment = new PaymentService()
+const zpayment = new PaymentService()
 
-export default payment
+export default zpayment

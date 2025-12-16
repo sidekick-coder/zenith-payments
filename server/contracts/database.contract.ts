@@ -57,11 +57,10 @@ export interface OrderTable extends TimestampTable {
 export interface OrderItemTable {
     id: Generated<number>
     order_id: number
-    product_id: number | null
-    price_id: number | null
-    subscription_id: number | null
+    item_type: string
+    item_id: string
     quantity: number
-    amount: number
+    unit_amount: number
     currency: string
 }
 

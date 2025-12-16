@@ -1,10 +1,18 @@
 import type GatewayEntity from '../entities/gatewayEntity.entity.ts'
 import type Product from '../entities/product.entity.ts'
+import type Payment from '../entities/payment.entity.ts'
+import type ProductPrice from '../entities/productPrice.entity.ts'
+import type Order from '../entities/order.entity.ts'
+import type OrderItem from '../entities/orderItem.entity.ts'
 import type User from '#server/entities/user.entity.ts'
 
 export interface PayPayload {
     product: Product
     user: User
+    payment: Payment,
+    price: ProductPrice,
+    order: Order,
+    orderItems: OrderItem[],
 }
 
 export interface CreateResponse {

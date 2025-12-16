@@ -1,5 +1,5 @@
 import { MercadoPagoConfig, PreApproval } from 'mercadopago'
-import payment from '../facades/payment.ts'
+import payment from '../facades/zpayment.ts'
 import GatewayEntityAssignment from '../entities/gatewayEntityAssignment.entity.ts'
 import Subscription from '../entities/subscription.entity.ts'
 import rootRouter from '#server/facades/router.facade.ts'

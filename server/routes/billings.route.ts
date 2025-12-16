@@ -5,7 +5,7 @@ import schemas from '#zpayments/shared/validators/index.ts'
 import Billing from '#zpayments/server/entities/billing.entity.ts'
 import User from '#server/entities/user.entity.ts'
 import { undeleted } from '#server/queries/index.ts'
-import payment from '#zpayments/server/facades/payment.ts'
+import payment from '#zpayments/server/facades/zpayment.ts'
 
 const router = rootRouter.prefix('/api/zpayments/billings')
     .use(authMiddleware)

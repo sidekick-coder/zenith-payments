@@ -1,4 +1,4 @@
-import payment from '#zpayments/server/facades/payment.ts'
+import payment from '#zpayments/server/facades/zpayment.ts'
 import rootRouter from '#server/facades/router.facade.ts'
 import validator from '#shared/services/validator.service.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
