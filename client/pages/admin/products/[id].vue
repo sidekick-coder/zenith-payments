@@ -18,6 +18,7 @@ import FormTextField from '#client/components/FormTextField.vue'
 import FormTextarea from '#client/components/FormTextarea.vue'
 import Button from '#client/components/Button.vue'
 import ProductMetasTable from '#zpayments/client/components/ProductMetasTable.vue'
+import ProductPricesTable from '#zpayments/client/components/ProductPricesTable.vue'
 import { $fetch } from '#client/utils/fetcher.ts'
 import type Product from '#zpayments/shared/entities/product.entity.ts'
 import TextField from '#client/components/TextField.vue'
@@ -50,6 +51,7 @@ async function loadProduct() {
     }
 
     product.value = response
+
     setValues({
         name: response.name,
         description: response.description || '',
@@ -59,7 +61,7 @@ async function loadProduct() {
 await loadProduct()
 
 const tab = computed({
-    get: () => (route.query.tab as string) || 'metas',
+    get: () => (route.query.tab as string) || 'prices',
     set: (value: string) => {
         router.replace({
             path: route.path,
@@ -154,9 +156,12 @@ const onSubmit = handleSubmit(async (formValues) => {
             <div class="flex-1 flex flex-col">
                 <Tabs
                     v-model="tab"
-                    default-value="metas"
+                    default-value="prices"
                 >
                     <TabsList>
+                        <TabsTrigger value="prices">
+                            {{ $t('Prices') }}
+                        </TabsTrigger>
                         <TabsTrigger value="metas">
                             {{ $t('Metas') }}
                         </TabsTrigger>
@@ -165,6 +170,10 @@ const onSubmit = handleSubmit(async (formValues) => {
                         </TabsTrigger>
                     </TabsList>
                     
+                    <TabsContent value="prices">
+                        <ProductPricesTable :product-id="id" />
+                    </TabsContent>
+
                     <TabsContent value="metas">
                         <ProductMetasTable :product-id="id" />
                     </TabsContent>

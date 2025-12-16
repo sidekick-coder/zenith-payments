@@ -4,12 +4,11 @@ import type { ComponentExposed } from 'vue-component-type-helpers'
 import { format } from 'date-fns'
 import { toast } from 'vue-sonner'
 import DataTable, { defineColumns } from '#client/components/DataTable.vue'
-import ProductMeta from '#zpayments/shared/entities/productMeta.entity.ts'
+import ProductPrice from '#zpayments/shared/entities/productPrice.entity.ts'
 import Button from '#client/components/Button.vue'
 import Icon from '#client/components/Icon.vue'
 import AlertButton from '#client/components/AlertButton.vue'
 import DialogForm, { defineFormFields } from '#client/components/DialogForm.vue'
-import { $fetch } from '#client/utils/fetcher.ts'
 import { Card, CardAction, CardContent, CardHeader } from '#client/components/ui/card/index.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
 
@@ -25,17 +24,18 @@ const tableRef = ref<ComponentExposed<typeof DataTable>>()
 const deletingItems = ref<number[]>([])
 
 const fields = defineFormFields({
-    name: {
+    amount: {
         component: 'text-field',
-        label: $t('Name'),
+        label: $t('Price'),
+        type: 'number',
     },
-    value: {
-        component: 'textarea',
-        label: $t('Value'),
+    currency: {
+        component: 'text-field',
+        label: $t('Currency'),
     },
 })
 
-const columns = defineColumns<ProductMeta>([
+const columns = defineColumns<ProductPrice>([
     {
         id: 'id',
         label: 'ID',
@@ -43,14 +43,14 @@ const columns = defineColumns<ProductMeta>([
         width: 50,
     },
     {
-        id: 'name',
-        label: $t('Name'),
-        field: 'name',
+        id: 'amount',
+        label: $t('Price'),
+        field: 'amount',
     },
     {
-        id: 'value',
-        label: $t('Value'),
-        field: 'value',
+        id: 'currency',
+        label: $t('Currency'),
+        field: 'currency',
     },
     {
         id: 'created_at',
@@ -89,15 +89,15 @@ defineExpose({
                     />
                 </Button>
                 <DialogForm 
-                    :fetch="`/api/zpayments/products/${productId}/metas`"
-                    :title="$t('Add Meta')"
-                    :description="$t('Fill in the details below to add a new meta')"
-                    :schema="schemas.productMeta.create"
+                    :fetch="`/api/zpayments/products/${productId}/prices`"
+                    :title="$t('Add Price')"
+                    :description="$t('Fill in the details below to add a new price')"
+                    :schema="schemas.productPrice.create"
                     :fields="fields"
                     @submit="load"
                 >
                     <Button>
-                        {{ $t('Add Meta') }}
+                        {{ $t('Add Price') }}
                     </Button>
                 </DialogForm>
             </CardAction>
@@ -108,16 +108,16 @@ defineExpose({
                 ref="tableRef"
                 v-model:loading="loading"
                 :columns="columns"
-                :serialize="row => ProductMeta.from(row)"
-                :fetch="`/api/zpayments/products/${productId}/metas`"
+                :serialize="row => ProductPrice.from(row)"
+                :fetch="`/api/zpayments/products/${productId}/prices`"
             >
                 <template #row-actions="{ row }">
                     <div class="flex items-center gap-2 justify-end">
                         <DialogForm 
-                            :fetch="`/api/zpayments/products/${productId}/metas/${row.id}`"
-                            :title="$t('Edit Meta')"
-                            :description="$t('Fill in the details below to edit the meta')"
-                            :schema="schemas.productMeta.update"
+                            :fetch="`/api/zpayments/products/${productId}/prices/${row.id}`"
+                            :title="$t('Edit Price')"
+                            :description="$t('Fill in the details below to edit the price')"
+                            :schema="schemas.productPrice.update"
                             :fields="fields"
                             :values="row"
                             method="PUT"
@@ -133,10 +133,10 @@ defineExpose({
 
                         <AlertButton
                             variant="ghost"
-                            :title="$t('Delete Meta')"
-                            :description="$t('Are you sure you want to delete this meta?')"
+                            :title="$t('Delete Price')"
+                            :description="$t('Are you sure you want to delete this price?')"
                             :loading="deletingItems.includes(row.id)"
-                            :fetch="`/api/zpayments/products/${props.productId}/metas/${row.id}`"
+                            :fetch="`/api/zpayments/products/${productId}/prices/${row.id}`"
                             @fetched="load"
                         >
                             <Icon name="Trash" />
