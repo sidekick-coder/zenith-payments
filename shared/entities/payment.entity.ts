@@ -3,31 +3,28 @@ import { compose } from '#shared/utils/compose.ts'
 
 export const STATUS = [
     {
-        id: 'pending',
+        id: 'pending' as const,
         label: $t('Pending'),
         color: 'var(--color-yellow-500)',
     },
     {
-        id: 'processing',
-        label: $t('Processing'),
-        color: 'var(--color-blue-500)',
-    },
-    {
-        id: 'succeeded',
-        label: $t('Succeeded'),
+        id: 'approved' as const,
+        label: $t('Approved'),
         color: 'var(--color-green-500)',
     },
     {
-        id: 'failed',
+        id: 'failed' as const,
         label: $t('Failed'),
         color: 'var(--color-red-500)',
     },
     {
-        id: 'refunded',
+        id: 'refunded' as const,
         label: $t('Refunded'),
         color: 'var(--color-purple-500)',
     }
 ]
+
+export type PaymentStatus = typeof STATUS[number]['id']
 
 export default class Payment extends compose(BaseEntity, Timestamp) {
     public static STATUS = STATUS
@@ -35,7 +32,7 @@ export default class Payment extends compose(BaseEntity, Timestamp) {
     public id: number
     public order_id: number
     public gateway_id: string
-    public status: string
+    public status: PaymentStatus
     public amount: number
 
     public get statusLabel() {

@@ -5,31 +5,23 @@ import { compose } from '#shared/utils/compose.ts'
 
 export const STATUS = [
     {
-        id: 'pending',
+        id: 'pending' as const,
         label: $t('Pending'),
         color: 'var(--color-yellow-500)',
     },
     {
-        id: 'processing',
-        label: $t('Processing'),
-        color: 'var(--color-blue-500)',
-    },
-    {
-        id: 'completed',
+        id: 'completed' as const,
         label: $t('Completed'),
         color: 'var(--color-green-500)',
     },
     {
-        id: 'cancelled',
-        label: $t('Cancelled'),
-        color: 'var(--color-red-500)',
-    },
-    {
-        id: 'failed',
+        id: 'failed' as const,
         label: $t('Failed'),
         color: 'var(--color-red-500)',
     }
 ]
+
+export type OrderStatus = typeof STATUS[number]['id']
 
 export default class Order extends compose(BaseEntity, Timestamp) {
     public static STATUS = STATUS
@@ -37,7 +29,7 @@ export default class Order extends compose(BaseEntity, Timestamp) {
     public id: number
     public user_id: number
     public purpose: string
-    public status: string
+    public status: OrderStatus
     public amount: number
     public currency: string
 

@@ -23,8 +23,20 @@ export interface CreateResponse {
     checkout_url: string
 }
 
+export interface GetStatusPayload {
+    payment: Payment
+}
+
 export default class GatewayProducts {
     public pay(payload: PayPayload): Promise<CreateResponse> {
+        const error = new Error('Method not implemented.')
+
+        Object.assign(error, { payload })
+
+        throw error
+    }
+
+    public getStatus(payload: GetStatusPayload): Promise<Payment['status']> {
         const error = new Error('Method not implemented.')
 
         Object.assign(error, { payload })

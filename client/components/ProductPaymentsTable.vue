@@ -80,7 +80,8 @@ function onSubmit(response: any) {
         return
     }
     
-    window.location.href = response.checkout_url
+    // open in new tab
+    window.open(response.checkout_url, '_blank')
 }
 
 defineExpose({

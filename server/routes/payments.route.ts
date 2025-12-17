@@ -1,11 +1,17 @@
 import Payment from '../entities/payment.entity.ts'
+import zpayment from '../facades/zpayment.ts'
 import rootRouter from '#server/facades/router.facade.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
 import { undeleted } from '#server/queries/index.ts'
+import validator from '#shared/services/validator.service.ts'
+import schemas from '#zpayments/shared/validators/index.ts'
+import env from '#server/facades/env.facade.ts'
 
 const router = rootRouter.prefix('/api/zpayments/payments')
     .use(authMiddleware)
     .group()
+
+const unrestricted = rootRouter.prefix('/api/zpayments/payments').group()
 
 router.get('/', async ({ query }) => {
     const page = Number(query.page) || 1
@@ -28,4 +34,27 @@ router.get('/:id', async ({ params }) => {
     }
     
     return payment
+})
+
+unrestricted.get('/:id/process', async ({ params, response }) => {
+    const paymentId = validator.validate(params.id, schemas.url.number())
+
+    const result = await zpayment.process(paymentId)
+
+    let path = '/zpayments/results/success'
+
+    if (result.payment.status === 'pending') {
+        path = '/zpayments/results/pending'
+    }
+
+    if (result.payment.status === 'failed') {
+        path = '/zpayments/results/failed'
+    }
+
+    const url = new URL(path, env.get('APP_URL'))
+
+    url.searchParams.set('payment_id', String(result.payment.id))
+    url.searchParams.set('order_id', String(result.order.id))
+
+    response.redirect(url.toString())
 })
