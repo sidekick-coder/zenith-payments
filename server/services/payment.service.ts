@@ -18,9 +18,9 @@ interface PaymentEventPayload {
 }
 
 export interface PaymentEvents {
-    'payment:approved': PaymentEventPayload
-    'payment:failed': PaymentEventPayload
-    'payment:refunded': PaymentEventPayload
+    'payment-approved': PaymentEventPayload
+    'payment-failed': PaymentEventPayload
+    'payment-refunded': PaymentEventPayload
 }
 
 export default class PaymentService {
@@ -93,7 +93,7 @@ export default class PaymentService {
 
             order.status = 'completed'
 
-            emmitter.emit('zpayments:payment:approved', data)
+            emmitter.emit('zpayments:payment-approved', data)
         }
 
         if (status === 'failed') {
@@ -101,11 +101,11 @@ export default class PaymentService {
             
             order.status = 'failed'
 
-            emmitter.emit('zpayments:payment:failed', data)
+            emmitter.emit('zpayments:payment-failed', data)
         }
 
         if (status === 'refunded') {
-            emmitter.emit('zpayments:payment:refunded', data)
+            emmitter.emit('zpayments:payment-refunded', data)
         }
 
         payment.status = status
