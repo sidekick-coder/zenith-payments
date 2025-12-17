@@ -15,7 +15,7 @@ export default class GatewayService {
     public async list(){
         const gatewaysConfig = config.get('zpayments.gateways', {})
     
-        const gateways = [] as GatewayConfig[]
+        const gateways = [] as Gateway[]
 
         for (const [id, data] of Object.entries<any>(gatewaysConfig)) {
             const constructor = this.contructors.get(data.gateway)
@@ -33,7 +33,7 @@ export default class GatewayService {
 
             const instance = new constructor(gc)
 
-            gateways.push(GatewayConfig.from(instance))
+            gateways.push(instance)
         }
 
         return gateways
