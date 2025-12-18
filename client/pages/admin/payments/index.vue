@@ -14,8 +14,8 @@ const columns = defineColumns([
     },
     {
         id: 'order_id',
-        label: $t('Order ID'),
-        field: 'order_id',
+        label: $t('Order'),
+        field: row => `#${row.order_id}`,
     },
     {
         id: 'gateway_id',

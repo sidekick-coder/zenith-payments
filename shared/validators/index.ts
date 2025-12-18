@@ -6,10 +6,12 @@ import * as product from './product.validator.ts'
 import * as productMeta from './productMeta.validator.ts'
 import * as productPrice from './productPrice.validator.ts'
 import * as order from './order.validator.ts'
+import * as payment from './payment.validator.ts'
 import root from '#shared/validators/index.ts'
 
 const schemas = {
     ...root,
+    payment,
     order,
     gateway,
     billing,
