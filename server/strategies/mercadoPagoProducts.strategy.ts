@@ -3,6 +3,7 @@ import GatewayEntity from '../entities/gatewayEntity.entity.ts'
 import GatewayProducts from '../gateways/gatewayProducts.gateway.ts'
 import logger from '#server/facades/logger.facade.ts'
 import type { PaymentStatus } from '#zpayments/shared/entities/payment.entity.ts'
+import env from '#server/facades/env.facade.ts'
 
 export default class MercadoPagoProducts extends GatewayProducts {
     public id: string
@@ -32,7 +33,8 @@ export default class MercadoPagoProducts extends GatewayProducts {
     }
 
     public pay: GatewayProducts['pay'] = async ({ product, price, user, payment }) => {
-        const baseURL = 'https://parrot-apt-ewe.ngrok-free.app'
+        const baseURL = env.get('APP_URL')
+        // const baseURL = 'https://parrot-apt-ewe.ngrok-free.app'
 
         const url = new URL(`/api/zpayments/payments/${payment.id}/process`, baseURL)
 

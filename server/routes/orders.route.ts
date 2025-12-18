@@ -1,20 +1,25 @@
 import Order from '../entities/order.entity.ts'
 import rootRouter from '#server/facades/router.facade.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
+import validator from '#shared/services/validator.service.ts'
+import schemas from '#zpayments/shared/validators/index.ts'
 
 const router = rootRouter.prefix('/api/zpayments/orders')
     .use(authMiddleware)
     .group()
 
 router.get('/', async ({ query }) => {
-    const page = Number(query.page) || 1
-    const limit = Number(query.limit) || 10
+    const payload = validator.validate(query, schemas.order.index)
 
     const pagination = await Order.paginate({
-        page,
-        limit,
-        query: qb => qb.selectAll().orderBy('created_at', 'desc'),
+        page: payload.page,
+        limit: payload.limit,
+        query: qb => Order.query(qb.selectAll(), payload),
     })
+
+    if (payload.include) {
+        await Order.load(pagination.items, payload.include)
+    }
 
     return pagination
 })

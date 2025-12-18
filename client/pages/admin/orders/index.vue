@@ -11,9 +11,8 @@ const columns = defineColumns([
         field: 'id',
     },
     {
-        id: 'user_id',
-        label: $t('User ID'),
-        field: 'user_id',
+        id: 'user',
+        label: $t('User'),
     },
     {
         id: 'purpose',
@@ -48,11 +47,26 @@ const columns = defineColumns([
 <template>
     <AppLayout>
         <PageCrud
+            fetch="/api/zpayments/orders"
             :title="$t('Orders')"
             :description="$t('View order records here.')"
             :columns="columns"
-            fetch="/api/zpayments/orders"
             :actions="[]"
-        />
+            :fetch-query="{
+                include: ['user']
+            }"
+        >
+            <template #row-user="{ row }">
+                <div v-if="!row.user">
+                    {{ row.user_id }}
+                </div>
+                <div v-else>
+                    <div>{{ row.user.name }}</div>
+                    <div class="text-sm text-gray-500">
+                        {{ row.user.email }}
+                    </div>
+                </div>
+            </template>
+        </PageCrud>
     </AppLayout>
 </template>

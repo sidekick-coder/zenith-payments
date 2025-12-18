@@ -1,3 +1,4 @@
+import type OrderItem from './orderItem.entity.ts'
 import type User from '#shared/entities/user.entity.ts'
 
 import { BaseEntity, Timestamp } from '#shared/mixins/index.ts'
@@ -34,6 +35,7 @@ export default class Order extends compose(BaseEntity, Timestamp) {
     public currency: string
 
     public user?: User
+    public items?: OrderItem[]
 
     public get statusLabel() {
         const status = Order.STATUS.find(s => s.id === this.status)

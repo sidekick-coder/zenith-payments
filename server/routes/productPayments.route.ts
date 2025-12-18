@@ -78,8 +78,8 @@ router.post('/', async ({ params, body }) => {
     }))
     
     if (error) {
-        await payment.setStatus('failed')
-        await order.setStatus('failed')
+        await payment.merge({ status: 'failed' }).save()
+        await order.merge({ status: 'failed' }).save()
     
         throw error
     }
