@@ -3,6 +3,8 @@ import { format } from 'date-fns'
 import { defineColumns } from '#client/components/DataTable.vue'
 import PageCrud from '#client/components/PageCrud.vue'
 import AppLayout from '#client/layouts/AppLayout.vue'
+import Order from '#zpayments/shared/entities/order.entity.ts'
+import { Badge } from '#client/components/ui/badge/index.ts'
 
 const columns = defineColumns([
     {
@@ -52,6 +54,7 @@ const columns = defineColumns([
             :description="$t('View order records here.')"
             :columns="columns"
             :actions="[]"
+            :serialize="row => Order.from(row)"
             :fetch-query="{
                 include: ['user']
             }"
@@ -66,6 +69,15 @@ const columns = defineColumns([
                         {{ row.user.email }}
                     </div>
                 </div>
+            </template>
+
+            <template #row-status="{ row }">
+                <Badge
+                    :style="{ '--color': row.statusColor }"
+                    class="bg-[var(--color)] text-white"
+                >
+                    {{ row.statusLabel }}
+                </Badge>
             </template>
         </PageCrud>
     </AppLayout>

@@ -3,6 +3,8 @@ import { format } from 'date-fns'
 import { defineColumns } from '#client/components/DataTable.vue'
 import PageCrud from '#client/components/PageCrud.vue'
 import AppLayout from '#client/layouts/AppLayout.vue'
+import Payment from '#zpayments/shared/entities/payment.entity.ts'
+import { Badge } from '#client/components/ui/badge/index.ts'
 
 const columns = defineColumns([
     {
@@ -46,8 +48,18 @@ const columns = defineColumns([
             :title="$t('Payments')"
             :description="$t('View payment records here.')"
             :columns="columns"
+            :serialize="row => Payment.from(row)"
             fetch="/api/zpayments/payments"
             :actions="[]"
-        />
+        >
+            <template #row-status="{ row }">
+                <Badge
+                    :style="{ '--color': row.statusColor }"
+                    class="bg-[var(--color)] text-white"
+                >
+                    {{ row.statusLabel }}
+                </Badge>
+            </template>
+        </PageCrud>
     </AppLayout>
 </template>
