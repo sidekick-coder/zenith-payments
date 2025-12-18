@@ -23,4 +23,10 @@ export default class Payment extends composeWith(
             }
         })
     }
+
+    public async setStatus(status: Payment['status']) {
+        await Payment.updateById(this.id, { status })
+        
+        this.status = status
+    }
 }

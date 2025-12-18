@@ -8,9 +8,9 @@ import validator from '#shared/services/validator.service.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
 import Product from '#zpayments/server/entities/product.entity.ts'
-import { undeleted } from '#server/queries/index.ts'
 import User from '#server/entities/user.entity.ts'
 import BaseException from '#server/exceptions/base.ts'
+import { tryCatch } from '#shared/utils/tryCatch.ts'
 
 const router = rootRouter.prefix('/api/zpayments/products/:product_id/payments')
     .use(authMiddleware)
@@ -68,12 +68,21 @@ router.post('/', async ({ params, body }) => {
     })
 
 
-    return await gateway.products.pay({
+    const [error, result] = await tryCatch(() => gateway.products!.pay({
         payment,
         order,
         orderItems: [orderItem],
         product,
         price,
         user,
-    })
+    }))
+    
+    if (error) {
+        await payment.setStatus('failed')
+        await order.setStatus('failed')
+    
+        throw error
+    }
+    
+    return result
 })
