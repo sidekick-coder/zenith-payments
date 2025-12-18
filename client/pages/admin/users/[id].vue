@@ -22,6 +22,7 @@ import TextField from '#client/components/TextField.vue'
 import type User from '#shared/entities/user.entity.ts'
 import UserOrdersTable from '#zpayments/client/components/UserOrdersTable.vue'
 import UserPaymentsTable from '#zpayments/client/components/UserPaymentsTable.vue'
+import UserOrdersCard from '#zpayments/client/components/UserOrdersCard.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -101,7 +102,7 @@ const tab = computed({
                     </TabsList>
 
                     <TabsContent value="orders">
-                        <UserOrdersTable :user-id="user.id" />
+                        <UserOrdersCard :user-id="user.id" />
                     </TabsContent>
 
                     <TabsContent value="payments">
