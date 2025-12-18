@@ -14,7 +14,9 @@ router.get('/', async ({ query }) => {
     const pagination = await Order.paginate({
         page: payload.page,
         limit: payload.limit,
-        query: qb => Order.query(qb.selectAll(), payload),
+        orderBy: payload.orderBy,
+        orderDesc: payload.orderDesc,
+        where: eb => Order.where(eb, payload),
     })
 
     if (payload.include) {
