@@ -10,16 +10,19 @@ const router = rootRouter.prefix('/api/zpayments/products')
     .group()
 
 router.get('/', async ({ query }) => {
-    const page = Number(query.page) || 1
-    const limit = Number(query.limit) || 10
+    const payload = validator.validate(query, schemas.product.index)
 
     const pagination = await Product.paginate({
-        page,
-        limit,
-        query: qb => qb.selectAll()
-            .where(undeleted)
-            .orderBy('created_at', 'desc'),
+        page: payload.page,
+        limit: payload.limit,
+        orderBy: payload.orderBy,
+        orderDesc: payload.orderDesc,
+        query: qb => Product.query(qb, payload),
     })
+
+    if (payload.include) {
+        await Product.load(pagination.items, payload.include)
+    }
 
     return pagination
 })
