@@ -8,4 +8,15 @@ export default class ProductPrice extends compose(BaseEntity, Timestamp, SoftDel
     public country?: string | null
     public amount: number
     public currency: string
+
+    public get amountFormatted(): string | null {
+        if (this.amount === undefined || this.currency === undefined) {
+            return null
+        }
+
+        return new Intl.NumberFormat('en-US', {
+            style: 'currency',
+            currency: this.currency,
+        }).format(this.amount / 100)
+    }
 }

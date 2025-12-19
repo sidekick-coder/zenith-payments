@@ -33,10 +33,12 @@ export default class MercadoPagoProducts extends GatewayProducts {
     }
 
     public pay: GatewayProducts['pay'] = async ({ product, price, user, payment }) => {
-        const baseURL = env.get('APP_URL')
-        // const baseURL = 'https://parrot-apt-ewe.ngrok-free.app'
+        // const baseURL = env.get('APP_URL')
+        const baseURL = 'https://parrot-apt-ewe.ngrok-free.app'
 
         const url = new URL(`/api/zpayments/payments/${payment.id}/process`, baseURL)
+
+        const priceAmount = price.amount / 100
 
         const items = [
             {
@@ -44,7 +46,7 @@ export default class MercadoPagoProducts extends GatewayProducts {
                 title: product.name,
                 description: product.description || '',
                 quantity: 1,
-                unit_price: price.amount,
+                unit_price: priceAmount,
             }
         ]
 

@@ -64,7 +64,7 @@ const columns = defineColumns<ProductPrice>([
     },
     {
         id: 'gateway_id',
-        label: $t('Gateway ID'),
+        label: $t('Gateway'),
         field: 'gateway_id',
     },
     {
@@ -72,23 +72,11 @@ const columns = defineColumns<ProductPrice>([
         label: $t('Country'),
         field: 'country',
         width: 100,
-    },
+    },   
     {
         id: 'amount',
         label: $t('Price'),
-        field: 'amount',
-    },
-    {
-        id: 'currency',
-        label: $t('Currency'),
-        field: 'currency',
-        width: 100,
-    },
-    {
-        id: 'created_at',
-        label: $t('Created At'),
-        field: row => format(new Date(row.created_at), 'PP p'),
-        width: 150,
+        field: 'amountFormatted',
     },
     { 
         id: 'actions',
