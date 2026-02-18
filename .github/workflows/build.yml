@@ -42,7 +42,7 @@ jobs:
 
       - name: build
         run: |
-          docker run --rm -v ./:/app/modules/zenith-payments zzhenryquezz/zenith:latest node arte module:build --prepare=true zenith-payments
+          docker run --rm -v ./:/app/modules/zenith-payments zzhenryquezz/zenith:latest node arte module:build --prepare true -m zenith-payments
 
       - name: push
         run: |
