@@ -46,6 +46,6 @@ jobs:
 
       - name: push
         run: |
-          git add -f dist
+          git add -f client-dist
           git commit -m "Build: $(date '+%Y-%m-%d %H:%M:%S')"
           git push origin build
