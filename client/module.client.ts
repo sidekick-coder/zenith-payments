@@ -7,6 +7,25 @@ import authGuard from '#client/guards/auth.guard.ts'
 import './assets/css/styles.css'
 
 export default class ZenithPayments extends Module {
+    public async onRegister(): Promise<void> {
+        for (const [path, importFn] of Object.entries(import.meta.glob<any>('./{components,layouts}/**/*.vue'))) {
+            const id = path.replace('./', '#zpayments/')
+
+            const ext = path.split('.').pop()
+
+            globalThis.imports[id] = importFn
+            globalThis.imports[id.replace(`.${ext}`, '')] = importFn
+        }
+
+        
+        for (const [path, mod] of Object.entries(import.meta.glob('./../shared/**'))) {
+            const id = path.replace('../shared/', '#zpayments/shared/')
+
+            globalThis.imports[id] = mod
+            globalThis.imports[id.replace('.ts', '')] = mod
+        }
+    }
+
     public async onLoad(): Promise<void> {
         const menu = useMenu()
         
