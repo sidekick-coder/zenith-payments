@@ -66,10 +66,11 @@ const columns = defineColumns([
             <template #prepend-actions="{ row }">
                 <Button
                     size="sm"
-                    variant="ghost"
-                    :to="`/zpayments/results/success?payment_id=${row.id}&order_id=${row.order_id}`"
+                    tag="a"
+                    :href="`/api/zpayments/payments/${row.id}/process`"
+                    target="_blank"
                 >
-                    <Icon name="Eye" />
+                    {{ $t('Process') }}
                 </Button>
             </template>
         </PageCrud>
