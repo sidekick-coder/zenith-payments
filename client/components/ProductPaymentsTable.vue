@@ -4,13 +4,12 @@ import type { ComponentExposed } from 'vue-component-type-helpers'
 import { format } from 'date-fns'
 import { toast } from 'vue-sonner'
 import DataTable, { defineColumns } from '#client/components/DataTable.vue'
-import ProductMeta from '#zpayments/shared/entities/productMeta.entity.ts'
 import Button from '#client/components/Button.vue'
 import Icon from '#client/components/Icon.vue'
-import AlertButton from '#client/components/AlertButton.vue'
 import DialogForm, { defineFormFields } from '#client/components/DialogForm.vue'
 import { Card, CardAction, CardContent, CardHeader } from '#client/components/ui/card/index.ts'
-import schemas from '#zpayments/shared/validators/index.ts'
+import Payment from '#zpayments/shared/entities/payment.entity.ts'
+import Badge from '#client/components/ui/badge/Badge.vue'
 
 const props = defineProps({
     productId: {
@@ -41,33 +40,37 @@ const fields = defineFormFields({
     },
 })
 
-const columns = defineColumns<ProductMeta>([
+const columns = defineColumns<Payment>([
     {
         id: 'id',
-        label: 'ID',
+        label: $t('ID'),
         field: 'id',
-        width: 50,
     },
     {
-        id: 'name',
-        label: $t('Name'),
-        field: 'name',
+        id: 'order_id',
+        label: $t('Order'),
+        field: row => `#${row.order_id}`,
     },
     {
-        id: 'value',
-        label: $t('Value'),
-        field: 'value',
+        id: 'gateway_id',
+        label: $t('Gateway ID'),
+        field: 'gateway_id',
+    },
+    {
+        id: 'status',
+        label: $t('Status'),
+        field: 'status',
+    },
+    {
+        id: 'amount',
+        label: $t('Amount'),
+        field: 'amount',
     },
     {
         id: 'created_at',
         label: $t('Created At'),
-        field: row => format(new Date(row.created_at), 'PP p'),
-        width: 150,
+        field: row => $d(row.created_at),
     },
-    { 
-        id: 'actions',
-        width: 200
-    }
 ])
 
 function load() {
@@ -119,13 +122,22 @@ defineExpose({
         </CardHeader>
 
         <CardContent>
-            <!-- <DataTable
+            <DataTable
                 ref="tableRef"
                 v-model:loading="loading"
                 :columns="columns"
-                :serialize="row => ProductMeta.from(row)"
+                :serialize="row => Payment.from(row)"
                 :fetch="`/api/zpayments/products/${productId}/payments`"
-            /> -->
+            >
+                <template #row-status="{ row }">
+                    <Badge
+                        :style="{ '--color': row.statusColor }"
+                        class="bg-[var(--color)] text-white"
+                    >
+                        {{ row.statusLabel }}
+                    </Badge>
+                </template>
+            </DataTable>
         </CardContent>
     </Card>
 </template>

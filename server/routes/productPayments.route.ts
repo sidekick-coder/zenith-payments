@@ -11,10 +11,32 @@ import Product from '#zpayments/server/entities/product.entity.ts'
 import User from '#server/entities/user.entity.ts'
 import BaseException from '#server/exceptions/base.ts'
 import { tryCatch } from '#shared/utils/tryCatch.ts'
+import db from '#server/facades/db.facade.ts'
 
 const router = rootRouter.prefix('/api/zpayments/products/:product_id/payments')
     .use(authMiddleware)
     .group()
+
+router.get('/', async ({ params, query }) => {
+    const productId = validator.validate(params.product_id, schemas.url.number())
+    const page = Number(query.page) || 1
+    const limit = Number(query.limit) || 10
+
+    const pagination = await Payment.paginate({
+        page,
+        limit,
+        query: () => db.selectFrom('zpayments__payments as p')
+            .selectAll('p')
+            .innerJoin('zpayments__orders as o', 'o.id', 'p.order_id')
+            .where('o.id', 'in', eb => eb.selectFrom('zpayments__order_items')
+                .select('order_id')
+                .where('item_id', '=', String(productId))
+            )
+            .orderBy('p.created_at', 'desc'),
+    })
+
+    return pagination
+})
 
 router.post('/', async ({ params, body }) => {
     const productId = validator.validate(params.product_id, schemas.url.number())
