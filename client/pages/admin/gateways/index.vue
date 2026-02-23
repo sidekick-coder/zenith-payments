@@ -132,29 +132,7 @@ async function destroy(id: string) {
             fetch="/api/zpayments/gateways"
         >
             <template #row-actions="{ row }">
-                <div class="flex items-center gap-2 justify-end">
-                    <DialogForm 
-                        v-if="row.configFields"
-                        :fetch="data => $fetch(`/api/zpayments/gateways/${row.id}`, {
-                            method: 'PUT',
-                            data: {
-                                config: data
-                            }
-                        })"
-                        :title="$t('Edit')"
-                        :description="$t('Fill in the details below to edit')"
-                        :fields="row.configFields"
-                        :values="row.config"
-                        @submit="load"
-                    >
-                        <Button
-                            size="icon"
-                            variant="ghost"
-                        >
-                            <Icon name="Settings" />
-                        </Button>
-                    </DialogForm>
-                    
+                <div class="flex items-center gap-2 justify-end">                    
                     <Button
                         size="icon"
                         variant="ghost"

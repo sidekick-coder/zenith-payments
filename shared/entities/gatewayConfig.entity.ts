@@ -16,13 +16,20 @@ export const GATEWAY_OPTIONS = [
         id: 'mercadopago',
         label: 'MercadoPago',
         config_fields: {
-            publicKey: { 
+            public_key: { 
                 component: 'text-field',
-                label: 'Public Key'
+                label: 'Public Key',
+                type: 'password'
             },
-            accessToken: { 
+            access_token: { 
                 component: 'text-field',
-                label: 'Access Token'
+                label: 'Access Token',
+                type: 'password'
+            },
+            back_url: {
+                component: 'text-field',
+                label: 'Callback URL',
+                hint: 'Used for tests with ngrok or similar services. Default APP_URL/api/zpayments/payments/:id/process'
             }
         }
     }

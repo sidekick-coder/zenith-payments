@@ -8,13 +8,13 @@ export default class MercadoPagoPlan extends GatewayPlan {
     public id: string
     public client: MercadoPagoConfig
     public preApprovalPlan: PreApprovalPlan
-    public publicKey: string
+    public public_key: string
     
-    constructor(id: string, client: MercadoPagoConfig, publicKey: string) {
+    constructor(id: string, client: MercadoPagoConfig, public_key: string) {
         super()
         this.id = id
         this.client = client
-        this.publicKey = publicKey
+        this.public_key = public_key
         this.preApprovalPlan = new PreApprovalPlan(this.client)
     }
 
@@ -23,7 +23,7 @@ export default class MercadoPagoPlan extends GatewayPlan {
 
         url.searchParams.set('gateway_id', this.id)
         url.searchParams.set('plan_id', plan.id.toString())
-        url.searchParams.set('public_key', this.publicKey)
+        url.searchParams.set('public_key', this.public_key)
 
         return url.toString()
     }
