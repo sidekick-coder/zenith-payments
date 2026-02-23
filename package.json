@@ -1,0 +1,18 @@
+{
+  "name": "zenith-payments",
+  "version": "1.0.0",
+  "imports": {
+    "#client/*": "./root/client/*",
+    "#server/*": "./root/server/*",
+    "#shared/*": "./root/shared/*",
+    "#config/*": "./root/config/*",
+    "#zpayments/server/*": "./server/*",
+    "#zpayments/shared/*": "./shared/*",
+    "#zpayments/client/*": "./client/*"
+  },
+  "dependencies": {
+    "@mercadopago/sdk-js": "^0.0.3",
+    "mercadopago": "^2.10.0",
+    "stripe": "^12.14.0"
+  }
+}

@@ -1,0 +1,73 @@
+name: Build
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Docker
+        uses: docker/setup-buildx-action@v3
+
+      - name: Configure Git
+        run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
+
+      - name: Prepare orphan build branch
+        run: |
+          git fetch origin
+
+          # If build branch exists, check it out
+          if git show-ref --quiet refs/remotes/origin/build; then
+            git checkout build
+            git pull origin build
+          else
+            # Create orphan build branch
+            git checkout --orphan build
+            git rm -rf .
+            echo "# Build branch" > README.md
+            git add README.md
+            git commit -m "Initial build branch"
+          fi
+
+          # Replace files with main branch snapshot (no history)
+          git rm -rf .
+          git checkout origin/main -- .
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build artifacts
+        run: |
+          docker run --rm \
+            -v ./:/app/modules/mod \
+            zzhenryquezz/zenith:latest \
+            node arte module:build --prepare true --module mod
+
+      - name: Commit and push build snapshot
+        run: |
+          git add -A
+          git add -f client-dist/**
+
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+            exit 0
+          fi
+
+          MAIN_SHA=$(git rev-parse origin/main)
+
+          git commit -m "Build from main@${MAIN_SHA} — $(date '+%Y-%m-%d %H:%M:%S')"
+          git push origin build
