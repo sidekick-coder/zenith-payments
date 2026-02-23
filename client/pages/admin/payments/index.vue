@@ -5,6 +5,8 @@ import PageCrud from '#client/components/PageCrud.vue'
 import AppLayout from '#client/layouts/AppLayout.vue'
 import Payment from '#zpayments/shared/entities/payment.entity.ts'
 import { Badge } from '#client/components/ui/badge/index.ts'
+import Button from '#client/components/Button.vue'
+import Icon from '#client/components/Icon.vue'
 
 const columns = defineColumns([
     {
@@ -35,7 +37,7 @@ const columns = defineColumns([
     {
         id: 'created_at',
         label: $t('Created At'),
-        field: row => format(new Date(row.created_at), 'PPpp'),
+        field: row => $d(row.created_at),
     },
     { id: 'actions' }
 ])
@@ -59,6 +61,16 @@ const columns = defineColumns([
                 >
                     {{ row.statusLabel }}
                 </Badge>
+            </template>
+            
+            <template #prepend-actions="{ row }">
+                <Button
+                    size="sm"
+                    variant="ghost"
+                    :to="`/zpayments/results/success?payment_id=${row.id}&order_id=${row.order_id}`"
+                >
+                    <Icon name="Eye" />
+                </Button>
             </template>
         </PageCrud>
     </AppLayout>
