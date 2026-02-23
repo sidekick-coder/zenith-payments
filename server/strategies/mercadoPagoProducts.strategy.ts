@@ -10,14 +10,16 @@ export default class MercadoPagoProducts extends GatewayProducts {
     public client: MercadoPagoConfig
     public preference: Preference
     public payment: Payment
+    public config: Record<string, any>
     public logger = logger.child({
         label: 'mercado-pago'
     })
     
-    constructor(id: string, client: MercadoPagoConfig) {
+    constructor(id: string, client: MercadoPagoConfig, config: Record<string, any>) {
         super()
         this.id = id
         this.client = client
+        this.config = config
         this.preference = new Preference(this.client)
         this.payment = new Payment(this.client)
     }
@@ -33,10 +35,11 @@ export default class MercadoPagoProducts extends GatewayProducts {
     }
 
     public pay: GatewayProducts['pay'] = async ({ product, price, user, payment }) => {
-        const baseURL = env.get('APP_URL')
-        // const baseURL = 'https://parrot-apt-ewe.ngrok-free.app'
+        let url = new URL(`/api/zpayments/payments/${payment.id}/process`, env.get('APP_URL'))
 
-        const url = new URL(`/api/zpayments/payments/${payment.id}/process`, baseURL)
+        if (this.config.back_url) {
+            url = new URL(this.config.back_url.replace(':id', String(payment.id)))
+        }
 
         const priceAmount = price.amount / 100
 

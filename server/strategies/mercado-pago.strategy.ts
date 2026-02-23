@@ -22,6 +22,6 @@ export default class MercadoPago extends Gateway {
             id: this.id,
             client: this.client,
         })
-        this.products = new MercadoPagoProducts(this.id, this.client)
+        this.products = new MercadoPagoProducts(this.id, this.client, this.config)
     }
 }
