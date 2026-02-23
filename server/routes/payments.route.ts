@@ -41,20 +41,22 @@ unrestricted.get('/:id/process', async ({ params, response }) => {
 
     const result = await zpayment.process(paymentId)
 
-    let path = '/zpayments/results/success'
+    const url = new URL('/zpayments/result', env.get('APP_URL'))
+    
+    url.searchParams.set('payment_id', String(result.payment.id))
+    url.searchParams.set('order_id', String(result.order.id))
 
     if (result.payment.status === 'pending') {
-        path = '/zpayments/results/pending'
+        url.searchParams.set('result', 'pending')
     }
 
     if (result.payment.status === 'failed') {
-        path = '/zpayments/results/failed'
+        url.searchParams.set('result', 'failed')
     }
 
-    const url = new URL(path, env.get('APP_URL'))
-
-    url.searchParams.set('payment_id', String(result.payment.id))
-    url.searchParams.set('order_id', String(result.order.id))
+    if (result.payment.status === 'approved') {
+        url.searchParams.set('result', 'approved')
+    }
 
     response.redirect(url.toString())
 })

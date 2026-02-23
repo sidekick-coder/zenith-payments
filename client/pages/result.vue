@@ -15,7 +15,7 @@ const message = computed(() => route.query.message as string || '')
 const config = computed(() => {
     const resultType = result.value.toLowerCase()
 
-    if (resultType === 'success') {
+    if (resultType === 'approved') {
         return {
             icon: 'CheckCircle',
             iconClass: 'text-green-500',
