@@ -26,7 +26,7 @@ class ZenithPayments extends Module {
       guards: [authGuard],
       prefix: "/admin/zpayments"
     });
-    router.auto(/* @__PURE__ */ Object.assign({ "./pages/admin/gateway-entities/index.vue": () => import("./index-iaXa09ix.js"), "./pages/admin/gateways/[id].vue": () => import("./_id_-DnZVjmX0.js"), "./pages/admin/gateways/index.vue": () => import("./index-BnHli0Fq.js"), "./pages/admin/orders/index.vue": () => import("./index-CTk7oJJA.js"), "./pages/admin/payments/index.vue": () => import("./index-ERtIdRO6.js"), "./pages/admin/products/[id].vue": () => import("./_id_-BySxUGEo.js"), "./pages/admin/products/index.vue": () => import("./index-D6o3obhG.js"), "./pages/admin/users/[id].vue": () => import("./_id_-CQ_fzdFC.js"), "./pages/admin/users/index.vue": () => import("./index-TDxKJGox.js"), "./pages/result.vue": () => import("./result-CaPfayhq.js") }), {
+    router.auto(/* @__PURE__ */ Object.assign({ "./pages/admin/gateway-entities/index.vue": () => import("./index-iaXa09ix.js"), "./pages/admin/gateways/[id].vue": () => import("./_id_-DnZVjmX0.js"), "./pages/admin/gateways/index.vue": () => import("./index-BnHli0Fq.js"), "./pages/admin/orders/index.vue": () => import("./index-CTk7oJJA.js"), "./pages/admin/payments/index.vue": () => import("./index-ERtIdRO6.js"), "./pages/admin/products/[id].vue": () => import("./_id_-BySxUGEo.js"), "./pages/admin/products/index.vue": () => import("./index-D6o3obhG.js"), "./pages/admin/users/[id].vue": () => import("./_id_-CQ_fzdFC.js"), "./pages/admin/users/index.vue": () => import("./index-TDxKJGox.js"), "./pages/result.vue": () => import("./result-BSd6FhWL.js") }), {
       strip: ["pages"],
       exclude: ["/admin/**"],
       prefix: "/zpayments"
@@ -42,42 +42,42 @@ class ZenithPayments extends Module {
       label: $t("Payments"),
       to: "/admin/zpayments/payments",
       icon: "credit-card",
-      group: $t("ZPayments")
+      group: "ZPayments"
     });
     menu.add({
       id: "zpayments-orders",
       label: $t("Orders"),
       to: "/admin/zpayments/orders",
       icon: "shopping-cart",
-      group: $t("ZPayments")
+      group: "ZPayments"
     });
     menu.add({
       id: "zpayments-customers",
       label: $t("Customers"),
       to: "/admin/zpayments/users",
       icon: "users",
-      group: $t("ZPayments")
+      group: "ZPayments"
     });
     menu.add({
       id: "zpayments-products",
       label: $t("Products"),
       to: "/admin/zpayments/products",
       icon: "box",
-      group: $t("ZPayments")
+      group: "ZPayments"
     });
     menu.add({
       id: "zpayments-gateways",
       label: $t("Gateways"),
       to: "/admin/zpayments/gateways",
       icon: "credit-card",
-      group: $t("ZPayments")
+      group: "ZPayments"
     });
     menu.add({
       id: "zpayments-gateway-entities",
       label: $t("Entities"),
       to: "/admin/zpayments/gateway-entities",
       icon: "database",
-      group: $t("ZPayments")
+      group: "ZPayments"
     });
   }
 }

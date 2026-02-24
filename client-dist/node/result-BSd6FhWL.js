@@ -12,7 +12,6 @@ const { ssrRenderComponent } = await globalThis.importAsync("vue/server-renderer
 const { ssrInterpolate } = await globalThis.importAsync("vue/server-renderer");
 const { useRoute } = await globalThis.importAsync("vue-router");
 const { useRouter } = await globalThis.importAsync("vue-router");
-const { $t } = await globalThis.importAsync("#shared/lang");
 const { Card } = await globalThis.importAsync("#client/components/ui/card/index.ts");
 const { CardHeader } = await globalThis.importAsync("#client/components/ui/card/index.ts");
 const { CardTitle } = await globalThis.importAsync("#client/components/ui/card/index.ts");
@@ -150,14 +149,14 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                           name: "Home",
                           class: "mr-2 h-4 w-4"
                         }, null, _parent4, _scopeId3));
-                        _push4(` ${ssrInterpolate(unref($t)("Go to Home"))}`);
+                        _push4(` ${ssrInterpolate(_ctx.$t("Go to Home"))}`);
                       } else {
                         return [
                           createVNode(Icon, {
                             name: "Home",
                             class: "mr-2 h-4 w-4"
                           }),
-                          createTextVNode(" " + toDisplayString(unref($t)("Go to Home")), 1)
+                          createTextVNode(" " + toDisplayString(_ctx.$t("Go to Home")), 1)
                         ];
                       }
                     }),
@@ -174,7 +173,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                           name: "Home",
                           class: "mr-2 h-4 w-4"
                         }),
-                        createTextVNode(" " + toDisplayString(unref($t)("Go to Home")), 1)
+                        createTextVNode(" " + toDisplayString(_ctx.$t("Go to Home")), 1)
                       ]),
                       _: 1
                     })
@@ -219,7 +218,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                         name: "Home",
                         class: "mr-2 h-4 w-4"
                       }),
-                      createTextVNode(" " + toDisplayString(unref($t)("Go to Home")), 1)
+                      createTextVNode(" " + toDisplayString(_ctx.$t("Go to Home")), 1)
                     ]),
                     _: 1
                   })

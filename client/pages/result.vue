@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import { $t } from '#shared/lang'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '#client/components/ui/card/index.ts'
 import Button from '#client/components/ui/button/Button.vue'
 import Icon from '#client/components/Icon.vue'
