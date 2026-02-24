@@ -4,8 +4,8 @@ const { ref } = await globalThis.importAsync("vue");
 const { defineAsyncComponent } = await globalThis.importAsync("vue");
 const { onMounted } = await globalThis.importAsync("vue");
 const { mergeProps } = await globalThis.importAsync("vue");
-const { unref } = await globalThis.importAsync("vue");
 const { withCtx } = await globalThis.importAsync("vue");
+const { unref } = await globalThis.importAsync("vue");
 const { createTextVNode } = await globalThis.importAsync("vue");
 const { toDisplayString } = await globalThis.importAsync("vue");
 const { createVNode } = await globalThis.importAsync("vue");
@@ -49,9 +49,8 @@ const __module__Button__ = await globalThis.importAsync("#client/components/Butt
 const Button = __module__Button__.default || __module__Button__;
 const { $fetch } = await globalThis.importAsync("#client/utils/fetcher.ts");
 const { tryCatch } = await globalThis.importAsync("#shared/utils/tryCatch.ts");
-const { $t } = await globalThis.importAsync("#shared/lang");
 import GatewayConfig from "./gatewayConfig.entity-Nc81nVpp.js";
-import schemas from "./index-CAJ9ML3h.js";
+import schemas from "./index-BjLGGSF7.js";
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "[id]",
   __ssrInlineRender: true,
@@ -66,17 +65,17 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       {
         id: "config",
         label: $t("Configuration"),
-        component: defineAsyncComponent(() => import("./GatewayConfig-DIS9iGNF.js"))
+        component: defineAsyncComponent(() => import("./GatewayConfig-CRvhzHWv.js"))
       },
       {
         id: "customers",
         label: $t("Customers"),
-        component: defineAsyncComponent(() => import("./GatewayCustomers-B--gT5xl.js"))
+        component: defineAsyncComponent(() => import("./GatewayCustomers-CzKyfTeB.js"))
       },
       {
         id: "subscriptions",
         label: $t("Subscriptions"),
-        component: defineAsyncComponent(() => import("./GatewaySubscriptions-Cor1A_pP.js"))
+        component: defineAsyncComponent(() => import("./GatewaySubscriptions-Bv_WPZBJ.js"))
       }
     ];
     const { handleSubmit: handleDetailsSubmit, setValues: setDetailsValues } = useForm({
@@ -122,7 +121,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     return (_ctx, _push, _parent, _attrs) => {
       _push(ssrRenderComponent(AppLayout, mergeProps({
         breadcrumbs: [
-          { label: unref($t)("Gateways"), to: "/admin/gateways" },
+          { label: _ctx.$t("Gateways"), to: "/admin/gateways" },
           { label: gateway.value?.name || "..." }
         ]
       }, _attrs), {
@@ -140,10 +139,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
               _push2(ssrRenderComponent(PageTitle, null, {
                 default: withCtx((_2, _push3, _parent3, _scopeId2) => {
                   if (_push3) {
-                    _push3(`${ssrInterpolate(unref($t)("Edit Gateway"))}`);
+                    _push3(`${ssrInterpolate(_ctx.$t("Edit Gateway"))}`);
                   } else {
                     return [
-                      createTextVNode(toDisplayString(unref($t)("Edit Gateway")), 1)
+                      createTextVNode(toDisplayString(_ctx.$t("Edit Gateway")), 1)
                     ];
                   }
                 }),
@@ -152,10 +151,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
               _push2(ssrRenderComponent(PageSubtitle, null, {
                 default: withCtx((_2, _push3, _parent3, _scopeId2) => {
                   if (_push3) {
-                    _push3(`${ssrInterpolate(unref($t)("Update the gateway information below"))}`);
+                    _push3(`${ssrInterpolate(_ctx.$t("Update the gateway information below"))}`);
                   } else {
                     return [
-                      createTextVNode(toDisplayString(unref($t)("Update the gateway information below")), 1)
+                      createTextVNode(toDisplayString(_ctx.$t("Update the gateway information below")), 1)
                     ];
                   }
                 }),
@@ -172,10 +171,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                             _push4(ssrRenderComponent(unref(CardTitle), null, {
                               default: withCtx((_4, _push5, _parent5, _scopeId4) => {
                                 if (_push5) {
-                                  _push5(`${ssrInterpolate(unref($t)("Details"))}`);
+                                  _push5(`${ssrInterpolate(_ctx.$t("Details"))}`);
                                 } else {
                                   return [
-                                    createTextVNode(toDisplayString(unref($t)("Details")), 1)
+                                    createTextVNode(toDisplayString(_ctx.$t("Details")), 1)
                                   ];
                                 }
                               }),
@@ -184,10 +183,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                             _push4(ssrRenderComponent(unref(CardDescription), null, {
                               default: withCtx((_4, _push5, _parent5, _scopeId4) => {
                                 if (_push5) {
-                                  _push5(`${ssrInterpolate(unref($t)("Gateway general information"))}`);
+                                  _push5(`${ssrInterpolate(_ctx.$t("Gateway general information"))}`);
                                 } else {
                                   return [
-                                    createTextVNode(toDisplayString(unref($t)("Gateway general information")), 1)
+                                    createTextVNode(toDisplayString(_ctx.$t("Gateway general information")), 1)
                                   ];
                                 }
                               }),
@@ -197,13 +196,13 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                             return [
                               createVNode(unref(CardTitle), null, {
                                 default: withCtx(() => [
-                                  createTextVNode(toDisplayString(unref($t)("Details")), 1)
+                                  createTextVNode(toDisplayString(_ctx.$t("Details")), 1)
                                 ]),
                                 _: 1
                               }),
                               createVNode(unref(CardDescription), null, {
                                 default: withCtx(() => [
-                                  createTextVNode(toDisplayString(unref($t)("Gateway general information")), 1)
+                                  createTextVNode(toDisplayString(_ctx.$t("Gateway general information")), 1)
                                 ]),
                                 _: 1
                               })
@@ -218,11 +217,11 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                             _push4(`<form class="space-y-4 w-full"${_scopeId3}>`);
                             _push4(ssrRenderComponent(FormTextField, {
                               name: "name",
-                              label: unref($t)("Name")
+                              label: _ctx.$t("Name")
                             }, null, _parent4, _scopeId3));
                             _push4(ssrRenderComponent(FormTextField, {
                               name: "description",
-                              label: unref($t)("Description")
+                              label: _ctx.$t("Description")
                             }, null, _parent4, _scopeId3));
                             _push4(`<div class="flex gap-3 pt-4 justify-end"${_scopeId3}>`);
                             _push4(ssrRenderComponent(Button, {
@@ -231,10 +230,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                             }, {
                               default: withCtx((_4, _push5, _parent5, _scopeId4) => {
                                 if (_push5) {
-                                  _push5(`${ssrInterpolate(unref($t)("Save"))}`);
+                                  _push5(`${ssrInterpolate(_ctx.$t("Save"))}`);
                                 } else {
                                   return [
-                                    createTextVNode(toDisplayString(unref($t)("Save")), 1)
+                                    createTextVNode(toDisplayString(_ctx.$t("Save")), 1)
                                   ];
                                 }
                               }),
@@ -249,11 +248,11 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                               }, [
                                 createVNode(FormTextField, {
                                   name: "name",
-                                  label: unref($t)("Name")
+                                  label: _ctx.$t("Name")
                                 }, null, 8, ["label"]),
                                 createVNode(FormTextField, {
                                   name: "description",
-                                  label: unref($t)("Description")
+                                  label: _ctx.$t("Description")
                                 }, null, 8, ["label"]),
                                 createVNode("div", { class: "flex gap-3 pt-4 justify-end" }, [
                                   createVNode(Button, {
@@ -261,7 +260,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                                     loading: savingDetails.value
                                   }, {
                                     default: withCtx(() => [
-                                      createTextVNode(toDisplayString(unref($t)("Save")), 1)
+                                      createTextVNode(toDisplayString(_ctx.$t("Save")), 1)
                                     ]),
                                     _: 1
                                   }, 8, ["loading"])
@@ -278,13 +277,13 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                           default: withCtx(() => [
                             createVNode(unref(CardTitle), null, {
                               default: withCtx(() => [
-                                createTextVNode(toDisplayString(unref($t)("Details")), 1)
+                                createTextVNode(toDisplayString(_ctx.$t("Details")), 1)
                               ]),
                               _: 1
                             }),
                             createVNode(unref(CardDescription), null, {
                               default: withCtx(() => [
-                                createTextVNode(toDisplayString(unref($t)("Gateway general information")), 1)
+                                createTextVNode(toDisplayString(_ctx.$t("Gateway general information")), 1)
                               ]),
                               _: 1
                             })
@@ -299,11 +298,11 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                             }, [
                               createVNode(FormTextField, {
                                 name: "name",
-                                label: unref($t)("Name")
+                                label: _ctx.$t("Name")
                               }, null, 8, ["label"]),
                               createVNode(FormTextField, {
                                 name: "description",
-                                label: unref($t)("Description")
+                                label: _ctx.$t("Description")
                               }, null, 8, ["label"]),
                               createVNode("div", { class: "flex gap-3 pt-4 justify-end" }, [
                                 createVNode(Button, {
@@ -311,7 +310,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                                   loading: savingDetails.value
                                 }, {
                                   default: withCtx(() => [
-                                    createTextVNode(toDisplayString(unref($t)("Save")), 1)
+                                    createTextVNode(toDisplayString(_ctx.$t("Save")), 1)
                                   ]),
                                   _: 1
                                 }, 8, ["loading"])
@@ -454,13 +453,13 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                   createVNode("div", null, [
                     createVNode(PageTitle, null, {
                       default: withCtx(() => [
-                        createTextVNode(toDisplayString(unref($t)("Edit Gateway")), 1)
+                        createTextVNode(toDisplayString(_ctx.$t("Edit Gateway")), 1)
                       ]),
                       _: 1
                     }),
                     createVNode(PageSubtitle, null, {
                       default: withCtx(() => [
-                        createTextVNode(toDisplayString(unref($t)("Update the gateway information below")), 1)
+                        createTextVNode(toDisplayString(_ctx.$t("Update the gateway information below")), 1)
                       ]),
                       _: 1
                     })
@@ -473,13 +472,13 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                         default: withCtx(() => [
                           createVNode(unref(CardTitle), null, {
                             default: withCtx(() => [
-                              createTextVNode(toDisplayString(unref($t)("Details")), 1)
+                              createTextVNode(toDisplayString(_ctx.$t("Details")), 1)
                             ]),
                             _: 1
                           }),
                           createVNode(unref(CardDescription), null, {
                             default: withCtx(() => [
-                              createTextVNode(toDisplayString(unref($t)("Gateway general information")), 1)
+                              createTextVNode(toDisplayString(_ctx.$t("Gateway general information")), 1)
                             ]),
                             _: 1
                           })
@@ -494,11 +493,11 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                           }, [
                             createVNode(FormTextField, {
                               name: "name",
-                              label: unref($t)("Name")
+                              label: _ctx.$t("Name")
                             }, null, 8, ["label"]),
                             createVNode(FormTextField, {
                               name: "description",
-                              label: unref($t)("Description")
+                              label: _ctx.$t("Description")
                             }, null, 8, ["label"]),
                             createVNode("div", { class: "flex gap-3 pt-4 justify-end" }, [
                               createVNode(Button, {
@@ -506,7 +505,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                                 loading: savingDetails.value
                               }, {
                                 default: withCtx(() => [
-                                  createTextVNode(toDisplayString(unref($t)("Save")), 1)
+                                  createTextVNode(toDisplayString(_ctx.$t("Save")), 1)
                                 ]),
                                 _: 1
                               }, 8, ["loading"])

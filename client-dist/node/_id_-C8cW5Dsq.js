@@ -45,8 +45,8 @@ const __module__FormTextarea__ = await globalThis.importAsync("#client/component
 const FormTextarea = __module__FormTextarea__.default || __module__FormTextarea__;
 const __module__Button__ = await globalThis.importAsync("#client/components/Button.vue");
 const Button = __module__Button__.default || __module__Button__;
-import _sfc_main$2 from "./ProductMetasTable-CpolWbyV.js";
-import _sfc_main$1 from "./ProductPricesTable-lHF_jH00.js";
+import _sfc_main$2 from "./ProductMetasTable-hSgfPxKG.js";
+import _sfc_main$1 from "./ProductPricesTable-BhB_oC53.js";
 const { $fetch } = await globalThis.importAsync("#client/utils/fetcher.ts");
 const __module__TextField__ = await globalThis.importAsync("#client/components/TextField.vue");
 const TextField = __module__TextField__.default || __module__TextField__;

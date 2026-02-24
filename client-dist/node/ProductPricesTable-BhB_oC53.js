@@ -25,7 +25,7 @@ const { Card } = await globalThis.importAsync("#client/components/ui/card/index.
 const { CardHeader } = await globalThis.importAsync("#client/components/ui/card/index.ts");
 const { CardAction } = await globalThis.importAsync("#client/components/ui/card/index.ts");
 const { CardContent } = await globalThis.importAsync("#client/components/ui/card/index.ts");
-import schemas from "./index-CAJ9ML3h.js";
+import schemas from "./index-BjLGGSF7.js";
 import countries from "./countries-V3nDIGlS.js";
 import currencies from "./currencies-D4ptYxqb.js";
 const _sfc_main = /* @__PURE__ */ defineComponent({

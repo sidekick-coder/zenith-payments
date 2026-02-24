@@ -26,7 +26,7 @@ const AlertButton = __module__AlertButton__.default || __module__AlertButton__;
 const __module__DialogForm__ = await globalThis.importAsync("#client/components/DialogForm.vue");
 const DialogForm = __module__DialogForm__.default || __module__DialogForm__;
 const { defineFormFields } = await globalThis.importAsync("#client/components/DialogForm.vue");
-import schemas from "./index-CAJ9ML3h.js";
+import schemas from "./index-BjLGGSF7.js";
 import GatewayConfig from "./gatewayConfig.entity-Nc81nVpp.js";
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "index",

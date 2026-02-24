@@ -25,7 +25,11 @@ const index = validator.create((v) => v.intersect([
   pagination.base,
   order,
   where,
-  validator.create((v2) => v2.object({ include: v2.optional(include) }))
+  validator.create((v2) => v2.object({
+    include: v2.optional(include),
+    start_date: v2.optional(url.datetime()),
+    end_date: v2.optional(url.datetime())
+  }))
 ]));
 const userIndex = validator.create((v) => v.intersect([
   pagination.base,

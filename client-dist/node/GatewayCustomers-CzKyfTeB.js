@@ -21,9 +21,8 @@ const __module__Icon__ = await globalThis.importAsync("#client/components/Icon.v
 const Icon = __module__Icon__.default || __module__Icon__;
 import _sfc_main$1 from "./GatewayEntityTable-HxIAD7eA.js";
 const { $fetch } = await globalThis.importAsync("#client/utils/fetcher.ts");
-const { $t } = await globalThis.importAsync("#shared/lang");
 const _sfc_main = /* @__PURE__ */ defineComponent({
-  __name: "GatewaySubscriptions",
+  __name: "GatewayCustomers",
   __ssrInlineRender: true,
   props: {
     gateway: {}
@@ -35,14 +34,14 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const tableRef = ref();
     async function sync() {
       syncing.value = true;
-      const [error] = await $fetch.try(`/api/zpayments/gateways/${props.gateway.id}/subscriptions/sync`, {
+      const [error] = await $fetch.try(`/api/zpayments/gateways/${props.gateway.id}/customers/sync`, {
         method: "POST"
       });
       if (error) {
         syncing.value = false;
         return;
       }
-      toast.success($t("Subscriptions synced successfully."));
+      toast.success($t("Customers synced successfully."));
       setTimeout(() => {
         syncing.value = false;
       }, 1e3);
@@ -60,10 +59,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                   _push3(ssrRenderComponent(unref(CardTitle), null, {
                     default: withCtx((_3, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
-                        _push4(`${ssrInterpolate(unref($t)("Subscriptions"))}`);
+                        _push4(`${ssrInterpolate(_ctx.$t("Customers"))}`);
                       } else {
                         return [
-                          createTextVNode(toDisplayString(unref($t)("Subscriptions")), 1)
+                          createTextVNode(toDisplayString(_ctx.$t("Customers")), 1)
                         ];
                       }
                     }),
@@ -72,10 +71,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                   _push3(ssrRenderComponent(unref(CardDescription), null, {
                     default: withCtx((_3, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
-                        _push4(`${ssrInterpolate(unref($t)("Manage subscriptions associated with this gateway."))}`);
+                        _push4(`${ssrInterpolate(_ctx.$t("Manage customers associated with this gateway."))}`);
                       } else {
                         return [
-                          createTextVNode(toDisplayString(unref($t)("Manage subscriptions associated with this gateway.")), 1)
+                          createTextVNode(toDisplayString(_ctx.$t("Manage customers associated with this gateway.")), 1)
                         ];
                       }
                     }),
@@ -113,10 +112,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                         }, {
                           default: withCtx((_4, _push5, _parent5, _scopeId4) => {
                             if (_push5) {
-                              _push5(`${ssrInterpolate(unref($t)("Sync"))}`);
+                              _push5(`${ssrInterpolate(_ctx.$t("Sync"))}`);
                             } else {
                               return [
-                                createTextVNode(toDisplayString(unref($t)("Sync")), 1)
+                                createTextVNode(toDisplayString(_ctx.$t("Sync")), 1)
                               ];
                             }
                           }),
@@ -143,7 +142,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                             onClick: sync
                           }, {
                             default: withCtx(() => [
-                              createTextVNode(toDisplayString(unref($t)("Sync")), 1)
+                              createTextVNode(toDisplayString(_ctx.$t("Sync")), 1)
                             ]),
                             _: 1
                           }, 8, ["loading"])
@@ -156,13 +155,13 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                   return [
                     createVNode(unref(CardTitle), null, {
                       default: withCtx(() => [
-                        createTextVNode(toDisplayString(unref($t)("Subscriptions")), 1)
+                        createTextVNode(toDisplayString(_ctx.$t("Customers")), 1)
                       ]),
                       _: 1
                     }),
                     createVNode(unref(CardDescription), null, {
                       default: withCtx(() => [
-                        createTextVNode(toDisplayString(unref($t)("Manage subscriptions associated with this gateway.")), 1)
+                        createTextVNode(toDisplayString(_ctx.$t("Manage customers associated with this gateway.")), 1)
                       ]),
                       _: 1
                     }),
@@ -187,7 +186,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                           onClick: sync
                         }, {
                           default: withCtx(() => [
-                            createTextVNode(toDisplayString(unref($t)("Sync")), 1)
+                            createTextVNode(toDisplayString(_ctx.$t("Sync")), 1)
                           ]),
                           _: 1
                         }, 8, ["loading"])
@@ -208,7 +207,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                     loading: loading.value,
                     "onUpdate:loading": ($event) => loading.value = $event,
                     "gateway-id": __props.gateway?.id,
-                    "entity-type": "subscription"
+                    "entity-type": "customer"
                   }, null, _parent3, _scopeId2));
                 } else {
                   return [
@@ -218,7 +217,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                       loading: loading.value,
                       "onUpdate:loading": ($event) => loading.value = $event,
                       "gateway-id": __props.gateway?.id,
-                      "entity-type": "subscription"
+                      "entity-type": "customer"
                     }, null, 8, ["loading", "onUpdate:loading", "gateway-id"])
                   ];
                 }
@@ -231,13 +230,13 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                 default: withCtx(() => [
                   createVNode(unref(CardTitle), null, {
                     default: withCtx(() => [
-                      createTextVNode(toDisplayString(unref($t)("Subscriptions")), 1)
+                      createTextVNode(toDisplayString(_ctx.$t("Customers")), 1)
                     ]),
                     _: 1
                   }),
                   createVNode(unref(CardDescription), null, {
                     default: withCtx(() => [
-                      createTextVNode(toDisplayString(unref($t)("Manage subscriptions associated with this gateway.")), 1)
+                      createTextVNode(toDisplayString(_ctx.$t("Manage customers associated with this gateway.")), 1)
                     ]),
                     _: 1
                   }),
@@ -262,7 +261,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                         onClick: sync
                       }, {
                         default: withCtx(() => [
-                          createTextVNode(toDisplayString(unref($t)("Sync")), 1)
+                          createTextVNode(toDisplayString(_ctx.$t("Sync")), 1)
                         ]),
                         _: 1
                       }, 8, ["loading"])
@@ -280,7 +279,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                     loading: loading.value,
                     "onUpdate:loading": ($event) => loading.value = $event,
                     "gateway-id": __props.gateway?.id,
-                    "entity-type": "subscription"
+                    "entity-type": "customer"
                   }, null, 8, ["loading", "onUpdate:loading", "gateway-id"])
                 ]),
                 _: 1
@@ -296,7 +295,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
 const _sfc_setup = _sfc_main.setup;
 _sfc_main.setup = (props, ctx) => {
   const ssrContext = useSSRContext();
-  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("modules/mod/client/components/GatewaySubscriptions.vue");
+  (ssrContext.modules || (ssrContext.modules = /* @__PURE__ */ new Set())).add("modules/mod/client/components/GatewayCustomers.vue");
   return _sfc_setup ? _sfc_setup(props, ctx) : void 0;
 };
 export {

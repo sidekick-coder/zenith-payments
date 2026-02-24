@@ -1,5 +1,5 @@
 import V from "./productMeta.entity-BGuejWQV.js";
-import v from "./index-C5jCdUgN.js";
+import v from "./index-D8jq18Zg.js";
 import { f as U } from "./format-8PJ5SmHp.js";
 const { defineComponent: $ } = await globalThis.importAsync("vue"), { ref: c } = await globalThis.importAsync("vue"), { createBlock: D } = await globalThis.importAsync("vue"), { openBlock: F } = await globalThis.importAsync("vue"), { unref: a } = await globalThis.importAsync("vue"), { withCtx: e } = await globalThis.importAsync("vue"), { createVNode: t } = await globalThis.importAsync("vue"), { normalizeClass: z } = await globalThis.importAsync("vue"), { createTextVNode: B } = await globalThis.importAsync("vue"), { toDisplayString: I } = await globalThis.importAsync("vue"), { createElementVNode: x } = await globalThis.importAsync("vue");
 await globalThis.importAsync("vue-sonner");

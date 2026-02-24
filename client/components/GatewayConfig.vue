@@ -6,7 +6,6 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle, CardFooter }
 import FormAutoFieldList from '#client/components/FormAutoFieldList.vue'
 import Button from '#client/components/Button.vue'
 import { $fetch } from '#client/utils/fetcher.ts'
-import { $t } from '#shared/lang'
 import type GatewayConfig from '#zpayments/shared/entities/gatewayConfig.entity.ts'
 
 const props = defineProps<{

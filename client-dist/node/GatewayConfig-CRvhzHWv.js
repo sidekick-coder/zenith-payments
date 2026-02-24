@@ -23,7 +23,6 @@ const FormAutoFieldList = __module__FormAutoFieldList__.default || __module__For
 const __module__Button__ = await globalThis.importAsync("#client/components/Button.vue");
 const Button = __module__Button__.default || __module__Button__;
 const { $fetch } = await globalThis.importAsync("#client/utils/fetcher.ts");
-const { $t } = await globalThis.importAsync("#shared/lang");
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "GatewayConfig",
   __ssrInlineRender: true,
@@ -68,10 +67,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                   _push3(ssrRenderComponent(unref(CardTitle), null, {
                     default: withCtx((_3, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
-                        _push4(`${ssrInterpolate(unref($t)("Gateway Configuration"))}`);
+                        _push4(`${ssrInterpolate(_ctx.$t("Gateway Configuration"))}`);
                       } else {
                         return [
-                          createTextVNode(toDisplayString(unref($t)("Gateway Configuration")), 1)
+                          createTextVNode(toDisplayString(_ctx.$t("Gateway Configuration")), 1)
                         ];
                       }
                     }),
@@ -80,10 +79,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                   _push3(ssrRenderComponent(unref(CardDescription), null, {
                     default: withCtx((_3, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
-                        _push4(`${ssrInterpolate(unref($t)("Edit gateway-specific configuration"))}`);
+                        _push4(`${ssrInterpolate(_ctx.$t("Edit gateway-specific configuration"))}`);
                       } else {
                         return [
-                          createTextVNode(toDisplayString(unref($t)("Edit gateway-specific configuration")), 1)
+                          createTextVNode(toDisplayString(_ctx.$t("Edit gateway-specific configuration")), 1)
                         ];
                       }
                     }),
@@ -93,13 +92,13 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                   return [
                     createVNode(unref(CardTitle), null, {
                       default: withCtx(() => [
-                        createTextVNode(toDisplayString(unref($t)("Gateway Configuration")), 1)
+                        createTextVNode(toDisplayString(_ctx.$t("Gateway Configuration")), 1)
                       ]),
                       _: 1
                     }),
                     createVNode(unref(CardDescription), null, {
                       default: withCtx(() => [
-                        createTextVNode(toDisplayString(unref($t)("Edit gateway-specific configuration")), 1)
+                        createTextVNode(toDisplayString(_ctx.$t("Edit gateway-specific configuration")), 1)
                       ]),
                       _: 1
                     })
@@ -133,10 +132,10 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                   }, {
                     default: withCtx((_3, _push4, _parent4, _scopeId3) => {
                       if (_push4) {
-                        _push4(`${ssrInterpolate(unref($t)("Save"))}`);
+                        _push4(`${ssrInterpolate(_ctx.$t("Save"))}`);
                       } else {
                         return [
-                          createTextVNode(toDisplayString(unref($t)("Save")), 1)
+                          createTextVNode(toDisplayString(_ctx.$t("Save")), 1)
                         ];
                       }
                     }),
@@ -149,7 +148,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                       loading: savingConfig.value
                     }, {
                       default: withCtx(() => [
-                        createTextVNode(toDisplayString(unref($t)("Save")), 1)
+                        createTextVNode(toDisplayString(_ctx.$t("Save")), 1)
                       ]),
                       _: 1
                     }, 8, ["loading"])
@@ -164,13 +163,13 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                 default: withCtx(() => [
                   createVNode(unref(CardTitle), null, {
                     default: withCtx(() => [
-                      createTextVNode(toDisplayString(unref($t)("Gateway Configuration")), 1)
+                      createTextVNode(toDisplayString(_ctx.$t("Gateway Configuration")), 1)
                     ]),
                     _: 1
                   }),
                   createVNode(unref(CardDescription), null, {
                     default: withCtx(() => [
-                      createTextVNode(toDisplayString(unref($t)("Edit gateway-specific configuration")), 1)
+                      createTextVNode(toDisplayString(_ctx.$t("Edit gateway-specific configuration")), 1)
                     ]),
                     _: 1
                   })
@@ -192,7 +191,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
                     loading: savingConfig.value
                   }, {
                     default: withCtx(() => [
-                      createTextVNode(toDisplayString(unref($t)("Save")), 1)
+                      createTextVNode(toDisplayString(_ctx.$t("Save")), 1)
                     ]),
                     _: 1
                   }, 8, ["loading"])

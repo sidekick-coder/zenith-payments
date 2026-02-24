@@ -30,7 +30,6 @@ import GatewayConfig from "./gatewayConfig.entity-Nc81nVpp.js";
 const { $fetch } = await globalThis.importAsync("#client/utils");
 const __module__Button__ = await globalThis.importAsync("#client/components/Button.vue");
 const Button = __module__Button__.default || __module__Button__;
-const { $t } = await globalThis.importAsync("#shared/lang");
 const _sfc_main = /* @__PURE__ */ defineComponent({
   __name: "GatewayLayout",
   __ssrInlineRender: true,
