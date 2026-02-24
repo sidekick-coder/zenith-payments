@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { computed, ref } from 'vue'
 import { format } from 'date-fns'
 import { defineColumns } from '#client/components/DataTable.vue'
 import PageCrud from '#client/components/PageCrud.vue'
@@ -6,7 +7,10 @@ import AppLayout from '#client/layouts/AppLayout.vue'
 import Payment from '#zpayments/shared/entities/payment.entity.ts'
 import { Badge } from '#client/components/ui/badge/index.ts'
 import Button from '#client/components/Button.vue'
-import Icon from '#client/components/Icon.vue'
+import Select from '#client/components/Select.vue'
+import DatePicker from '#client/components/DatePicker.vue'
+import { Card, CardContent } from '#client/components/ui/card/index.ts'
+
 
 const columns = defineColumns([
     {
@@ -37,10 +41,23 @@ const columns = defineColumns([
     {
         id: 'created_at',
         label: $t('Created At'),
-        field: row => $d(row.created_at),
+        field: row => $dt(row.created_at),
     },
     { id: 'actions' }
 ])
+
+
+const fetchQuery = ref({
+    status: '',
+    start_date: null,
+    end_date: null,
+})
+
+function clearFilters() {
+    fetchQuery.value.status = ''
+    fetchQuery.value.start_date = null
+    fetchQuery.value.end_date = null
+}
 
 </script>
 
@@ -52,8 +69,58 @@ const columns = defineColumns([
             :columns="columns"
             :serialize="row => Payment.from(row)"
             fetch="/api/zpayments/payments"
+            :fetch-query="fetchQuery"
             :actions="[]"
         >
+            <template #header-append>
+                <Card class="mb-4">
+                    <CardContent class="pt-6">
+                        <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                            <Select
+                                v-model="fetchQuery.status"
+                                :label="$t('Status')"
+                                :placeholder="$t('All')"
+                                :options="Payment.STATUS"
+                                label-key="label"
+                                value-key="id"
+                                clearable
+                            />
+
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-medium">
+                                    {{ $t('Start Date') }}
+                                </label>
+                                <DatePicker
+                                    v-model="fetchQuery.start_date"
+                                    mode="datetime"
+                                    clearable
+                                />
+                            </div>
+
+                            <div class="flex flex-col gap-2">
+                                <label class="text-sm font-medium">
+                                    {{ $t('End Date') }}
+                                </label>
+                                <DatePicker
+                                    v-model="fetchQuery.end_date"
+                                    mode="datetime"
+                                    clearable
+                                />
+                            </div>
+
+                            <div class="flex items-end">
+                                <Button
+                                    variant="outline"
+                                    @click="clearFilters"
+                                >
+                                    {{ $t('Clear Filters') }}
+                                </Button>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </template>
+
             <template #row-status="{ row }">
                 <Badge
                     :style="{ '--color': row.statusColor }"
