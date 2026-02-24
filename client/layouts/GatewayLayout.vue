@@ -6,7 +6,6 @@ import AppLayout from '#client/layouts/AppLayout.vue'
 import GatewayConfig from '#zpayments/shared/entities/gatewayConfig.entity.ts'
 import { $fetch } from '#client/utils'
 import Button from '#client/components/Button.vue'
-import { $t } from '#shared/lang'
 
 const route = useRoute()
 const id = computed(() => route.params.id as string)

@@ -6,7 +6,6 @@ import Button from '#client/components/Button.vue'
 import Icon from '#client/components/Icon.vue'
 import GatewayEntityTable from '#zpayments/client/components/GatewayEntityTable.vue'
 import { $fetch } from '#client/utils/fetcher.ts'
-import { $t } from '#shared/lang'
 import type GatewayConfig from '#zpayments/shared/entities/gatewayConfig.entity.ts'
 
 const props = defineProps<{

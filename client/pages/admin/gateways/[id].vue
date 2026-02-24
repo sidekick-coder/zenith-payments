@@ -15,7 +15,6 @@ import FormTextField from '#client/components/FormTextField.vue'
 import Button from '#client/components/Button.vue'
 import { $fetch } from '#client/utils/fetcher.ts'
 import { tryCatch } from '#shared/utils/tryCatch.ts'
-import { $t } from '#shared/lang'
 import GatewayConfig from '#zpayments/shared/entities/gatewayConfig.entity.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
 
