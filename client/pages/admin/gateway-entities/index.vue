@@ -4,7 +4,7 @@ import type { ComponentExposed } from 'vue-component-type-helpers'
 import { format } from 'date-fns'
 import DataTable, { defineColumns } from '#client/components/DataTable.vue'
 
-import AppLayout from '#client/layouts/AppLayout.vue'
+import AdminLayout from '#client/layouts/AdminLayout.vue'
 import Button from '#client/components/Button.vue'
 import Icon from '#client/components/Icon.vue'
 import GatewayEntity from '#zpayments/shared/entities/gatewayEntity.entity.ts'
@@ -66,7 +66,7 @@ function load(){
 </script>
 
 <template>
-    <AppLayout>
+    <AdminLayout>
         <div class="flex flex-col mb-4">
             <PageTitle>{{ $t('Entities') }}</PageTitle>
             <PageSubtitle>
@@ -78,5 +78,5 @@ function load(){
             ref="tableRef"
             v-model:loading="loading"
         />
-    </AppLayout>
+    </AdminLayout>
 </template>
