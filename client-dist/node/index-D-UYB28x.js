@@ -13,8 +13,8 @@ import { format } from "date-fns";
 const { defineColumns } = await globalThis.importAsync("#client/components/DataTable.vue");
 const __module__PageCrud__ = await globalThis.importAsync("#client/components/PageCrud.vue");
 const PageCrud = __module__PageCrud__.default || __module__PageCrud__;
-const __module__AppLayout__ = await globalThis.importAsync("#client/layouts/AppLayout.vue");
-const AppLayout = __module__AppLayout__.default || __module__AppLayout__;
+const __module__AdminLayout__ = await globalThis.importAsync("#client/layouts/AdminLayout.vue");
+const AdminLayout = __module__AdminLayout__.default || __module__AdminLayout__;
 import Order from "./order.entity-CBgThORh.js";
 const { Badge } = await globalThis.importAsync("#client/components/ui/badge/index.ts");
 const _sfc_main = /* @__PURE__ */ defineComponent({
@@ -59,7 +59,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       { id: "actions" }
     ]);
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(AppLayout, _attrs, {
+      _push(ssrRenderComponent(AdminLayout, _attrs, {
         default: withCtx((_, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(ssrRenderComponent(PageCrud, {

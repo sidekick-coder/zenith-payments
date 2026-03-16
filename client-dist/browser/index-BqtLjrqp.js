@@ -1,6 +1,6 @@
 import K from "./index-D8jq18Zg.js";
 import A from "./gatewayConfig.entity-DUywytzM.js";
-const { defineComponent: x } = await globalThis.importAsync("vue"), { ref: m } = await globalThis.importAsync("vue"), { createBlock: z } = await globalThis.importAsync("vue"), { openBlock: B } = await globalThis.importAsync("vue"), { withCtx: e } = await globalThis.importAsync("vue"), { createElementVNode: i } = await globalThis.importAsync("vue"), { createVNode: t } = await globalThis.importAsync("vue"), { toDisplayString: f } = await globalThis.importAsync("vue"), { normalizeClass: F } = await globalThis.importAsync("vue"), { unref: s } = await globalThis.importAsync("vue"), { createTextVNode: N } = await globalThis.importAsync("vue"), { toast: E } = await globalThis.importAsync("vue-sonner"), _ = await globalThis.importAsync("#client/components/DataTable.vue"), I = _.default || _, { defineColumns: k } = await globalThis.importAsync("#client/components/DataTable.vue"), y = await globalThis.importAsync("#client/layouts/AppLayout.vue"), V = y.default || y, { $fetch: O } = await globalThis.importAsync("#client/utils/fetcher.ts"), g = await globalThis.importAsync("#client/components/ClientOnly.vue"), G = g.default || g, b = await globalThis.importAsync("#client/components/Button.vue"), u = b.default || b, h = await globalThis.importAsync("#client/components/Icon.vue"), r = h.default || h, w = await globalThis.importAsync("#client/components/AlertButton.vue"), L = w.default || w, v = await globalThis.importAsync("#client/components/DialogForm.vue"), S = v.default || v, { defineFormFields: R } = await globalThis.importAsync("#client/components/DialogForm.vue"), j = { class: "flex" }, P = { class: "text-2xl font-bold mb-4 text-foreground flex-1" }, U = { class: "flex items-center gap-2" }, W = { class: "flex items-center gap-2 justify-end" }, M = /* @__PURE__ */ x({
+const { defineComponent: x } = await globalThis.importAsync("vue"), { ref: m } = await globalThis.importAsync("vue"), { createBlock: z } = await globalThis.importAsync("vue"), { openBlock: B } = await globalThis.importAsync("vue"), { withCtx: e } = await globalThis.importAsync("vue"), { createElementVNode: l } = await globalThis.importAsync("vue"), { createVNode: t } = await globalThis.importAsync("vue"), { toDisplayString: f } = await globalThis.importAsync("vue"), { normalizeClass: F } = await globalThis.importAsync("vue"), { unref: s } = await globalThis.importAsync("vue"), { createTextVNode: N } = await globalThis.importAsync("vue"), { toast: E } = await globalThis.importAsync("vue-sonner"), _ = await globalThis.importAsync("#client/components/DataTable.vue"), I = _.default || _, { defineColumns: k } = await globalThis.importAsync("#client/components/DataTable.vue"), y = await globalThis.importAsync("#client/layouts/AdminLayout.vue"), V = y.default || y, { $fetch: O } = await globalThis.importAsync("#client/utils/fetcher.ts"), g = await globalThis.importAsync("#client/components/ClientOnly.vue"), G = g.default || g, b = await globalThis.importAsync("#client/components/Button.vue"), u = b.default || b, h = await globalThis.importAsync("#client/components/Icon.vue"), r = h.default || h, w = await globalThis.importAsync("#client/components/AlertButton.vue"), L = w.default || w, v = await globalThis.importAsync("#client/components/DialogForm.vue"), S = v.default || v, { defineFormFields: R } = await globalThis.importAsync("#client/components/DialogForm.vue"), j = { class: "flex" }, P = { class: "text-2xl font-bold mb-4 text-foreground flex-1" }, U = { class: "flex items-center gap-2" }, W = { class: "flex items-center gap-2 justify-end" }, M = /* @__PURE__ */ x({
   __name: "index",
   setup(Y) {
     const n = m(!1), c = m(), d = m([]), T = k([
@@ -50,10 +50,10 @@ const { defineComponent: x } = await globalThis.importAsync("vue"), { ref: m } =
     }
     async function $(o) {
       d.value.push(o);
-      const [l] = await O.try(`/api/zpayments/gateways/${o}`, {
+      const [i] = await O.try(`/api/zpayments/gateways/${o}`, {
         method: "DELETE"
       });
-      if (l) {
+      if (i) {
         d.value = [];
         return;
       }
@@ -61,11 +61,11 @@ const { defineComponent: x } = await globalThis.importAsync("vue"), { ref: m } =
         E.success($t("Deleted successfully.")), D();
       }, 1e3);
     }
-    return (o, l) => (B(), z(V, null, {
+    return (o, i) => (B(), z(V, null, {
       default: e(() => [
-        i("div", j, [
-          i("h1", P, f(o.$t("Gateways")), 1),
-          i("div", U, [
+        l("div", j, [
+          l("h1", P, f(o.$t("Gateways")), 1),
+          l("div", U, [
             t(u, {
               variant: "outline",
               size: "icon",
@@ -109,13 +109,13 @@ const { defineComponent: x } = await globalThis.importAsync("vue"), { ref: m } =
           ref_key: "tableRef",
           ref: c,
           loading: n.value,
-          "onUpdate:loading": l[0] || (l[0] = (a) => n.value = a),
+          "onUpdate:loading": i[0] || (i[0] = (a) => n.value = a),
           columns: s(T),
           serialize: (a) => s(A).from(a),
           fetch: "/api/zpayments/gateways"
         }, {
           "row-actions": e(({ row: a }) => [
-            i("div", W, [
+            l("div", W, [
               t(u, {
                 size: "icon",
                 variant: "ghost",

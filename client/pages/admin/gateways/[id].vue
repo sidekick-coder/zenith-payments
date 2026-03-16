@@ -5,7 +5,7 @@ import { useForm } from 'vee-validate'
 import { useRouteQuery } from '@vueuse/router'
 import { toTypedSchema } from '@vee-validate/valibot'
 import { toast } from 'vue-sonner'
-import AppLayout from '#client/layouts/AppLayout.vue'
+import AdminLayout from '#client/layouts/AdminLayout.vue'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#client/components/ui/card'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '#client/components/ui/tabs'
 import { Skeleton } from '#client/components/ui/skeleton'
@@ -101,7 +101,7 @@ onMounted(loadGateway)
 </script>
 
 <template>
-    <AppLayout
+    <AdminLayout
         :breadcrumbs="[
             { label: $t('Gateways'), to: '/admin/gateways' },
             { label: gateway?.name || '...' }
@@ -199,5 +199,5 @@ onMounted(loadGateway)
                 </Tabs>
             </div>
         </div>
-    </AppLayout>
+    </AdminLayout>
 </template>

@@ -12,8 +12,8 @@ const { toast } = await globalThis.importAsync("vue-sonner");
 const __module__DataTable__ = await globalThis.importAsync("#client/components/DataTable.vue");
 const DataTable = __module__DataTable__.default || __module__DataTable__;
 const { defineColumns } = await globalThis.importAsync("#client/components/DataTable.vue");
-const __module__AppLayout__ = await globalThis.importAsync("#client/layouts/AppLayout.vue");
-const AppLayout = __module__AppLayout__.default || __module__AppLayout__;
+const __module__AdminLayout__ = await globalThis.importAsync("#client/layouts/AdminLayout.vue");
+const AdminLayout = __module__AdminLayout__.default || __module__AdminLayout__;
 const { $fetch } = await globalThis.importAsync("#client/utils/fetcher.ts");
 const __module__ClientOnly__ = await globalThis.importAsync("#client/components/ClientOnly.vue");
 const ClientOnly = __module__ClientOnly__.default || __module__ClientOnly__;
@@ -96,7 +96,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       }, 1e3);
     }
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(AppLayout, _attrs, {
+      _push(ssrRenderComponent(AdminLayout, _attrs, {
         default: withCtx((_, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="flex"${_scopeId}><h1 class="text-2xl font-bold mb-4 text-foreground flex-1"${_scopeId}>${ssrInterpolate(_ctx.$t("Gateways"))}</h1><div class="flex items-center gap-2"${_scopeId}>`);

@@ -1,6 +1,6 @@
 import h from "./order.entity-X244Lp1t.js";
 import { f as v } from "./format-8PJ5SmHp.js";
-const { defineComponent: m } = await globalThis.importAsync("vue"), { createBlock: p } = await globalThis.importAsync("vue"), { openBlock: s } = await globalThis.importAsync("vue"), { withCtx: o } = await globalThis.importAsync("vue"), { createVNode: l } = await globalThis.importAsync("vue"), { unref: i } = await globalThis.importAsync("vue"), { normalizeStyle: y } = await globalThis.importAsync("vue"), { createTextVNode: _ } = await globalThis.importAsync("vue"), { toDisplayString: a } = await globalThis.importAsync("vue"), { createElementBlock: n } = await globalThis.importAsync("vue"), { createElementVNode: r } = await globalThis.importAsync("vue"), { defineColumns: b } = await globalThis.importAsync("#client/components/DataTable.vue"), c = await globalThis.importAsync("#client/components/PageCrud.vue"), f = c.default || c, u = await globalThis.importAsync("#client/layouts/AppLayout.vue"), g = u.default || u, { Badge: A } = await globalThis.importAsync("#client/components/ui/badge/index.ts"), w = { key: 0 }, T = { key: 1 }, C = { class: "text-sm text-gray-500" }, V = /* @__PURE__ */ m({
+const { defineComponent: m } = await globalThis.importAsync("vue"), { createBlock: p } = await globalThis.importAsync("vue"), { openBlock: i } = await globalThis.importAsync("vue"), { withCtx: o } = await globalThis.importAsync("vue"), { createVNode: l } = await globalThis.importAsync("vue"), { unref: s } = await globalThis.importAsync("vue"), { normalizeStyle: y } = await globalThis.importAsync("vue"), { createTextVNode: _ } = await globalThis.importAsync("vue"), { toDisplayString: a } = await globalThis.importAsync("vue"), { createElementBlock: n } = await globalThis.importAsync("vue"), { createElementVNode: r } = await globalThis.importAsync("vue"), { defineColumns: b } = await globalThis.importAsync("#client/components/DataTable.vue"), c = await globalThis.importAsync("#client/components/PageCrud.vue"), f = c.default || c, u = await globalThis.importAsync("#client/layouts/AdminLayout.vue"), g = u.default || u, { Badge: A } = await globalThis.importAsync("#client/components/ui/badge/index.ts"), w = { key: 0 }, T = { key: 1 }, C = { class: "text-sm text-gray-500" }, V = /* @__PURE__ */ m({
   __name: "index",
   setup(x) {
     const d = b([
@@ -40,27 +40,27 @@ const { defineComponent: m } = await globalThis.importAsync("vue"), { createBloc
       },
       { id: "actions" }
     ]);
-    return (t, $) => (s(), p(g, null, {
+    return (t, $) => (i(), p(g, null, {
       default: o(() => [
         l(f, {
           fetch: "/api/zpayments/orders",
           title: t.$t("Orders"),
           description: t.$t("View order records here."),
-          columns: i(d),
+          columns: s(d),
           actions: [],
-          serialize: (e) => i(h).from(e),
+          serialize: (e) => s(h).from(e),
           "fetch-query": {
             include: ["user"]
           }
         }, {
           "row-user": o(({ row: e }) => [
-            e.user ? (s(), n("div", T, [
+            e.user ? (i(), n("div", T, [
               r("div", null, a(e.user.name), 1),
               r("div", C, a(e.user.email), 1)
-            ])) : (s(), n("div", w, a(e.user_id), 1))
+            ])) : (i(), n("div", w, a(e.user_id), 1))
           ]),
           "row-status": o(({ row: e }) => [
-            l(i(A), {
+            l(s(A), {
               style: y({ "--color": e.statusColor }),
               class: "bg-[var(--color)] text-white"
             }, {

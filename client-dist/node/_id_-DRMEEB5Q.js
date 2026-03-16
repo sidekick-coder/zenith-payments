@@ -20,8 +20,8 @@ const { useForm } = await globalThis.importAsync("vee-validate");
 import * as v from "valibot";
 import { toTypedSchema } from "@vee-validate/valibot";
 const { toast } = await globalThis.importAsync("vue-sonner");
-const __module__AppLayout__ = await globalThis.importAsync("#client/layouts/AppLayout.vue");
-const AppLayout = __module__AppLayout__.default || __module__AppLayout__;
+const __module__AdminLayout__ = await globalThis.importAsync("#client/layouts/AdminLayout.vue");
+const AdminLayout = __module__AdminLayout__.default || __module__AdminLayout__;
 const __module__Card__ = await globalThis.importAsync("#client/components/ui/card/Card.vue");
 const Card = __module__Card__.default || __module__Card__;
 const __module__CardDescription__ = await globalThis.importAsync("#client/components/ui/card/CardDescription.vue");
@@ -121,7 +121,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       await loadProduct();
     });
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(AppLayout, _attrs, {
+      _push(ssrRenderComponent(AdminLayout, _attrs, {
         default: withCtx((_, _push2, _parent2, _scopeId) => {
           if (_push2) {
             _push2(`<div class="flex min-h-full w-full [&amp;&gt;*]:px-4 -mx-2"${_scopeId}><div class="w-full lg:w-3/12 min-h-full rounded-none shadow-none gap-y-6 flex flex-col"${_scopeId}>`);

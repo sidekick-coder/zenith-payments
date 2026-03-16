@@ -5,7 +5,7 @@ import { useForm } from 'vee-validate'
 import * as v from 'valibot'
 import { toTypedSchema } from '@vee-validate/valibot'
 import { toast } from 'vue-sonner'
-import AppLayout from '#client/layouts/AppLayout.vue'
+import AdminLayout from '#client/layouts/AdminLayout.vue'
 import Card from '#client/components/ui/card/Card.vue'
 import CardDescription from '#client/components/ui/card/CardDescription.vue'
 import CardHeader from '#client/components/ui/card/CardHeader.vue'
@@ -107,7 +107,7 @@ const onSubmit = handleSubmit(async (formValues) => {
 </script>
 
 <template>
-    <AppLayout>
+    <AdminLayout>
         <div class="flex min-h-full w-full [&>*]:px-4 -mx-2">
             <div class="w-full lg:w-3/12 min-h-full rounded-none shadow-none gap-y-6 flex flex-col">
                 <form
@@ -185,5 +185,5 @@ const onSubmit = handleSubmit(async (formValues) => {
                 </Tabs>
             </div>
         </div>
-    </AppLayout>
+    </AdminLayout>
 </template>

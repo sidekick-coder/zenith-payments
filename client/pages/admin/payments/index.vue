@@ -3,7 +3,7 @@ import { computed, ref } from 'vue'
 import { format } from 'date-fns'
 import { defineColumns } from '#client/components/DataTable.vue'
 import PageCrud from '#client/components/PageCrud.vue'
-import AppLayout from '#client/layouts/AppLayout.vue'
+import AdminLayout from '#client/layouts/AdminLayout.vue'
 import Payment from '#zpayments/shared/entities/payment.entity.ts'
 import { Badge } from '#client/components/ui/badge/index.ts'
 import Button from '#client/components/Button.vue'
@@ -62,7 +62,7 @@ function clearFilters() {
 </script>
 
 <template>
-    <AppLayout>
+    <AdminLayout>
         <PageCrud
             :title="$t('Payments')"
             :description="$t('View payment records here.')"
@@ -141,5 +141,5 @@ function clearFilters() {
                 </Button>
             </template>
         </PageCrud>
-    </AppLayout>
+    </AdminLayout>
 </template>

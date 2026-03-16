@@ -27,8 +27,8 @@ const { useForm } = await globalThis.importAsync("vee-validate");
 import { useRouteQuery } from "@vueuse/router";
 import { toTypedSchema } from "@vee-validate/valibot";
 const { toast } = await globalThis.importAsync("vue-sonner");
-const __module__AppLayout__ = await globalThis.importAsync("#client/layouts/AppLayout.vue");
-const AppLayout = __module__AppLayout__.default || __module__AppLayout__;
+const __module__AdminLayout__ = await globalThis.importAsync("#client/layouts/AdminLayout.vue");
+const AdminLayout = __module__AdminLayout__.default || __module__AdminLayout__;
 const { Card } = await globalThis.importAsync("#client/components/ui/card");
 const { CardHeader } = await globalThis.importAsync("#client/components/ui/card");
 const { CardTitle } = await globalThis.importAsync("#client/components/ui/card");
@@ -119,7 +119,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     });
     onMounted(loadGateway);
     return (_ctx, _push, _parent, _attrs) => {
-      _push(ssrRenderComponent(AppLayout, mergeProps({
+      _push(ssrRenderComponent(AdminLayout, mergeProps({
         breadcrumbs: [
           { label: _ctx.$t("Gateways"), to: "/admin/gateways" },
           { label: gateway.value?.name || "..." }

@@ -2,7 +2,7 @@
 import { format } from 'date-fns'
 import { defineColumns } from '#client/components/DataTable.vue'
 import PageCrud from '#client/components/PageCrud.vue'
-import AppLayout from '#client/layouts/AppLayout.vue'
+import AdminLayout from '#client/layouts/AdminLayout.vue'
 import User from '#shared/entities/user.entity.ts'
 
 const columns = defineColumns([
@@ -33,7 +33,7 @@ const columns = defineColumns([
 </script>
 
 <template>
-    <AppLayout>
+    <AdminLayout>
         <PageCrud
             :title="$t('Customers')"
             :description="$t('View customer records here.')"
@@ -43,5 +43,5 @@ const columns = defineColumns([
             view-to="/admin/zpayments/users/:id"
             fetch="/api/users"
         />
-    </AppLayout>
+    </AdminLayout>
 </template>

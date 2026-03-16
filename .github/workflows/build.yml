@@ -1,8 +1,6 @@
 name: Build
 
 on:
-  push:
-    branches: [main]
   workflow_dispatch:
 
 permissions:
@@ -54,7 +52,7 @@ jobs:
         run: |
           docker run --rm \
             -v ./:/app/modules/mod \
-            zzhenryquezz/zenith:latest \
+            sidekickcoder/zenith:0.1.0 \
             node arte module:build --prepare true --module mod
 
       - name: Commit and push build snapshot

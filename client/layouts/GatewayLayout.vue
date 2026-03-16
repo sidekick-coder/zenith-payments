@@ -2,7 +2,7 @@
 import { computed, onMounted } from 'vue'
 import { useRoute } from 'vue-router'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '#client/components/ui/card'
-import AppLayout from '#client/layouts/AppLayout.vue'
+import AdminLayout from '#client/layouts/AdminLayout.vue'
 import GatewayConfig from '#zpayments/shared/entities/gatewayConfig.entity.ts'
 import { $fetch } from '#client/utils'
 import Button from '#client/components/Button.vue'
@@ -50,7 +50,7 @@ onMounted(load)
 </script>
 
 <template>
-    <AppLayout>
+    <AdminLayout>
         <div class="flex [&>*]:px-4 -mx-4">
             <div class="w-full md:w-6/12 lg:w-4/12 xl:w-3/12">
                 <Card v-if="gateway">
@@ -75,5 +75,5 @@ onMounted(load)
                 <slot v-if="gateway" />
             </div>
         </div>
-    </AppLayout>
+    </AdminLayout>
 </template>
