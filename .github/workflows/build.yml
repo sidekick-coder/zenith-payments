@@ -52,7 +52,7 @@ jobs:
         run: |
           docker run --rm \
             -v ./:/app/modules/mod \
-            sidekickcoder/zenith:0.1.0 \
+            sidekickcoder/zenith:latest \
             node arte module:build --prepare true --module mod
 
       - name: Commit and push build snapshot

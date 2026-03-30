@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
-import { format } from 'date-fns'
+import {  ref } from 'vue'
 import { defineColumns } from '#client/components/DataTable.vue'
 import PageCrud from '#client/components/PageCrud.vue'
 import AdminLayout from '#client/layouts/AdminLayout.vue'
@@ -64,12 +63,12 @@ function clearFilters() {
 <template>
     <AdminLayout>
         <PageCrud
+            v-model:fetch-query="fetchQuery"
             :title="$t('Payments')"
             :description="$t('View payment records here.')"
             :columns="columns"
             :serialize="row => Payment.from(row)"
             fetch="/api/zpayments/payments"
-            :fetch-query="fetchQuery"
             :actions="[]"
         >
             <template #header-append>

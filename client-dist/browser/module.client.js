@@ -1,72 +1,133 @@
-const o = await globalThis.importAsync("#client/entities/module.entity.ts"), m = o.default || o, r = await globalThis.importAsync("#client/facades/router.facade.ts"), i = r.default || r, n = await globalThis.importAsync("#client/facades/menu.facade.ts"), a = n.default || n, d = await globalThis.importAsync("#client/guards/auth.guard.ts"), u = d.default || d;
-class y extends m {
-  async onRegister() {
-    for (const [e, s] of Object.entries(/* @__PURE__ */ Object.assign({ "./components/GatewayConfig.vue": () => import("./GatewayConfig-C_LP4r90.js"), "./components/GatewayCustomers.vue": () => import("./GatewayCustomers-C7GU7PDc.js"), "./components/GatewayEntityTable.vue": () => import("./GatewayEntityTable-BZ3-nDbO.js"), "./components/GatewaySubscriptions.vue": () => import("./GatewaySubscriptions-BN-3319F.js"), "./components/PlanGatewayLinks.vue": () => import("./PlanGatewayLinks-yOimmSNP.js"), "./components/ProductMetasTable.vue": () => import("./ProductMetasTable-Bgbd8ppy.js"), "./components/ProductPaymentsTable.vue": () => import("./ProductPaymentsTable-BD51O23i.js"), "./components/ProductPricesTable.vue": () => import("./ProductPricesTable-BFmMmiqU.js"), "./components/UserOrdersCard.vue": () => import("./UserOrdersCard-HsecrrRx.js"), "./components/UserOrdersPage.vue": () => import("./UserOrdersPage-NSup5URu.js"), "./components/UserOrdersTable.vue": () => import("./UserOrdersTable-C3hbm4k-.js"), "./components/UserPaymentsTable.vue": () => import("./UserPaymentsTable-CsZUVj9Y.js"), "./layouts/GatewayLayout.vue": () => import("./GatewayLayout-DtURQ47z.js") }))) {
-      const t = e.replace("./", "#zpayments/"), p = e.split(".").pop();
-      globalThis.imports[t] = s, globalThis.imports[t.replace(`.${p}`, "")] = s;
-    }
-    for (const [e, s] of Object.entries(/* @__PURE__ */ Object.assign({ "../shared/data/countries.json": () => import("./countries-C9bDipll.js"), "../shared/data/currencies.json": () => import("./currencies-CxlqxawI.js"), "../shared/entities/billing.entity.ts": () => import("./billing.entity-la0Fzlu3.js"), "../shared/entities/gatewayConfig.entity.ts": () => import("./gatewayConfig.entity-DUywytzM.js"), "../shared/entities/gatewayEntity.entity.ts": () => import("./gatewayEntity.entity-DWRIlNyc.js"), "../shared/entities/gatewayEntityAssignment.entity.ts": () => import("./gatewayEntityAssignment.entity-DR3Sa6eU.js"), "../shared/entities/gatewayEntityMeta.entity.ts": () => import("./gatewayEntityMeta.entity-oy7HQ1Bh.js"), "../shared/entities/order.entity.ts": () => import("./order.entity-X244Lp1t.js"), "../shared/entities/orderItem.entity.ts": () => import("./orderItem.entity-Dwbe-V_1.js"), "../shared/entities/payment.entity.ts": () => import("./payment.entity-DTIYwuVL.js"), "../shared/entities/plan.entity.ts": () => import("./plan.entity-bed8wErQ.js"), "../shared/entities/product.entity.ts": () => import("./product.entity-49u26AfL.js"), "../shared/entities/productMeta.entity.ts": () => import("./productMeta.entity-BGuejWQV.js"), "../shared/entities/productPrice.entity.ts": () => import("./productPrice.entity-Bb_psyp9.js"), "../shared/entities/subscription.entity.ts": () => import("./subscription.entity-DIYtBs8Y.js"), "../shared/validators/billing.validator.ts": () => import("./billing.validator-38hE51Is.js").then((t) => t.b), "../shared/validators/gateway.validator.ts": () => import("./gateway.validator-DNnw7-3F.js").then((t) => t.g), "../shared/validators/index.ts": () => import("./index-D8jq18Zg.js"), "../shared/validators/order.validator.ts": () => import("./order.validator-GNHngukB.js").then((t) => t.o), "../shared/validators/payment.validator.ts": () => import("./payment.validator-CThP3Zs7.js").then((t) => t.p), "../shared/validators/plan.validator.ts": () => import("./plan.validator-fL5xIT1j.js").then((t) => t.p), "../shared/validators/product.validator.ts": () => import("./product.validator--IxSQwpG.js").then((t) => t.p), "../shared/validators/productMeta.validator.ts": () => import("./productMeta.validator-CbaIOPJB.js").then((t) => t.p), "../shared/validators/productPrice.validator.ts": () => import("./productPrice.validator-Bt9NxB_i.js").then((t) => t.p), "../shared/validators/subscription.validator.ts": () => import("./subscription.validator-DoADR1cN.js").then((t) => t.s) }))) {
-      const t = e.replace("../shared/", "#zpayments/shared/");
-      globalThis.imports[t] = s, globalThis.imports[t.replace(".ts", "")] = s;
-    }
-  }
-  async onLoad() {
-    i.auto(/* @__PURE__ */ Object.assign({ "./pages/admin/gateway-entities/index.vue": () => import("./index-g-htTBzW.js"), "./pages/admin/gateways/[id].vue": () => import("./_id_-BoDbLuzC.js"), "./pages/admin/gateways/index.vue": () => import("./index-BqtLjrqp.js"), "./pages/admin/orders/index.vue": () => import("./index-O5e_pkti.js"), "./pages/admin/payments/index.vue": () => import("./index-2S6eC7fo.js"), "./pages/admin/products/[id].vue": () => import("./_id_-BD7hMOEO.js"), "./pages/admin/products/index.vue": () => import("./index-Bk-uSyBe.js"), "./pages/admin/users/[id].vue": () => import("./_id_-D6PmOVqc.js"), "./pages/admin/users/index.vue": () => import("./index-BeKEeu1F.js") }), {
-      strip: ["pages", "admin"],
-      guards: [u],
-      prefix: "/admin/zpayments"
-    }), i.auto(/* @__PURE__ */ Object.assign({ "./pages/admin/gateway-entities/index.vue": () => import("./index-g-htTBzW.js"), "./pages/admin/gateways/[id].vue": () => import("./_id_-BoDbLuzC.js"), "./pages/admin/gateways/index.vue": () => import("./index-BqtLjrqp.js"), "./pages/admin/orders/index.vue": () => import("./index-O5e_pkti.js"), "./pages/admin/payments/index.vue": () => import("./index-2S6eC7fo.js"), "./pages/admin/products/[id].vue": () => import("./_id_-BD7hMOEO.js"), "./pages/admin/products/index.vue": () => import("./index-Bk-uSyBe.js"), "./pages/admin/users/[id].vue": () => import("./_id_-D6PmOVqc.js"), "./pages/admin/users/index.vue": () => import("./index-BeKEeu1F.js"), "./pages/result.vue": () => import("./result-DSHBKVKK.js") }), {
-      strip: ["pages"],
-      exclude: ["/admin/**"],
-      prefix: "/zpayments"
-    }), i.addRoute({
-      path: "/admin/zpayments/gateways/:id",
-      redirect: (e) => `/admin/zpayments/gateways/${e.params.id}/details`
-    }), a.add({
-      id: "zpayments-payments",
-      layout: "admin",
-      label: $t("Payments"),
-      to: "/admin/zpayments/payments",
-      icon: "credit-card",
-      group: "ZPayments"
-    }), a.add({
-      id: "zpayments-orders",
-      layout: "admin",
-      label: $t("Orders"),
-      to: "/admin/zpayments/orders",
-      icon: "shopping-cart",
-      group: "ZPayments"
-    }), a.add({
-      id: "zpayments-customers",
-      layout: "admin",
-      label: $t("Customers"),
-      to: "/admin/zpayments/users",
-      icon: "users",
-      group: "ZPayments"
-    }), a.add({
-      id: "zpayments-products",
-      layout: "admin",
-      label: $t("Products"),
-      to: "/admin/zpayments/products",
-      icon: "box",
-      group: "ZPayments"
-    }), a.add({
-      id: "zpayments-gateways",
-      layout: "admin",
-      label: $t("Gateways"),
-      to: "/admin/zpayments/gateways",
-      icon: "credit-card",
-      group: "ZPayments"
-    }), a.add({
-      id: "zpayments-gateway-entities",
-      layout: "admin",
-      label: $t("Entities"),
-      to: "/admin/zpayments/gateway-entities",
-      icon: "database",
-      group: "ZPayments"
-    });
-  }
-}
-export {
-  y as default
+const e = await globalThis.importAsync("#client/entities/module.entity.ts"), t = e.default || e, n = await globalThis.importAsync("#client/facades/router.facade.ts"), r = n.default || n, i = await globalThis.importAsync("#client/facades/menu.facade.ts"), a = i.default || i, o = await globalThis.importAsync("#client/guards/auth.guard.ts"), s = o.default || o;
+//#region modules/mod/client/module.client.ts
+var c = class extends t {
+	async onRegister() {
+		for (let [e, t] of Object.entries(/* @__PURE__ */ Object.assign({
+			"./components/GatewayConfig.vue": () => import("./GatewayConfig-D1POPdPN.js"),
+			"./components/GatewayCustomers.vue": () => import("./GatewayCustomers-C-nprIGT.js"),
+			"./components/GatewayEntityTable.vue": () => import("./GatewayEntityTable-B6dX7I5k.js").then((e) => e.n),
+			"./components/GatewaySubscriptions.vue": () => import("./GatewaySubscriptions-D0EtDuu7.js"),
+			"./components/PlanGatewayLinks.vue": () => import("./PlanGatewayLinks-Cbj-Lczf.js"),
+			"./components/ProductMetasTable.vue": () => import("./ProductMetasTable-5neSwaMM.js"),
+			"./components/ProductPaymentsTable.vue": () => import("./ProductPaymentsTable-CCDAihJx.js").then((e) => e.n),
+			"./components/ProductPricesTable.vue": () => import("./ProductPricesTable-Cr7fhWuz.js"),
+			"./components/UserOrdersCard.vue": () => import("./UserOrdersCard-qiHSRmLu.js").then((e) => e.n),
+			"./components/UserOrdersPage.vue": () => import("./UserOrdersPage-BnGCsE3E.js"),
+			"./components/UserOrdersTable.vue": () => import("./UserOrdersTable-DQxb9jfu.js").then((e) => e.n),
+			"./components/UserPaymentsTable.vue": () => import("./UserPaymentsTable-Ck-4E8XA.js").then((e) => e.n),
+			"./layouts/GatewayLayout.vue": () => import("./GatewayLayout-C4q7Mz6i.js")
+		}))) {
+			let n = e.replace("./", "#zpayments/"), r = e.split(".").pop();
+			globalThis.imports[n] = t, globalThis.imports[n.replace(`.${r}`, "")] = t;
+		}
+		for (let [e, t] of Object.entries(/* @__PURE__ */ Object.assign({
+			"../shared/data/countries.json": () => import("./countries-CBBqQFay.js").then((e) => e.n),
+			"../shared/data/currencies.json": () => import("./currencies-D0_IzH7E.js").then((e) => e.n),
+			"../shared/entities/billing.entity.ts": () => import("./billing.entity-MX_QtpWh.js"),
+			"../shared/entities/gatewayConfig.entity.ts": () => import("./gatewayConfig.entity-CU54VVHj.js").then((e) => e.n),
+			"../shared/entities/gatewayEntity.entity.ts": () => import("./gatewayEntity.entity-BLW5x_M3.js").then((e) => e.n),
+			"../shared/entities/gatewayEntityAssignment.entity.ts": () => import("./gatewayEntityAssignment.entity-BAG4u9Tp.js"),
+			"../shared/entities/gatewayEntityMeta.entity.ts": () => import("./gatewayEntityMeta.entity-D7wFRVRd.js"),
+			"../shared/entities/order.entity.ts": () => import("./order.entity-MK6wmEzS.js").then((e) => e.n),
+			"../shared/entities/orderItem.entity.ts": () => import("./orderItem.entity-DjULDDYM.js"),
+			"../shared/entities/payment.entity.ts": () => import("./payment.entity-BbwelBtU.js").then((e) => e.n),
+			"../shared/entities/plan.entity.ts": () => import("./plan.entity-C-kdRqJo.js"),
+			"../shared/entities/product.entity.ts": () => import("./product.entity-DIQXq6CT.js"),
+			"../shared/entities/productMeta.entity.ts": () => import("./productMeta.entity-DpsHMh7o.js").then((e) => e.n),
+			"../shared/entities/productPrice.entity.ts": () => import("./productPrice.entity-Duw_iyHe.js").then((e) => e.n),
+			"../shared/entities/subscription.entity.ts": () => import("./subscription.entity-DZvRLu0q.js"),
+			"../shared/validators/billing.validator.ts": () => import("./billing.validator-Dl2bU7Sm.js").then((e) => e.t),
+			"../shared/validators/gateway.validator.ts": () => import("./gateway.validator-CPCVXnEO.js").then((e) => e.t),
+			"../shared/validators/index.ts": () => import("./validators-DYe0pUUO.js"),
+			"../shared/validators/order.validator.ts": () => import("./order.validator-CgVRIMhK.js").then((e) => e.t),
+			"../shared/validators/payment.validator.ts": () => import("./payment.validator-D-9QKFL_.js").then((e) => e.t),
+			"../shared/validators/plan.validator.ts": () => import("./plan.validator-C20zmZQK.js").then((e) => e.t),
+			"../shared/validators/product.validator.ts": () => import("./product.validator-cJxmEfx6.js").then((e) => e.t),
+			"../shared/validators/productMeta.validator.ts": () => import("./productMeta.validator-CdTGFlfO.js").then((e) => e.t),
+			"../shared/validators/productPrice.validator.ts": () => import("./productPrice.validator-d3_680Hu.js").then((e) => e.t),
+			"../shared/validators/subscription.validator.ts": () => import("./subscription.validator-CsCyVvJI.js").then((e) => e.t)
+		}))) {
+			let n = e.replace("../shared/", "#zpayments/shared/");
+			globalThis.imports[n] = t, globalThis.imports[n.replace(".ts", "")] = t;
+		}
+	}
+	async onLoad() {
+		r.auto(/* @__PURE__ */ Object.assign({
+			"./pages/admin/gateway-entities/index.vue": () => import("./gateway-entities-BMl_Or3m.js"),
+			"./pages/admin/gateways/[id].vue": () => import("./_id_-BTAb1SuO.js"),
+			"./pages/admin/gateways/index.vue": () => import("./gateways-CYDsExMr.js"),
+			"./pages/admin/orders/index.vue": () => import("./orders-DuCullKZ.js"),
+			"./pages/admin/payments/index.vue": () => import("./payments-bblwhG_P.js"),
+			"./pages/admin/products/[id].vue": () => import("./_id_-Z9U087ct.js"),
+			"./pages/admin/products/index.vue": () => import("./products-CGVdssgs.js"),
+			"./pages/admin/users/[id].vue": () => import("./_id_-z9WWf9mM.js"),
+			"./pages/admin/users/index.vue": () => import("./users-BGmApbwu.js")
+		}), {
+			strip: ["pages", "admin"],
+			guards: [s],
+			prefix: "/admin/zpayments"
+		}), r.auto(/* @__PURE__ */ Object.assign({
+			"./pages/admin/gateway-entities/index.vue": () => import("./gateway-entities-BMl_Or3m.js"),
+			"./pages/admin/gateways/[id].vue": () => import("./_id_-BTAb1SuO.js"),
+			"./pages/admin/gateways/index.vue": () => import("./gateways-CYDsExMr.js"),
+			"./pages/admin/orders/index.vue": () => import("./orders-DuCullKZ.js"),
+			"./pages/admin/payments/index.vue": () => import("./payments-bblwhG_P.js"),
+			"./pages/admin/products/[id].vue": () => import("./_id_-Z9U087ct.js"),
+			"./pages/admin/products/index.vue": () => import("./products-CGVdssgs.js"),
+			"./pages/admin/users/[id].vue": () => import("./_id_-z9WWf9mM.js"),
+			"./pages/admin/users/index.vue": () => import("./users-BGmApbwu.js"),
+			"./pages/result.vue": () => import("./result-BGbJ4KtH.js")
+		}), {
+			strip: ["pages"],
+			exclude: ["/admin/**"],
+			prefix: "/zpayments"
+		}), r.addRoute({
+			path: "/admin/zpayments/gateways/:id",
+			redirect: (e) => `/admin/zpayments/gateways/${e.params.id}/details`
+		}), a.add({
+			id: "zpayments-payments",
+			layout: "admin",
+			label: $t("Payments"),
+			to: "/admin/zpayments/payments",
+			icon: "credit-card",
+			group: "ZPayments"
+		}), a.add({
+			id: "zpayments-orders",
+			layout: "admin",
+			label: $t("Orders"),
+			to: "/admin/zpayments/orders",
+			icon: "shopping-cart",
+			group: "ZPayments"
+		}), a.add({
+			id: "zpayments-customers",
+			layout: "admin",
+			label: $t("Customers"),
+			to: "/admin/zpayments/users",
+			icon: "users",
+			group: "ZPayments"
+		}), a.add({
+			id: "zpayments-products",
+			layout: "admin",
+			label: $t("Products"),
+			to: "/admin/zpayments/products",
+			icon: "box",
+			group: "ZPayments"
+		}), a.add({
+			id: "zpayments-gateways",
+			layout: "admin",
+			label: $t("Gateways"),
+			to: "/admin/zpayments/gateways",
+			icon: "credit-card",
+			group: "ZPayments"
+		}), a.add({
+			id: "zpayments-gateway-entities",
+			layout: "admin",
+			label: $t("Entities"),
+			to: "/admin/zpayments/gateway-entities",
+			icon: "database",
+			group: "ZPayments"
+		});
+	}
 };
+//#endregion
+export { c as default };
