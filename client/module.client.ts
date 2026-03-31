@@ -3,7 +3,6 @@ import router from '#client/facades/router.facade.ts'
 import menu from '#client/facades/menu.facade.ts'
 import authGuard from '#client/guards/auth.guard.ts'
 
-
 import './assets/css/styles.css'
 
 export default class ZenithPayments extends Module {
@@ -13,16 +12,16 @@ export default class ZenithPayments extends Module {
 
             const ext = path.split('.').pop()
 
-            globalThis.imports[id] = importFn
-            globalThis.imports[id.replace(`.${ext}`, '')] = importFn
+            globalThis.imports.set(id, importFn)
+            globalThis.imports.set(id.replace(`.${ext}`, ''), importFn)
         }
 
         
         for (const [path, mod] of Object.entries(import.meta.glob('./../shared/**'))) {
             const id = path.replace('../shared/', '#zpayments/shared/')
 
-            globalThis.imports[id] = mod
-            globalThis.imports[id.replace('.ts', '')] = mod
+            globalThis.imports.set(id, mod)
+            globalThis.imports.set(id.replace('.ts', ''), mod)
         }
     }
 
