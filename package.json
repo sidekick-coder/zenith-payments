@@ -1,18 +1,28 @@
 {
-  "name": "zenith-payments",
-  "version": "1.0.0",
-  "imports": {
-    "#client/*": "./root/client/*",
-    "#server/*": "./root/server/*",
-    "#shared/*": "./root/shared/*",
-    "#config/*": "./root/config/*",
-    "#zpayments/server/*": "./server/*",
-    "#zpayments/shared/*": "./shared/*",
-    "#zpayments/client/*": "./client/*"
-  },
-  "dependencies": {
-    "@mercadopago/sdk-js": "^0.0.3",
-    "mercadopago": "^2.10.0",
-    "stripe": "^12.14.0"
-  }
+    "name": "zenith-payments",
+    "version": "1.0.0",
+    "imports": {
+        "#client/*": "./legacy/client/*",
+        "#server/*": "./legacy/server/*",
+        "#shared/*": "./legacy/shared/*",
+        "#config/*": "./legacy/config/*",
+        "#zpayments/server/*": "./server/*",
+        "#zpayments/shared/*": "./shared/*",
+        "#zpayments/client/*": "./client/*"
+    },
+    "scripts": {
+        "start": "NODE_PRODUCTION=true zenith serve",
+        "dev": "zenith serve",
+        "build": "zkit build"
+    },
+    "dependencies": {
+        "@mercadopago/sdk-js": "^0.0.3",
+        "@sidekick-coder/zenith-kit": "^0.1.0",
+        "mercadopago": "^2.10.0",
+        "stripe": "^12.14.0"
+    },
+    "devDependencies": {
+        "@vue/tsconfig": "^0.9.1",
+        "vite": "^7.3.5"
+    }
 }

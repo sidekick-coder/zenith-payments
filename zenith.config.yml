@@ -1,0 +1,9 @@
+id: 01KV8V4SA1SRJMA3V5J8ZDFCGP
+name: zenith-payments
+description: A payments module for the Zenith providing seamless integration with various payment gateways and ensuring secure transactions for customers.
+aliases:
+    - zenith-payments
+    - zp
+version_available_channels:
+    - branch:main
+    - branch:build

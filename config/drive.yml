@@ -1,0 +1,7 @@
+disks:
+  uploads:
+    name: Uploads
+    type: fs
+    config:
+      directory: /home/henryque/git/sc_zenith-payments/storage/uploads
+default: uploads
