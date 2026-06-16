@@ -1,8 +1,7 @@
 import { MercadoPagoConfig, PreApprovalPlan } from 'mercadopago'
 import GatewayEntity from '../entities/gatewayEntity.entity.ts'
-import GatewayEntityAssignment from '../entities/gatewayEntityAssignment.entity.ts'
 import GatewayPlan from '../gateways/gatewayPlans.gateway.ts'
-import env from '#server/env.ts'
+import { env } from '@sidekick-coder/zenith-kit/server'
 
 export default class MercadoPagoPlan extends GatewayPlan {
     public id: string
@@ -19,7 +18,7 @@ export default class MercadoPagoPlan extends GatewayPlan {
     }
 
     public createSubscribeURL: GatewayPlan['createSubscribeURL'] = async (plan) => {
-        const url = new URL(env.APP_URL + '/zpayments/mercado-pago/subscribe')
+        const url = new URL(env.get('ZENITH_APP_URL') + '/zpayments/mercado-pago/subscribe')
 
         url.searchParams.set('gateway_id', this.id)
         url.searchParams.set('plan_id', plan.id.toString())

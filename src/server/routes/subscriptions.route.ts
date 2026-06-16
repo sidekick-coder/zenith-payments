@@ -5,9 +5,9 @@ import authMiddleware from '#server/middlewares/auth.middleware.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
 import Subscription from '#zpayments/server/entities/subscription.entity.ts'
 import Plan from '#zpayments/server/entities/plan.entity.ts'
-import User from '#server/entities/user.entity.ts'
 import { undeleted } from '#server/queries/index.ts'
 import BaseException from '#server/exceptions/base.ts'
+import { userRepository } from '@sidekick-coder/zenith-kit/server'
 
 const router = rootRouter.prefix('/api/zpayments/subscriptions')
     .use(authMiddleware)
@@ -28,8 +28,8 @@ router.get('/', async ({ acl, query }) => {
     })
 
     if (pagination.items.length) {
-        const users = await User.list({
-            query: qb => qb.selectAll().where('id', 'in', pagination.items.map(s => s.user_id))
+        const users = await userRepository.findMany({
+            id: pagination.items.map(s => s.user_id)
         })
 
         const plans = await Plan.list({
@@ -56,7 +56,7 @@ router.get('/:id', async ({ params, acl }) => {
     
     // Load related user and plan
     const [user, plan] = await Promise.all([
-        User.find(subscription.user_id),
+        userRepository.findByIdOrFail(subscription.user_id),
         Plan.find(subscription.plan_id)
     ])
     

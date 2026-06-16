@@ -1,7 +1,9 @@
 import type { InferOutput } from 'valibot'
-import validator from '#shared/services/validator.service.ts'
-import * as url from '#shared/validators/url.validator.ts'
-import * as pagination from '#shared/validators/pagination.validator.ts'
+import { validator } from '@sidekick-coder/zenith-kit/shared'
+
+const url = validator.v.extras.url
+const pagination = validator.v.extras.pagination 
+
 
 export type OrderWhere = InferOutput<typeof where>
 export type OrderIndex = InferOutput<typeof index>
@@ -18,29 +20,14 @@ export const where = validator.create(v => v.object({
     status: v.optional(v.string()),
 }))
 
-export const order = pagination.order({
-    defaultOrder: 'created_at',
-    defaultDirection: 'desc',
-    allowed: [
-        'id',
-        'user_id',
-        'amount',
-        'status',
-        'created_at', 
-        'updated_at'
-    ] as const
-})
-
 export const index = validator.create(v => v.intersect([
-    pagination.base,
-    order,
+    pagination.base(),
     where,
     validator.create(v => v.object({ include: v.optional(include) }))
 ]))
 
 export const userIndex = validator.create(v => v.intersect([
-    pagination.base,
-    order,
+    pagination.base(),
     v.omit(where, ['user_id']),
     validator.create(v => v.object({ include: v.optional(include) }))
 ]))

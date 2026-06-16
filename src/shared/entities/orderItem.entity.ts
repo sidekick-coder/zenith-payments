@@ -1,5 +1,4 @@
-import { BaseEntity } from '#shared/mixins/index.ts'
-import { compose } from '#shared/utils/compose.ts'
+import { BaseEntityMixin as BaseEntity, SoftDeleteMixin as SoftDelete, TimestampMixin as Timestamp, compose } from '@sidekick-coder/zenith-kit/shared'
 
 export default class OrderItem extends compose(BaseEntity) {
     public id: number

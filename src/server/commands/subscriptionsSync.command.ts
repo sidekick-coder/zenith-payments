@@ -1,10 +1,11 @@
 
-import { program } from 'commander'
-import { select } from '@inquirer/prompts'
+import { CliCommand } from '@sidekick-coder/zenith-kit/server'
 import payment from '../facades/zpayment.ts'
 
-program
-    .command('zpayments:subscriptions-sync')
+const command = new CliCommand('zpayments:subscriptions-sync')
+const select = command.inquirer.select
+
+command
     .option('-g, --gateway-id <gatewayId>', 'Gateway ID to execute')
     .description('Sync subscriptions from payment gateway')
     .helpGroup('zpayments')

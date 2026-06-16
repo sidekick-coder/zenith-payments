@@ -1,5 +1,4 @@
-import { BaseEntity } from '#shared/mixins/baseEntity.mixin.ts'
-import { compose } from '#shared/utils/compose.ts'
+import { BaseEntityMixin as BaseEntity, compose } from '@sidekick-coder/zenith-kit/shared'
 
 export const GATEWAY_OPTIONS = [
     {

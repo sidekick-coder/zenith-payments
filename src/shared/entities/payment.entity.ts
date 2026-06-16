@@ -1,25 +1,24 @@
-import { BaseEntity, Timestamp } from '#shared/mixins/index.ts'
-import { compose } from '#shared/utils/compose.ts'
+import { BaseEntityMixin as BaseEntity, TimestampMixin as Timestamp, compose } from '@sidekick-coder/zenith-kit/shared'
 
 export const STATUS = [
     {
         id: 'pending' as const,
-        label: $t('Pending'),
+        label: 'Pending',
         color: 'var(--color-yellow-500)',
     },
     {
         id: 'approved' as const,
-        label: $t('Approved'),
+        label: 'Approved',
         color: 'var(--color-green-500)',
     },
     {
         id: 'failed' as const,
-        label: $t('Failed'),
+        label: 'Failed',
         color: 'var(--color-red-500)',
     },
     {
         id: 'refunded' as const,
-        label: $t('Refunded'),
+        label: 'Refunded',
         color: 'var(--color-purple-500)',
     }
 ]
@@ -37,6 +36,7 @@ export default class Payment extends compose(BaseEntity, Timestamp) {
 
     public get statusLabel() {
         const status = Payment.STATUS.find(s => s.id === this.status)
+
         return status ? status.label : this.status
     }
 

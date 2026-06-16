@@ -1,5 +1,13 @@
 import type { Generated } from 'kysely'
-import type { SoftDeleteTable, TimestampTable } from '#server/queries/index.ts'
+
+interface SoftDeleteTable {
+    deleted_at: Date | null
+}
+
+interface TimestampTable {
+    created_at: Date
+    updated_at: Date
+}
 
 export interface GatewayEntityTable extends TimestampTable, SoftDeleteTable {
     id: Generated<number>
@@ -72,8 +80,8 @@ export interface PaymentTable extends TimestampTable {
     amount: number
 }
 
-declare module '#server/contracts/database.contract' {
-    export interface Database  {
+declare module '@sidekick-coder/zenith-kit/server' {
+    export interface DatabaseContract  {
         zpayments__gateway_entities: GatewayEntityTable
         zpayments__gateway_entity_metas: GatewayEntityMetaTable
         zpayments__gateway_entity_assignments: GatewayEntityAssignmentTable

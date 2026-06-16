@@ -1,27 +1,24 @@
-import type User from '#shared/entities/user.entity.ts'
-
-import { BaseEntity, SoftDelete, Timestamp } from '#shared/mixins/index.ts'
-import { compose } from '#shared/utils/compose.ts'
+import { UserEntity as User, BaseEntityMixin as BaseEntity, SoftDeleteMixin as SoftDelete, TimestampMixin as Timestamp, compose } from '@sidekick-coder/zenith-kit/shared'
 
 export const STATUS = [
     {
         id: 'pending',
-        label: $t('Pending'),
+        label: 'Pending',
         color: 'var(--color-yellow-500)',
     },
     {
         id: 'approved',
-        label: $t('Approved'),
+        label: 'Approved',
         color: 'var(--color-green-500)',
     },
     {
         id: 'failed',
-        label: $t('Failed'),
+        label: 'Failed',
         color: 'var(--color-red-500)',
     },
     {
         id: 'refunded',
-        label: $t('Refunded'),
+        label: 'Refunded',
         color: 'var(--color-blue-500)',
     }
 ]

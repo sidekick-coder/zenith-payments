@@ -1,5 +1,4 @@
-import { BaseEntity, SoftDelete, Timestamp } from '#shared/mixins/index.ts'
-import { compose } from '#shared/utils/compose.ts'
+import { BaseEntityMixin as BaseEntity, SoftDeleteMixin as SoftDelete, TimestampMixin as Timestamp, compose } from '@sidekick-coder/zenith-kit/shared'
 
 export default class ProductMeta extends compose(BaseEntity, Timestamp, SoftDelete) {
     public id: number

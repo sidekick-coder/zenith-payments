@@ -1,6 +1,6 @@
 import type GatewayEntity from './gatewayEntity.entity.ts'
-import { BaseEntity, SoftDelete, Timestamp } from '#shared/mixins/index.ts'
-import { compose } from '#shared/utils/compose.ts'
+
+import { UserEntity as User, BaseEntityMixin as BaseEntity, SoftDeleteMixin as SoftDelete, TimestampMixin as Timestamp, compose } from '@sidekick-coder/zenith-kit/shared'
 
 export default class GatewayEntityAssignment extends compose(BaseEntity, Timestamp, SoftDelete) {
     public id: number

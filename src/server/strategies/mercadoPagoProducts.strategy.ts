@@ -3,7 +3,7 @@ import GatewayEntity from '../entities/gatewayEntity.entity.ts'
 import GatewayProducts from '../gateways/gatewayProducts.gateway.ts'
 import logger from '#server/facades/logger.facade.ts'
 import type { PaymentStatus } from '#zpayments/shared/entities/payment.entity.ts'
-import env from '#server/facades/env.facade.ts'
+import { env } from '@sidekick-coder/zenith-kit/server'
 
 export default class MercadoPagoProducts extends GatewayProducts {
     public id: string
@@ -35,7 +35,7 @@ export default class MercadoPagoProducts extends GatewayProducts {
     }
 
     public pay: GatewayProducts['pay'] = async ({ product, price, user, payment }) => {
-        let url = new URL(`/api/zpayments/payments/${payment.id}/process`, env.get('APP_URL'))
+        let url = new URL(`/api/zpayments/payments/${payment.id}/process`, env.get('ZENITH_APP_URL'))
 
         if (this.config.back_url) {
             url = new URL(this.config.back_url.replace(':id', String(payment.id)))

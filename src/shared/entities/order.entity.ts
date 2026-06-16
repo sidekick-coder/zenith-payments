@@ -1,23 +1,20 @@
 import type OrderItem from './orderItem.entity.ts'
-import type User from '#shared/entities/user.entity.ts'
-
-import { BaseEntity, Timestamp } from '#shared/mixins/index.ts'
-import { compose } from '#shared/utils/compose.ts'
+import { UserEntity as User, BaseEntityMixin as BaseEntity, TimestampMixin as Timestamp, compose } from '@sidekick-coder/zenith-kit/shared'
 
 export const STATUS = [
     {
         id: 'pending' as const,
-        label: $t('Pending'),
+        label: 'Pending',
         color: 'var(--color-yellow-500)',
     },
     {
         id: 'completed' as const,
-        label: $t('Completed'),
+        label: 'Completed',
         color: 'var(--color-green-500)',
     },
     {
         id: 'failed' as const,
-        label: $t('Failed'),
+        label: 'Failed',
         color: 'var(--color-red-500)',
     }
 ]

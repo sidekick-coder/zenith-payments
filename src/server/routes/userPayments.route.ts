@@ -9,7 +9,7 @@ const router = rootRouter.prefix('/api/zpayments/users/:user_id/payments')
     .group()
 
 router.get('/', async ({ query, params, acl }) => {
-    const userId = validator.validate(params.user_id, schemas.url.number())
+    const userId = validator.validate(params.user_id, v => v.extras.url.number())
     const payload = validator.validate(query, schemas.payment.userIndex)
 
     acl.authorize('read', 'Payment', { user_id: userId })

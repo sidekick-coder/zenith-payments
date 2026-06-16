@@ -1,6 +1,5 @@
 import ProductPrice from './productPrice.entity.ts'
-import { BaseEntity, SoftDelete, Timestamp } from '#shared/mixins/index.ts'
-import { compose } from '#shared/utils/compose.ts'
+import { BaseEntityMixin as BaseEntity, SoftDeleteMixin as SoftDelete, TimestampMixin as Timestamp, compose } from '@sidekick-coder/zenith-kit/shared'
 
 export default class Product extends compose(BaseEntity, Timestamp, SoftDelete) {
     public id: number

@@ -2,9 +2,8 @@ import zpayment from '../facades/zpayment.ts'
 import rootRouter from '#server/facades/router.facade.ts'
 import validator from '#shared/services/validator.service.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
-import config from '#server/facades/config.facade.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
-import Pagination from '#shared/entities/pagination.entity.ts'
+import { PaginationEntity as Pagination } from '@sidekick-coder/zenith-kit/shared'
 
 const router = rootRouter.prefix('/api/zpayments/gateways')
     .use(authMiddleware)

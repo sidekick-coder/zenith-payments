@@ -7,7 +7,8 @@ import BillingService from './billing.service.ts'
 import GatewayService from './gateway.service.ts'
 import SubscriptionService from './subscription.service.ts'
 import emmitter from '#server/facades/emmitter.facade.ts'
-import User from '#server/entities/user.entity.ts'
+import { UserEntity as User } from '@sidekick-coder/zenith-kit/shared'
+import { userRepository } from '@sidekick-coder/zenith-kit/server'
 
 interface PaymentEventPayload {
     payment: Payment;
@@ -41,7 +42,7 @@ export default class PaymentService {
     public async process(paymentId: number) {
         const payment = await Payment.findOrFail(paymentId)
         const order = await Order.findOrFail(payment.order_id)
-        const user = await User.findOrFail(order.user_id)
+        const user = await userRepository.findByIdOrFail(order.user_id)
         const orderItems = await OrderItem.list({
             query: q => q.selectAll().where('order_id', '=', order.id)
         })

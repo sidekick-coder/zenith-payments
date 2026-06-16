@@ -1,10 +1,11 @@
-
-import { program } from 'commander'
-import { select } from '@inquirer/prompts'
 import payment from '../facades/zpayment.ts'
+import { CliCommand } from '@sidekick-coder/zenith-kit/server'
 
-program
-    .command('zpayments:customers-sync')
+const command = new CliCommand('zpayments:customers-sync')
+
+const select = command.inquirer.select
+
+command
     .option('-g, --gateway-id <gatewayId>', 'Gateway ID to execute')
     .description('Sync customers from payment gateway')
     .helpGroup('zpayments')
@@ -40,3 +41,5 @@ program
 
         await gateway.customers.sync()
     })
+
+export default command

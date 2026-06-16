@@ -1,22 +1,7 @@
-import { MercadoPagoConfig, PreApproval } from 'mercadopago'
-import payment from '../facades/zpayment.ts'
-import GatewayEntityAssignment from '../entities/gatewayEntityAssignment.entity.ts'
-import Subscription from '../entities/subscription.entity.ts'
-import zpayment from '../facades/zpayment.ts'
 import Payment from '../entities/payment.entity.ts'
 import Order from '../entities/order.entity.ts'
-import MercadoPago from '../strategies/mercado-pago.strategy.ts'
 import rootRouter from '#server/facades/router.facade.ts'
-import validator from '#shared/services/validator.service.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
-import schemas from '#zpayments/shared/validators/index.ts'
-import Plan from '#zpayments/server/entities/plan.entity.ts'
-import { undeleted } from '#server/queries/index.ts'
-import GatewayEntity from '#zpayments/server/entities/gatewayEntity.entity.ts'
-import { tryCatch } from '#shared/utils/tryCatch.ts'
-import BaseException from '#server/exceptions/base.ts'
-import logger from '#server/facades/logger.facade.ts'
-import env from '#server/env.ts'
 
 const router = rootRouter.prefix('/api/zpayments/mercadopago')
     .use(authMiddleware)

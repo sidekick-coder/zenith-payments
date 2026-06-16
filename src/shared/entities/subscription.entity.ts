@@ -1,16 +1,14 @@
-
-import { BaseEntity, SoftDelete, Timestamp } from '#shared/mixins/index.ts'
-import { compose } from '#shared/utils/compose.ts'
+import { BaseEntityMixin as BaseEntity, SoftDeleteMixin as SoftDelete, TimestampMixin as Timestamp, compose } from '@sidekick-coder/zenith-kit/shared'
 
 export const STATUS = [
     {
         id: 'active',
-        label: $t('Active'),
+        label: 'Active',
         color: 'var(--color-green-500)',
     },
     {
         id: 'inactive',
-        label: $t('Inactive'),
+        label: 'Inactive',
         color: 'var(--color-gray-500)',
     },
 ]

@@ -5,8 +5,6 @@ import authMiddleware from '#server/middlewares/auth.middleware.ts'
 import { undeleted } from '#server/queries/index.ts'
 import validator from '#shared/services/validator.service.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
-import env from '#server/facades/env.facade.ts'
-import db from '#server/facades/db.facade.ts'
 
 const router = rootRouter.prefix('/api/zpayments/payments')
     .use(authMiddleware)

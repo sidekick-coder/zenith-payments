@@ -1,7 +1,6 @@
 import { MercadoPagoConfig, Payment, Customer as MPCustomer, User } from 'mercadopago'
 import GatewayEntity from '../entities/gatewayEntity.entity.ts'
 import GatewaySubscription from '../gateways/gatewaySubscriptions.gateway.ts'
-import Subscription from '../entities/subscription.entity.ts'
 import Customer from '../entities/customer.entity.ts'
 import logger from '#server/facades/logger.facade.ts'
 

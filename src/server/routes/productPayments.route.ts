@@ -8,10 +8,10 @@ import validator from '#shared/services/validator.service.ts'
 import authMiddleware from '#server/middlewares/auth.middleware.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
 import Product from '#zpayments/server/entities/product.entity.ts'
-import User from '#server/entities/user.entity.ts'
 import BaseException from '#server/exceptions/base.ts'
 import { tryCatch } from '#shared/utils/tryCatch.ts'
 import db from '#server/facades/db.facade.ts'
+import { userRepository } from '@sidekick-coder/zenith-kit/server'
 
 const router = rootRouter.prefix('/api/zpayments/products/:product_id/payments')
     .use(authMiddleware)
@@ -47,7 +47,7 @@ router.post('/', async ({ params, body }) => {
     }))
 
     const product = await Product.findOrFail(productId)
-    const user = await User.findOrFail(payload.user_id)
+    const user = await userRepository.findByIdOrFail(payload.user_id)
     const gateway = await zpayment.gateways.find(payload.gateway_id)
 
     const price = await ProductPrice.findOne({

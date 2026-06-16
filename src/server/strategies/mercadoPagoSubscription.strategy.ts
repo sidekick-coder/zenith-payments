@@ -1,15 +1,13 @@
 import { MercadoPagoConfig, PreApproval } from 'mercadopago'
-import { sql  } from 'kysely'
 import type { Insertable } from 'kysely'
 import GatewayEntity from '../entities/gatewayEntity.entity.ts'
 import GatewaySubscription from '../gateways/gatewaySubscriptions.gateway.ts'
 import type { CreateSubscriptionPayload, GatewaySubscriptionResponse } from '../gateways/gatewaySubscriptions.gateway.ts'
 import Subscription from '../entities/subscription.entity.ts'
 import Customer from '../entities/customer.entity.ts'
-import env from '#server/env.ts'
 import logger from '#server/facades/logger.facade.ts'
 import type { Database } from '#server/contracts/database.contract'
-import db from '#server/facades/db.facade.ts'
+import { env } from '@sidekick-coder/zenith-kit/server'
 
 export default class MercadoPagoSubscription extends GatewaySubscription {
     public id: string
@@ -111,7 +109,7 @@ export default class MercadoPagoSubscription extends GatewaySubscription {
                 preapproval_plan_id: planEntity.external_id,
                 reason: plan.name,
                 payer_email: user.email,
-                back_url: env.APP_URL + '/api/zpayments/webhooks/mercadopago',
+                back_url: env.get('ZENITH_APP_URL') + '/api/zpayments/webhooks/mercadopago',
                 auto_recurring: {
                     frequency: 1,
                     frequency_type: 'months',
