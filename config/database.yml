@@ -1,5 +1,0 @@
-default: default
-connections:
-  default:
-    dialect: sqlite
-    database: /home/henryque/git/sc_zenith-payments/zenith.db
