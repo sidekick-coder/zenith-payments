@@ -1,14 +1,24 @@
-import { PluginEntity, authGuard, menu, router } from '@sidekick-coder/zenith-kit/client'
+import { PluginEntity, authGuard, menu, router, layout } from '@sidekick-coder/zenith-kit/client'
 import './assets/css/styles.css'
 
 export default class extends PluginEntity {
     public async load() {
+        layout.add('ZPaymentAdminLayout', () => import('./layouts/ZPaymentAdminLayout.vue'))
+
         router.auto(import.meta.glob<any>('./pages/admin/**/*.vue'), {
             strip: ['pages', 'admin'],
             guards: [authGuard],
             prefix: '/admin/zpayments',
+            refine: records => {
+                return records.map(record => {
+                    record.meta = { layout: 'ZPaymentAdminLayout' }
+
+                    return record
+                })
+            }
+
         })
-        
+
         router.auto(import.meta.glob<any>('./pages/**/*.vue'), {
             strip: ['pages'],
             exclude: ['/admin/**'],
@@ -21,59 +31,48 @@ export default class extends PluginEntity {
                 return `/admin/zpayments/gateways/${to.params.id}/details`
             },
         })
-       
+
         menu.add({
-            id: 'zpayments-payments',
             layout: 'admin',
             label: $t('Payments'),
             to: '/admin/zpayments/payments',
             icon: 'credit-card',
-            group: 'ZPayments',
+            group: 'Plugins',
         })
 
         menu.add({
-            id: 'zpayments-orders',
-            layout: 'admin',
+            layout: 'zpayments-admin',
             label: $t('Orders'),
             to: '/admin/zpayments/orders',
             icon: 'shopping-cart',
-            group: 'ZPayments',
         })
 
         menu.add({
-            id: 'zpayments-customers',
-            layout: 'admin',
+            layout: 'zpayments-admin',
             label: $t('Customers'),
             to: '/admin/zpayments/users',
             icon: 'users',
-            group: 'ZPayments',
         })
 
         menu.add({
-            id: 'zpayments-products',
-            layout: 'admin',
+            layout: 'zpayments-admin',
             label: $t('Products'),
             to: '/admin/zpayments/products',
             icon: 'box',
-            group: 'ZPayments',
-        })
-    
-        menu.add({
-            id: 'zpayments-gateways',
-            layout: 'admin',
-            label: $t('Gateways'),
-            to: '/admin/zpayments/gateways',
-            icon: 'credit-card',
-            group: 'ZPayments',
         })
 
         menu.add({
-            id: 'zpayments-gateway-entities',
-            layout: 'admin',
+            layout: 'zpayments-admin',
+            label: $t('Gateways'),
+            to: '/admin/zpayments/gateways',
+            icon: 'credit-card',
+        })
+
+        menu.add({
+            layout: 'zpayments-admin',
             label: $t('Entities'),
             to: '/admin/zpayments/gateway-entities',
             icon: 'database',
-            group: 'ZPayments',
         })
     }
 }

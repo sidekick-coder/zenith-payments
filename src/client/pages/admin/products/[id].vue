@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, } from 'vue'
 import { route, router, toast, useValibotForm, fetcher } from '@sidekick-coder/zenith-kit/client'
-import AdminLayout from '#client/layouts/AdminLayout.vue'
 import Card from '#client/components/ui/card/Card.vue'
 import CardDescription from '#client/components/ui/card/CardDescription.vue'
 import CardHeader from '#client/components/ui/card/CardHeader.vue'
@@ -83,83 +82,60 @@ const onSubmit = handleSubmit(async (data) => {
 </script>
 
 <template>
-    <AdminLayout>
-        <div class="zp:flex zp:[&>*]:px-4 -mx-2">
-            <div class="zp:w-full zp:lg:w-3/12 zp:min-h-full zp:rounded-none zp:shadow-none zp:gap-y-6 zp:flex zp:flex-col">
-                <form
-                    v-if="product"
-                    @submit.prevent="onSubmit"
-                >
-                    <Card>
-                        <CardHeader>
-                            <CardTitle>{{ $t('Product Details') }}</CardTitle>
-                            <CardDescription>{{ $t('Edit product information') }}</CardDescription>
-                        </CardHeader>
-                        <CardContent class="space-y-6">
-                            <FormTextField
-                                name="name"
-                                :label="$t('Name')"
-                            />
 
-                            <FormTextarea
-                                name="description"
-                                :label="$t('Description')"
-                            />
+    <div class="zp:flex zp:[&>*]:px-4 -mx-2">
+        <div class="zp:w-full zp:lg:w-3/12 zp:min-h-full zp:rounded-none zp:shadow-none zp:gap-y-6 zp:flex zp:flex-col">
+            <form v-if="product" @submit.prevent="onSubmit">
+                <Card>
+                    <CardHeader>
+                        <CardTitle>{{ $t('Product Details') }}</CardTitle>
+                        <CardDescription>{{ $t('Edit product information') }}</CardDescription>
+                    </CardHeader>
+                    <CardContent class="space-y-6">
+                        <FormTextField name="name" :label="$t('Name')" />
 
-                            <TextField
-                                :label="$t('Created At')"
-                                :model-value="$d(product.created_at)"
-                                readonly
-                            />
+                        <FormTextarea name="description" :label="$t('Description')" />
 
-                            <TextField
-                                :label="$t('Updated At')"
-                                :model-value="$d(product.updated_at)"
-                                readonly
-                            />
-                        </CardContent>
-                        <CardFooter class="flex justify-end">
-                            <Button
-                                type="submit"
-                                :loading="saving"
-                            >
-                                {{ $t('Update') }}
-                            </Button>
-                        </CardFooter>
-                    </Card>
-                </form>
-            </div>
-            
-            <div class="flex-1 flex flex-col">
-                <Tabs
-                    v-model="tab"
-                    default-value="prices"
-                >
-                    <TabsList>
-                        <TabsTrigger value="prices">
-                            {{ $t('Prices') }}
-                        </TabsTrigger>
-                        <TabsTrigger value="metas">
-                            {{ $t('Metas') }}
-                        </TabsTrigger>
-                        <TabsTrigger value="payments">
-                            {{ $t('Payments') }}
-                        </TabsTrigger>
-                    </TabsList>
-                    
-                    <TabsContent value="prices">
-                        <!-- <ProductPricesTable :product-id="id" /> -->
-                    </TabsContent>
+                        <TextField :label="$t('Created At')" :model-value="$d(product.created_at)" readonly />
 
-                    <TabsContent value="metas">
-                        <!-- <ProductMetasTable :product-id="id" /> -->
-                    </TabsContent>
-
-                    <TabsContent value="payments">
-                        <!-- <ProductPaymentsTable :product-id="id" /> -->
-                    </TabsContent>
-                </Tabs>
-            </div>
+                        <TextField :label="$t('Updated At')" :model-value="$d(product.updated_at)" readonly />
+                    </CardContent>
+                    <CardFooter class="flex justify-end">
+                        <Button type="submit" :loading="saving">
+                            {{ $t('Update') }}
+                        </Button>
+                    </CardFooter>
+                </Card>
+            </form>
         </div>
-    </AdminLayout>
+
+        <div class="flex-1 flex flex-col">
+            <Tabs v-model="tab" default-value="prices">
+                <TabsList>
+                    <TabsTrigger value="prices">
+                        {{ $t('Prices') }}
+                    </TabsTrigger>
+                    <TabsTrigger value="metas">
+                        {{ $t('Metas') }}
+                    </TabsTrigger>
+                    <TabsTrigger value="payments">
+                        {{ $t('Payments') }}
+                    </TabsTrigger>
+                </TabsList>
+
+                <TabsContent value="prices">
+                    <!-- <ProductPricesTable :product-id="id" /> -->
+                </TabsContent>
+
+                <TabsContent value="metas">
+                    <!-- <ProductMetasTable :product-id="id" /> -->
+                </TabsContent>
+
+                <TabsContent value="payments">
+                    <!-- <ProductPaymentsTable :product-id="id" /> -->
+                </TabsContent>
+            </Tabs>
+        </div>
+    </div>
+
 </template>
