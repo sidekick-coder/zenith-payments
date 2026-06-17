@@ -1,0 +1,13 @@
+import productRepository from "#zpayments/server/facades/productRepository.ts";
+import { defineHandler } from "@sidekick-coder/zenith-kit/server";
+import { validator } from "@sidekick-coder/zenith-kit/shared";
+
+export default defineHandler(async (ctx) => {
+    const id = validator.validate(ctx.params.id, v => v.extras.url.number())
+
+    const product = await productRepository.findByIdOrFail(id)
+
+    ctx.acl.authorize('delete', 'Product', product)
+
+    return productRepository.softDeleteById(id)
+})

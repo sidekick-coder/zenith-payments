@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import { computed, onMounted, ref } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useForm } from 'vee-validate'
-import * as v from 'valibot'
-import { toTypedSchema } from '@vee-validate/valibot'
-import { toast } from 'vue-sonner'
+import { computed, onMounted, ref, } from 'vue'
+import { route, router, toast, useValibotForm, fetcher } from '@sidekick-coder/zenith-kit/client'
 import AdminLayout from '#client/layouts/AdminLayout.vue'
 import Card from '#client/components/ui/card/Card.vue'
 import CardDescription from '#client/components/ui/card/CardDescription.vue'
@@ -13,35 +9,26 @@ import CardTitle from '#client/components/ui/card/CardTitle.vue'
 import CardContent from '#client/components/ui/card/CardContent.vue'
 import CardFooter from '#client/components/ui/card/CardFooter.vue'
 import Tabs from '#client/components/ui/tabs/Tabs.vue'
-import { TabsContent, TabsList, TabsTrigger } from '#client/components/ui/tabs'
+import { TabsContent, TabsList, TabsTrigger } from '#client/components/ui/tabs/index.ts'
 import FormTextField from '#client/components/FormTextField.vue'
 import FormTextarea from '#client/components/FormTextarea.vue'
 import Button from '#client/components/Button.vue'
 import ProductMetasTable from '#zpayments/client/components/ProductMetasTable.vue'
 import ProductPricesTable from '#zpayments/client/components/ProductPricesTable.vue'
-import { $fetch } from '#client/utils/fetcher.ts'
 import type Product from '#zpayments/shared/entities/product.entity.ts'
 import TextField from '#client/components/TextField.vue'
 import ProductPaymentsTable from '#zpayments/client/components/ProductPaymentsTable.vue'
+import { productSchema } from '#zpayments/shared/schemas/index.ts'
 
-const route = useRoute()
-const router = useRouter()
 const id = computed(() => route.params.id as string)
 
 const product = ref<Product | null>(null)
 const saving = ref(false)
 
-const schema = v.object({
-    name: v.pipe(v.string(), v.minLength(2, $t('Name is required'))),
-    description: v.optional(v.string()),
-})
-
-const { handleSubmit, setValues } = useForm({
-    validationSchema: toTypedSchema(schema)
-})
+const { handleSubmit, setValues } = useValibotForm(productSchema.update())
 
 async function loadProduct() {
-    const [error, response] = await $fetch.try(`/api/zpayments/products/${id.value}`, {
+    const [error, response] = await fetcher.try(`/api/zpayments/products/${id.value}`, {
         method: 'GET'
     })
 
@@ -73,32 +60,21 @@ const tab = computed({
     }
 })
 
-const formatDate = (date: string | Date | null) => {
-    if (!date) {
-        return $t('N/A')
-    }
-
-    return new Intl.DateTimeFormat('pt-BR', {
-        dateStyle: 'short',
-        timeStyle: 'short'
-    }).format(new Date(date))
-}
-
-const onSubmit = handleSubmit(async (formValues) => {
+const onSubmit = handleSubmit(async (data) => {
     saving.value = true
 
-    const [error] = await $fetch.try(`/api/zpayments/products/${id.value}`, {
+    const [error] = await fetcher.try(`/api/zpayments/products/${id.value}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formValues)
+        data
     })
 
     if (error) {
-        console.error('Failed to save product:', error)
-        toast.error($t('Failed to update.'))
         saving.value = false
         return
     }
+
+    await new Promise(resolve => setTimeout(resolve, 500))
 
     toast.success($t('Updated successfully.'))
     saving.value = false
@@ -108,8 +84,8 @@ const onSubmit = handleSubmit(async (formValues) => {
 
 <template>
     <AdminLayout>
-        <div class="flex min-h-full w-full [&>*]:px-4 -mx-2">
-            <div class="w-full lg:w-3/12 min-h-full rounded-none shadow-none gap-y-6 flex flex-col">
+        <div class="zp:flex zp:[&>*]:px-4 -mx-2">
+            <div class="zp:w-full zp:lg:w-3/12 zp:min-h-full zp:rounded-none zp:shadow-none zp:gap-y-6 zp:flex zp:flex-col">
                 <form
                     v-if="product"
                     @submit.prevent="onSubmit"
@@ -132,13 +108,13 @@ const onSubmit = handleSubmit(async (formValues) => {
 
                             <TextField
                                 :label="$t('Created At')"
-                                :model-value="formatDate(product.created_at)"
+                                :model-value="$d(product.created_at)"
                                 readonly
                             />
 
                             <TextField
                                 :label="$t('Updated At')"
-                                :model-value="formatDate(product.updated_at)"
+                                :model-value="$d(product.updated_at)"
                                 readonly
                             />
                         </CardContent>
@@ -172,15 +148,15 @@ const onSubmit = handleSubmit(async (formValues) => {
                     </TabsList>
                     
                     <TabsContent value="prices">
-                        <ProductPricesTable :product-id="id" />
+                        <!-- <ProductPricesTable :product-id="id" /> -->
                     </TabsContent>
 
                     <TabsContent value="metas">
-                        <ProductMetasTable :product-id="id" />
+                        <!-- <ProductMetasTable :product-id="id" /> -->
                     </TabsContent>
 
                     <TabsContent value="payments">
-                        <ProductPaymentsTable :product-id="id" />
+                        <!-- <ProductPaymentsTable :product-id="id" /> -->
                     </TabsContent>
                 </Tabs>
             </div>

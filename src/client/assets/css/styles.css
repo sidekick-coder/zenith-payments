@@ -1,2 +1,2 @@
-@import "../../../root/client/assets/styles.css";
-@source "./../../";
+@import 'tailwindcss' prefix(zp) source('../../../');
+

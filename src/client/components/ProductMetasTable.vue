@@ -1,15 +1,11 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import type { ComponentExposed } from 'vue-component-type-helpers'
-import { format } from 'date-fns'
-import { toast } from 'vue-sonner'
+import { ref } from 'vue'
 import DataTable, { defineColumns } from '#client/components/DataTable.vue'
 import ProductMeta from '#zpayments/shared/entities/productMeta.entity.ts'
 import Button from '#client/components/Button.vue'
 import Icon from '#client/components/Icon.vue'
 import AlertButton from '#client/components/AlertButton.vue'
 import DialogForm, { defineFormFields } from '#client/components/DialogForm.vue'
-import { $fetch } from '#client/utils/fetcher.ts'
 import { Card, CardAction, CardContent, CardHeader } from '#client/components/ui/card/index.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
 
@@ -21,7 +17,7 @@ const props = defineProps({
 })
 
 const loading = ref(false)
-const tableRef = ref<ComponentExposed<typeof DataTable>>()
+const tableRef = ref()
 const deletingItems = ref<number[]>([])
 
 const fields = defineFormFields({
@@ -55,7 +51,7 @@ const columns = defineColumns<ProductMeta>([
     {
         id: 'created_at',
         label: $t('Created At'),
-        field: row => format(new Date(row.created_at), 'PP p'),
+        field: row => $d(row.created_at),
         width: 150,
     },
     { 
@@ -108,8 +104,6 @@ defineExpose({
                 ref="tableRef"
                 v-model:loading="loading"
                 :columns="columns"
-                :serialize="row => ProductMeta.from(row)"
-                :fetch="`/api/zpayments/products/${productId}/metas`"
             >
                 <template #row-actions="{ row }">
                     <div class="flex items-center gap-2 justify-end">
