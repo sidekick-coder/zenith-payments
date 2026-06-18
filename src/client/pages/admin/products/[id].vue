@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { computed, onMounted, ref, } from 'vue'
-import { route, router, toast, useValibotForm, fetcher } from '@sidekick-coder/zenith-kit/client'
+import { route, router, toast, useValibotForm, fetcher, useRouteQuery } from '@sidekick-coder/zenith-kit/client'
 import Card from '#client/components/ui/card/Card.vue'
 import CardDescription from '#client/components/ui/card/CardDescription.vue'
 import CardHeader from '#client/components/ui/card/CardHeader.vue'
@@ -47,17 +47,7 @@ async function loadProduct() {
 
 onMounted(loadProduct)
 
-const tab = computed({
-    get: () => (route.query.tab as string) || 'prices',
-    set: (value: string) => {
-        router.replace({
-            path: route.path,
-            query: {
-                tab: value
-            }
-        })
-    }
-})
+const tab = useRouteQuery('tab', 'prices')
 
 const onSubmit = handleSubmit(async (data) => {
     saving.value = true
@@ -82,7 +72,6 @@ const onSubmit = handleSubmit(async (data) => {
 </script>
 
 <template>
-
     <div class="zp:flex zp:[&>*]:px-4 -mx-2">
         <div class="zp:w-full zp:lg:w-3/12 zp:min-h-full zp:rounded-none zp:shadow-none zp:gap-y-6 zp:flex zp:flex-col">
             <form v-if="product" @submit.prevent="onSubmit">
@@ -128,7 +117,7 @@ const onSubmit = handleSubmit(async (data) => {
                 </TabsContent>
 
                 <TabsContent value="metas">
-                    <!-- <ProductMetasTable :product-id="id" /> -->
+                    <ProductMetasTable :product-id="id" />
                 </TabsContent>
 
                 <TabsContent value="payments">

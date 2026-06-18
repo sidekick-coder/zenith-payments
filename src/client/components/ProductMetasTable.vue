@@ -1,13 +1,15 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import DataTable, { defineColumns } from '#client/components/DataTable.vue'
 import ProductMeta from '#zpayments/shared/entities/productMeta.entity.ts'
 import Button from '#client/components/Button.vue'
 import Icon from '#client/components/Icon.vue'
 import AlertButton from '#client/components/AlertButton.vue'
 import DialogForm, { defineFormFields } from '#client/components/DialogForm.vue'
-import { Card, CardAction, CardContent, CardHeader } from '#client/components/ui/card/index.ts'
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from '#client/components/ui/card/index.ts'
 import schemas from '#zpayments/shared/validators/index.ts'
+import type { Meta, ProductMetaSchema } from '#zpayments/shared/schemas/productMetaSchema.ts'
+import { fetcher, toast } from '@sidekick-coder/zenith-kit/client'
 
 const props = defineProps({
     productId: {
@@ -17,7 +19,8 @@ const props = defineProps({
 })
 
 const loading = ref(false)
-const tableRef = ref()
+const saving = ref(false)
+const rows = ref<Meta[]>([])
 const deletingItems = ref<number[]>([])
 
 const fields = defineFormFields({
@@ -33,12 +36,6 @@ const fields = defineFormFields({
 
 const columns = defineColumns<ProductMeta>([
     {
-        id: 'id',
-        label: 'ID',
-        field: 'id',
-        width: 50,
-    },
-    {
         id: 'name',
         label: $t('Name'),
         field: 'name',
@@ -49,20 +46,92 @@ const columns = defineColumns<ProductMeta>([
         field: 'value',
     },
     {
-        id: 'created_at',
-        label: $t('Created At'),
-        field: row => $d(row.created_at),
-        width: 150,
-    },
-    { 
         id: 'actions',
         width: 200
     }
 ])
 
-function load() {
-    tableRef.value?.load()
+async function load() {
+    loading.value = true
+
+    const [error, response] = await fetcher.try(`/api/zpayments/products/${props.productId}/metas`)
+
+    loading.value = false
+
+    if (error) {
+        return
+    }
+
+    rows.value = Object.entries(response).map(([key, value]) => ({
+        name: key,
+        value: value as string,
+    }))
 }
+
+async function save(data: Record<string, string>) {
+    saving.value = true
+
+    const [error] = await fetcher.try(`/api/zpayments/products/${props.productId}/metas`, {
+        method: 'PUT',
+        data
+    })
+
+    if (error) {
+        saving.value = false
+        return
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 500))
+
+    rows.value = Object.entries(data).map(([key, value]) => ({
+        name: key,
+        value: value as string,
+    }))
+
+    toast.success($t('Updated successfully.'))
+
+    saving.value = false
+}
+
+function create(payload: Meta) {
+    const existing = rows.value.find(row => row.name === payload.name)
+
+    if (existing) {
+        const error = new Error($t('A meta with this name already exists. Please choose a different name.'))
+
+        toast.error(error.message)
+
+        throw error
+    }
+
+    const data = Object.fromEntries(rows.value.map(row => [row.name, row.value]))
+
+    data[payload.name] = payload.value
+
+    save(data)
+}
+
+function update(name: string, payload: Meta) {
+    const data = Object.fromEntries(rows.value.map(row => [row.name, row.value]))
+
+    if (name !== payload.name) {
+        delete data[name]
+    }
+
+    data[payload.name] = payload.value
+
+    save(data)
+}
+
+function remove(name: string) {
+    const data = Object.fromEntries(rows.value.map(row => [row.name, row.value]))
+
+    delete data[name]
+
+    save(data)
+}
+
+onMounted(load)
 
 defineExpose({
     load
@@ -72,6 +141,12 @@ defineExpose({
 <template>
     <Card>
         <CardHeader>
+            <CardTitle>
+                {{ $t('Metas') }}
+            </CardTitle>
+            <CardDescription>
+                {{ $t('Manage the metas for this product.') }}
+            </CardDescription>
             <CardAction class="gap-x-2 flex">
                 <Button
                     variant="outline"
@@ -84,13 +159,12 @@ defineExpose({
                         :class="{ 'animate-spin': loading }"
                     />
                 </Button>
-                <DialogForm 
-                    :fetch="`/api/zpayments/products/${productId}/metas`"
+                <DialogForm
                     :title="$t('Add Meta')"
                     :description="$t('Fill in the details below to add a new meta')"
                     :schema="schemas.productMeta.create"
                     :fields="fields"
-                    @submit="load"
+                    :handle="create"
                 >
                     <Button>
                         {{ $t('Add Meta') }}
@@ -101,21 +175,19 @@ defineExpose({
 
         <CardContent>
             <DataTable
-                ref="tableRef"
                 v-model:loading="loading"
                 :columns="columns"
+                :rows="rows"
             >
                 <template #row-actions="{ row }">
                     <div class="flex items-center gap-2 justify-end">
-                        <DialogForm 
+                        <DialogForm
                             :fetch="`/api/zpayments/products/${productId}/metas/${row.id}`"
                             :title="$t('Edit Meta')"
                             :description="$t('Fill in the details below to edit the meta')"
-                            :schema="schemas.productMeta.update"
-                            :fields="fields"
                             :values="row"
-                            method="PUT"
-                            @submit="load"
+                            :handle="(data: Meta) => update(row.name, data)"
+                            :fields="fields"
                         >
                             <Button
                                 size="icon"
@@ -130,7 +202,7 @@ defineExpose({
                             :title="$t('Delete Meta')"
                             :description="$t('Are you sure you want to delete this meta?')"
                             :loading="deletingItems.includes(row.id)"
-                            :fetch="`/api/zpayments/products/${props.productId}/metas/${row.id}`"
+                            @confirm="remove(row.name)"
                             @fetched="load"
                         >
                             <Icon name="Trash" />

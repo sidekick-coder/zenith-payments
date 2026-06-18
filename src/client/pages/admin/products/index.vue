@@ -27,12 +27,12 @@ const columns = defineColumns([
 </script>
 
 <template>
-        <PageCrud
-            :title="$t('Products')"
-            :description="$t('Manage your products here.')"
-            :fields="fields"
-            :columns="columns"
-            fetch="/api/zpayments/products"
-            view-to="/admin/zpayments/products/:id"
-        />
+    <PageCrud
+        :title="$t('Products')"
+        :description="$t('Manage your products here.')"
+        :fields="fields"
+        :columns="columns"
+        fetch="/api/zpayments/products"
+        view-to="/admin/zpayments/products/:id"
+    />
 </template>
