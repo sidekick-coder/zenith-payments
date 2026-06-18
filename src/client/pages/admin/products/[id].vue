@@ -16,7 +16,6 @@ import ProductMetasTable from '#zpayments/client/components/ProductMetasTable.vu
 import ProductPricesTable from '#zpayments/client/components/ProductPricesTable.vue'
 import type Product from '#zpayments/shared/entities/product.entity.ts'
 import TextField from '#client/components/TextField.vue'
-import ProductPaymentsTable from '#zpayments/client/components/ProductPaymentsTable.vue'
 import { productSchema } from '#zpayments/shared/schemas/index.ts'
 
 const id = computed(() => route.params.id as string)
@@ -74,23 +73,43 @@ const onSubmit = handleSubmit(async (data) => {
 <template>
     <div class="zp:flex zp:[&>*]:px-4 -mx-2">
         <div class="zp:w-full zp:lg:w-3/12 zp:min-h-full zp:rounded-none zp:shadow-none zp:gap-y-6 zp:flex zp:flex-col">
-            <form v-if="product" @submit.prevent="onSubmit">
+            <form
+                v-if="product"
+                @submit.prevent="onSubmit"
+            >
                 <Card>
                     <CardHeader>
                         <CardTitle>{{ $t('Product Details') }}</CardTitle>
                         <CardDescription>{{ $t('Edit product information') }}</CardDescription>
                     </CardHeader>
                     <CardContent class="space-y-6">
-                        <FormTextField name="name" :label="$t('Name')" />
+                        <FormTextField
+                            name="name"
+                            :label="$t('Name')"
+                        />
 
-                        <FormTextarea name="description" :label="$t('Description')" />
+                        <FormTextarea
+                            name="description"
+                            :label="$t('Description')"
+                        />
 
-                        <TextField :label="$t('Created At')" :model-value="$d(product.created_at)" readonly />
+                        <TextField
+                            :label="$t('Created At')"
+                            :model-value="$d(product.created_at)"
+                            readonly
+                        />
 
-                        <TextField :label="$t('Updated At')" :model-value="$d(product.updated_at)" readonly />
+                        <TextField
+                            :label="$t('Updated At')"
+                            :model-value="$d(product.updated_at)"
+                            readonly
+                        />
                     </CardContent>
                     <CardFooter class="flex justify-end">
-                        <Button type="submit" :loading="saving">
+                        <Button
+                            type="submit"
+                            :loading="saving"
+                        >
                             {{ $t('Update') }}
                         </Button>
                     </CardFooter>
@@ -98,33 +117,9 @@ const onSubmit = handleSubmit(async (data) => {
             </form>
         </div>
 
-        <div class="flex-1 flex flex-col">
-            <Tabs v-model="tab" default-value="prices">
-                <TabsList>
-                    <TabsTrigger value="prices">
-                        {{ $t('Prices') }}
-                    </TabsTrigger>
-                    <TabsTrigger value="metas">
-                        {{ $t('Metas') }}
-                    </TabsTrigger>
-                    <TabsTrigger value="payments">
-                        {{ $t('Payments') }}
-                    </TabsTrigger>
-                </TabsList>
-
-                <TabsContent value="prices">
-                    <!-- <ProductPricesTable :product-id="id" /> -->
-                </TabsContent>
-
-                <TabsContent value="metas">
-                    <ProductMetasTable :product-id="id" />
-                </TabsContent>
-
-                <TabsContent value="payments">
-                    <!-- <ProductPaymentsTable :product-id="id" /> -->
-                </TabsContent>
-            </Tabs>
+        <div class="flex-1 flex flex-col zp:gap-y-6">
+            <ProductPricesTable :product-id="id" />
+            <ProductMetasTable :product-id="id" />
         </div>
     </div>
-
 </template>

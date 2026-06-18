@@ -40,19 +40,19 @@ export default class extends PluginEntity {
             group: 'Plugins',
         })
 
-        menu.add({
-            layout: 'zpayments-admin',
-            label: $t('Orders'),
-            to: '/admin/zpayments/orders',
-            icon: 'shopping-cart',
-        })
+        // menu.add({
+        //     layout: 'zpayments-admin',
+        //     label: $t('Orders'),
+        //     to: '/admin/zpayments/orders',
+        //     icon: 'shopping-cart',
+        // })
 
-        menu.add({
-            layout: 'zpayments-admin',
-            label: $t('Customers'),
-            to: '/admin/zpayments/users',
-            icon: 'users',
-        })
+        // menu.add({
+        //     layout: 'zpayments-admin',
+        //     label: $t('Customers'),
+        //     to: '/admin/zpayments/users',
+        //     icon: 'users',
+        // })
 
         menu.add({
             layout: 'zpayments-admin',
@@ -68,12 +68,12 @@ export default class extends PluginEntity {
             icon: 'credit-card',
         })
 
-        menu.add({
-            layout: 'zpayments-admin',
-            label: $t('Entities'),
-            to: '/admin/zpayments/gateway-entities',
-            icon: 'database',
-        })
+        // menu.add({
+        //     layout: 'zpayments-admin',
+        //     label: $t('Entities'),
+        //     to: '/admin/zpayments/gateway-entities',
+        //     icon: 'database',
+        // })
     }
 }
 

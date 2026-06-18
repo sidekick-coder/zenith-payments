@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import { ref } from 'vue'
-import type { ComponentExposed } from 'vue-component-type-helpers'
-import { format } from 'date-fns'
-import DataTable, { defineColumns } from '#client/components/DataTable.vue'
+import { onMounted, onServerPrefetch, ref } from 'vue'
+import { ZDataTable } from '@sidekick-coder/zenith-kit/components'
 import ProductPrice from '#zpayments/shared/entities/productPrice.entity.ts'
 import Button from '#client/components/Button.vue'
 import Icon from '#client/components/Icon.vue'
 import AlertButton from '#client/components/AlertButton.vue'
 import DialogForm, { defineFormFields } from '#client/components/DialogForm.vue'
-import { Card, CardAction, CardContent, CardHeader } from '#client/components/ui/card/index.ts'
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@sidekick-coder/zenith-kit/components'
 import schemas from '#zpayments/shared/validators/index.ts'
 import countries from '#zpayments/shared/data/countries.json'
 import currencies from '#zpayments/shared/data/currencies.json'
+import { useFetchPagination, defineColumns } from '@sidekick-coder/zenith-kit/client'
 
 const props = defineProps({
     productId: {
@@ -20,9 +19,41 @@ const props = defineProps({
     }
 })
 
-const loading = ref(false)
-const tableRef = ref<ComponentExposed<typeof DataTable>>()
 const deletingItems = ref<number[]>([])
+
+const { items, load, loading, hydrate } = useFetchPagination<ProductPrice>(`/api/zpayments/products/${props.productId}/prices`, {
+    limit: 100,
+    serialize: item => ProductPrice.from(item)
+})
+
+const columns = defineColumns<ProductPrice>([
+    {
+        id: 'id',
+        label: 'ID',
+        field: 'id',
+        width: 50,
+    },
+    {
+        id: 'gateway_id',
+        label: $t('Gateway'),
+        field: 'gateway_id',
+    },
+    {
+        id: 'country',
+        label: $t('Country'),
+        field: 'country',
+        width: 100,
+    },
+    {
+        id: 'amount',
+        label: $t('Amount'),
+        field: 'amountFormatted',
+    },
+    {
+        id: 'actions',
+        width: 200
+    }
+])
 
 const fields = defineFormFields({
     gateway_id: {
@@ -50,52 +81,27 @@ const fields = defineFormFields({
     },
     amount: {
         component: 'text-field',
-        label: $t('Price'),
+        label: $t('Amount'),
+        hint: $t('Amount in cents (e.g. $10 = 1000)'),
         type: 'number',
     },
 })
 
-const columns = defineColumns<ProductPrice>([
-    {
-        id: 'id',
-        label: 'ID',
-        field: 'id',
-        width: 50,
-    },
-    {
-        id: 'gateway_id',
-        label: $t('Gateway'),
-        field: 'gateway_id',
-    },
-    {
-        id: 'country',
-        label: $t('Country'),
-        field: 'country',
-        width: 100,
-    },   
-    {
-        id: 'amount',
-        label: $t('Price'),
-        field: 'amountFormatted',
-    },
-    { 
-        id: 'actions',
-        width: 200
-    }
-])
 
-function load() {
-    tableRef.value?.load()
-}
 
-defineExpose({
-    load
-})
+onMounted(hydrate)
+onServerPrefetch(hydrate)
 </script>
 
 <template>
     <Card>
         <CardHeader>
+            <CardTitle>
+                {{ $t('Prices') }}
+            </CardTitle>
+            <CardDEscription>
+                {{ $t('Manage the prices for this product') }}
+            </CardDEscription>
             <CardAction class="gap-x-2 flex">
                 <Button
                     variant="outline"
@@ -108,11 +114,10 @@ defineExpose({
                         :class="{ 'animate-spin': loading }"
                     />
                 </Button>
-                <DialogForm 
+                <DialogForm
                     :fetch="`/api/zpayments/products/${productId}/prices`"
                     :title="$t('Add Price')"
                     :description="$t('Fill in the details below to add a new price')"
-                    :schema="schemas.productPrice.create"
                     :fields="fields"
                     @submit="load"
                 >
@@ -124,23 +129,21 @@ defineExpose({
         </CardHeader>
 
         <CardContent>
-            <DataTable
-                ref="tableRef"
-                v-model:loading="loading"
+            <ZDataTable
+                :loading="loading"
                 :columns="columns"
-                :serialize="row => ProductPrice.from(row)"
-                :fetch="`/api/zpayments/products/${productId}/prices`"
+                :rows="items"
             >
                 <template #row-actions="{ row }">
                     <div class="flex items-center gap-2 justify-end">
-                        <DialogForm 
+                        <DialogForm
                             :fetch="`/api/zpayments/products/${productId}/prices/${row.id}`"
                             :title="$t('Edit Price')"
                             :description="$t('Fill in the details below to edit the price')"
                             :schema="schemas.productPrice.update"
                             :values="row"
                             :fields="fields"
-                            method="PUT"
+                            method="PATCH"
                             @submit="load"
                         >
                             <Button
@@ -163,7 +166,7 @@ defineExpose({
                         </AlertButton>
                     </div>
                 </template>
-            </DataTable>
+            </ZDatatable>
         </CardContent>
     </Card>
 </template>

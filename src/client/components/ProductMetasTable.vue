@@ -178,6 +178,7 @@ defineExpose({
                 v-model:loading="loading"
                 :columns="columns"
                 :rows="rows"
+                hide-pagination
             >
                 <template #row-actions="{ row }">
                     <div class="flex items-center gap-2 justify-end">
