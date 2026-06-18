@@ -11,6 +11,7 @@ import schemas from '#zpayments/shared/validators/index.ts'
 import countries from '#zpayments/shared/data/countries.json'
 import currencies from '#zpayments/shared/data/currencies.json'
 import { useFetchPagination, defineColumns } from '@sidekick-coder/zenith-kit/client'
+import CardDescription from '#client/components/ui/card/CardDescription.vue'
 
 const props = defineProps({
     productId: {
@@ -21,9 +22,9 @@ const props = defineProps({
 
 const deletingItems = ref<number[]>([])
 
-const { items, load, loading, hydrate } = useFetchPagination<ProductPrice>(`/api/zpayments/products/${props.productId}/prices`, {
+const { items, load, loading, hydrate, orderBy, orderDirection } = useFetchPagination<ProductPrice>(`/api/zpayments/products/${props.productId}/prices`, {
     limit: 100,
-    serialize: item => ProductPrice.from(item)
+    serialize: item => ProductPrice.from(item),
 })
 
 const columns = defineColumns<ProductPrice>([
@@ -34,9 +35,14 @@ const columns = defineColumns<ProductPrice>([
         width: 50,
     },
     {
-        id: 'gateway_id',
-        label: $t('Gateway'),
-        field: 'gateway_id',
+        id: 'amount',
+        label: $t('Amount'),
+        field: 'amountFormatted',
+    },
+    {
+        id: 'currency',
+        label: $t('Currency'),
+        field: 'currency',
     },
     {
         id: 'country',
@@ -45,9 +51,9 @@ const columns = defineColumns<ProductPrice>([
         width: 100,
     },
     {
-        id: 'amount',
-        label: $t('Amount'),
-        field: 'amountFormatted',
+        id: 'gateway_id',
+        label: $t('Gateway'),
+        field: 'gateway_id',
     },
     {
         id: 'actions',
@@ -56,21 +62,6 @@ const columns = defineColumns<ProductPrice>([
 ])
 
 const fields = defineFormFields({
-    gateway_id: {
-        component: 'select',
-        label: $t('Gateway ID'),
-        fetch: '/api/zpayments/gateways',
-        labelKey: 'name',
-        valueKey: 'id',
-    },
-    country: {
-        component: 'autocomplete',
-        label: $t('Country'),
-        options: countries,
-        labelKey: 'name',
-        valueKey: 'code',
-        clearable: true,
-    },
     currency: {
         component: 'autocomplete',
         label: $t('Currency'),
@@ -84,6 +75,21 @@ const fields = defineFormFields({
         label: $t('Amount'),
         hint: $t('Amount in cents (e.g. $10 = 1000)'),
         type: 'number',
+    },
+    country: {
+        component: 'autocomplete',
+        label: $t('Country'),
+        options: countries,
+        labelKey: 'name',
+        valueKey: 'code',
+        clearable: true,
+    },
+    gateway_id: {
+        component: 'select',
+        label: $t('Gateway ID'),
+        fetch: '/api/zpayments/gateways',
+        labelKey: 'name',
+        valueKey: 'id',
     },
 })
 
@@ -99,9 +105,9 @@ onServerPrefetch(hydrate)
             <CardTitle>
                 {{ $t('Prices') }}
             </CardTitle>
-            <CardDEscription>
+            <CardDescription>
                 {{ $t('Manage the prices for this product') }}
-            </CardDEscription>
+            </CardDescription>
             <CardAction class="gap-x-2 flex">
                 <Button
                     variant="outline"
@@ -130,6 +136,8 @@ onServerPrefetch(hydrate)
 
         <CardContent>
             <ZDataTable
+                v-model:order-by="orderBy"
+                v-model:order-direction="orderDirection"
                 :loading="loading"
                 :columns="columns"
                 :rows="items"
