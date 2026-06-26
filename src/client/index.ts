@@ -40,12 +40,6 @@ export default class extends PluginEntity {
             group: 'Plugins',
         })
 
-        // menu.add({
-        //     layout: 'zpayments-admin',
-        //     label: $t('Orders'),
-        //     to: '/admin/zpayments/orders',
-        //     icon: 'shopping-cart',
-        // })
 
         // menu.add({
         //     layout: 'zpayments-admin',
@@ -59,6 +53,13 @@ export default class extends PluginEntity {
             label: $t('Products'),
             to: '/admin/zpayments/products',
             icon: 'box',
+        })
+
+        menu.add({
+            layout: 'zpayments-admin',
+            label: $t('Orders'),
+            to: '/admin/zpayments/orders',
+            icon: 'shopping-cart',
         })
 
         menu.add({

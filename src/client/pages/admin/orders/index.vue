@@ -1,20 +1,32 @@
 <script setup lang="ts">
-import { format } from 'date-fns'
-import { defineColumns } from '#client/components/DataTable.vue'
-import PageCrud from '#client/components/PageCrud.vue'
-import AdminLayout from '#client/layouts/AdminLayout.vue'
-import Order from '#zpayments/shared/entities/order.entity.ts'
-import { Badge } from '#client/components/ui/badge/index.ts'
+import {
+    defineFormFields,
+    DialogForm,
+    ZAlertButton,
+    ZButton,
+    Icon,
+    Button,
+    DataTable,
+    PageTitle,
+    PageSubtitle,
+} from '@sidekick-coder/zenith-kit/components'
+import { useFetchPagination, defineColumns } from '@sidekick-coder/zenith-kit/client'
+import { type OrderSchema } from '#zpayments/shared/schemas/orderSchema.ts'
+import currencies from '#zpayments/shared/data/currencies.json'
+import { onMounted, onServerPrefetch } from 'vue'
 
-const columns = defineColumns([
+const { items: rows, loading, load, hydrate } = useFetchPagination<OrderSchema>('/api/zpayments/orders')
+
+const columns = defineColumns<OrderSchema>([
     {
         id: 'id',
         label: $t('ID'),
         field: 'id',
     },
     {
-        id: 'user',
-        label: $t('User'),
+        id: 'user_id',
+        label: $t('User ID'),
+        field: 'user_id',
     },
     {
         id: 'purpose',
@@ -39,46 +51,99 @@ const columns = defineColumns([
     {
         id: 'created_at',
         label: $t('Created At'),
-        field: row => format(new Date(row.created_at), 'PPpp'),
+        field: row => $dt(row.created_at),
     },
-    { id: 'actions' }
+    { id: 'actions' },
 ])
 
+const fields = defineFormFields({
+    user_id: {
+        component: 'autocomplete',
+        label: $t('User ID'),
+        fetch: '/api/users',
+        fetchOption: '/api/users/:value',
+        labelKey: 'name',
+        valueKey: 'id',
+    },
+    purpose: {
+        component: 'text-field',
+        label: $t('Purpose'),
+    },
+    currency: {
+        component: 'autocomplete',
+        label: $t('Currency'),
+        options: currencies,
+        labelKey: 'label',
+        valueKey: 'code',
+    },
+})
+
+onMounted(hydrate)
+onServerPrefetch(hydrate)
 </script>
 
 <template>
-    <AdminLayout>
-        <PageCrud
-            fetch="/api/zpayments/orders"
-            :title="$t('Orders')"
-            :description="$t('View order records here.')"
-            :columns="columns"
-            :actions="[]"
-            :serialize="row => Order.from(row)"
-            :fetch-query="{
-                include: ['user']
-            }"
-        >
-            <template #row-user="{ row }">
-                <div v-if="!row.user">
-                    {{ row.user_id }}
-                </div>
-                <div v-else>
-                    <div>{{ row.user.name }}</div>
-                    <div class="text-sm text-gray-500">
-                        {{ row.user.email }}
-                    </div>
-                </div>
-            </template>
+    <div class="flex items-center justify-between mb-6">
+        <div>
+            <PageTitle>
+                {{ $t('Orders') }}
+            </PageTitle>
+            <PageSubtitle>
+                {{ $t('Manage your orders') }}
+            </PageSubtitle>
+        </div>
+        <div class="flex items-center gap-2">
+            <DialogForm
+                :title="$t('Add new')"
+                :fields="fields"
+                :values="{ status: 'pending', currency: 'USD' }"
+                fetch="/api/zpayments/orders"
+                fetch-method="POST"
+                @submit="load"
+            >
+                <Button>
+                    {{ $t('Add new') }}
+                </Button>
+            </DialogForm>
 
-            <template #row-status="{ row }">
-                <Badge
-                    :style="{ '--color': row.statusColor }"
-                    class="bg-[var(--color)] text-white"
+            <Button
+                variant="outline"
+                @click="load"
+            >
+                <Icon
+                    name="refreshCw"
+                    :class="{ 'animate-spin': loading }"
+                />
+            </Button>
+        </div>
+    </div>
+
+    <DataTable
+        :rows="rows"
+        :columns="columns"
+        :loading="loading"
+    >
+        <template #row-actions="{ row }">
+            <div class="flex items-center gap-2 justify-end">
+                <ZButton
+                    variant="ghost"
+                    size="sm"
+                    :to="`/admin/zpayments/orders/${row.id}`"
                 >
-                    {{ row.statusLabel }}
-                </Badge>
-            </template>
-        </PageCrud>
-    </AdminLayout>
+                    <Icon name="Edit" />
+                </ZButton>
+
+                <ZAlertButton
+                    variant="ghost"
+                    size="sm"
+                    fetch-method="DELETE"
+                    :fetch="`/api/zpayments/orders/${row.id}`"
+                    :toast-on-success="$t('Deleted successfully')"
+                    @fetched="load"
+                >
+                    <Icon name="trash" />
+                </ZAlertButton>
+            </div>
+        </template>
+    </DataTable>
 </template>

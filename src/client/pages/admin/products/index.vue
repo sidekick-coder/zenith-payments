@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { onMounted, ref } from 'vue'
 import {
-    defineColumns,
     defineFormFields,
     DialogForm,
     ZAlertButton,
@@ -12,7 +11,7 @@ import {
     PageTitle,
     PageSubtitle,
 } from '@sidekick-coder/zenith-kit/components'
-import { fetcher } from '@sidekick-coder/zenith-kit/client'
+import { fetcher, defineColumns } from '@sidekick-coder/zenith-kit/client'
 import type { ProductSchema } from '#zpayments/shared/schemas/productSchema.ts'
 
 const rows = ref<ProductSchema[]>([])
