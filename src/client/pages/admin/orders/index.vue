@@ -56,28 +56,6 @@ const columns = defineColumns<OrderSchema>([
     { id: 'actions' },
 ])
 
-const fields = defineFormFields({
-    user_id: {
-        component: 'autocomplete',
-        label: $t('User ID'),
-        fetch: '/api/users',
-        fetchOption: '/api/users/:value',
-        labelKey: 'name',
-        valueKey: 'id',
-    },
-    purpose: {
-        component: 'text-field',
-        label: $t('Purpose'),
-    },
-    currency: {
-        component: 'autocomplete',
-        label: $t('Currency'),
-        options: currencies,
-        labelKey: 'label',
-        valueKey: 'code',
-    },
-})
-
 onMounted(hydrate)
 onServerPrefetch(hydrate)
 </script>
@@ -93,18 +71,9 @@ onServerPrefetch(hydrate)
             </PageSubtitle>
         </div>
         <div class="flex items-center gap-2">
-            <DialogForm
-                :title="$t('Add new')"
-                :fields="fields"
-                :values="{ status: 'pending', currency: 'USD' }"
-                fetch="/api/zpayments/orders"
-                fetch-method="POST"
-                @submit="load"
-            >
-                <Button>
-                    {{ $t('Add new') }}
-                </Button>
-            </DialogForm>
+            <ZButton to="/admin/zpayments/orders/new">
+                {{ $t('Add new') }}
+            </ZButton>
 
             <Button
                 variant="outline"

@@ -13,7 +13,9 @@ export function productPriceSchema() {
         amount: v.number(),
         created_at: v.string(),
         updated_at: v.string(),
-        deleted_at: v.nullish(v.string())
+        deleted_at: v.nullish(v.string()),
+
+        product: v.nullish(v.any())
     }))
 }
 

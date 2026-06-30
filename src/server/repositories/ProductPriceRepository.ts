@@ -3,6 +3,7 @@ import { DatabaseRepository } from '@sidekick-coder/zenith-kit/server'
 
 export interface ProductPriceRespotoryQueryOptions {
     id?: number | number[]
+    search?: string
     country?: string | string[]
     currency?: string | string[]
     product_id?: number
@@ -22,6 +23,12 @@ export default class ProductPriceRespotory extends DatabaseRepository<ProductPri
 
         if (!options.show_deleted) {
             query = query.where('deleted_at', 'is', null)
+        }
+
+        if (options?.search) {
+            query = query.innerJoin('zpayments__products as p', 'zpayments__products.id', 'zpayments__product_prices.product_id')
+
+            query = query.where('p.name', 'like', `%${options.search}%`)
         }
 
         if (options?.id) {

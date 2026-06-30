@@ -2,6 +2,7 @@ import { validator } from "@sidekick-coder/zenith-kit/shared";
 import type { ValidatorResult } from "@sidekick-coder/zenith-kit/shared";
 
 export type OrderSchema = ValidatorResult<ReturnType<typeof orderSchema>>
+export type OrderCreateSchema = ValidatorResult<ReturnType<typeof orderCreateSchema>>
 
 export const ORDER_STATUS = [
     {
@@ -39,3 +40,18 @@ export function orderSchema() {
         deleted_at: v.nullish(v.string())
     }))
 }
+
+const orderCreateSchema = () => {
+  return validator.create(v => v.object({
+    user_id: v.number(),
+    items: v.array(v.looseObject({
+        price_id: v.number(),
+        unit_amount: v.number(),
+        quantity: v.number(),
+        currency: v.string()
+    })),
+}))
+}
+
+orderSchema.create = orderCreateSchema
+
