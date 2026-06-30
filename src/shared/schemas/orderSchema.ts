@@ -44,6 +44,7 @@ export function orderSchema() {
 const orderCreateSchema = () => {
   return validator.create(v => v.object({
     user_id: v.number(),
+    purpose: v.string(),
     items: v.array(v.looseObject({
         price_id: v.number(),
         unit_amount: v.number(),

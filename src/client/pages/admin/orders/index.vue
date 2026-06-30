@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import {
-    defineFormFields,
-    DialogForm,
     ZAlertButton,
     ZButton,
     Icon,
@@ -12,10 +10,14 @@ import {
 } from '@sidekick-coder/zenith-kit/components'
 import { useFetchPagination, defineColumns } from '@sidekick-coder/zenith-kit/client'
 import { type OrderSchema } from '#zpayments/shared/schemas/orderSchema.ts'
-import currencies from '#zpayments/shared/data/currencies.json'
 import { onMounted, onServerPrefetch } from 'vue'
+import { formatAmount } from '#zpayments/client/utils/formatAmount.ts'
 
-const { items: rows, loading, load, hydrate } = useFetchPagination<OrderSchema>('/api/zpayments/orders')
+const { items: rows, loading, load, hydrate } = useFetchPagination<OrderSchema>('/api/zpayments/orders', {
+    query: {
+        with: 'user'
+    }
+})
 
 const columns = defineColumns<OrderSchema>([
     {
@@ -41,7 +43,7 @@ const columns = defineColumns<OrderSchema>([
     {
         id: 'amount',
         label: $t('Amount'),
-        field: 'amount',
+        field: row => formatAmount(row.amount, row.currency)
     },
     {
         id: 'currency',

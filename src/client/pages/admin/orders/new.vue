@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { orderSchema } from '#zpayments/shared/schemas/orderSchema.ts';
-import { useForm } from '@sidekick-coder/zenith-kit/client';
+import { fetcher, router, useForm } from '@sidekick-coder/zenith-kit/client';
 import {
     ZButton,
     PageTitle,
@@ -14,9 +14,10 @@ import {
     FormAutocomplete
 } from '@sidekick-coder/zenith-kit/components';
 import OrderNewItems from '#zpayments/client/components/OrderNewItems.vue';
-import { computed } from 'vue';
+import { computed, ref } from 'vue';
 import { formatAmount } from '#zpayments/client/utils/formatAmount.ts';
 
+const saving = ref(false)
 const { handleSubmit, values, setFieldValue } = useForm(orderSchema.create())
 
 const currency = computed(() => {
@@ -40,9 +41,23 @@ const total = computed(() => {
     return total
 });
 
-const onSubmit = handleSubmit(async (values) => {
-    console.log('Form submitted with values:', values);
-    // You can add your form submission logic here, e.g., sending data to an API
+const onSubmit = handleSubmit(async (data) => {
+    saving.value = false
+
+    const [error] = await fetcher.try('/api/zpayments/orders', {
+        method: 'POST',
+        data
+    })
+
+    if (error) {
+        saving.value = false
+        return
+    }
+
+    await new Promise(resolve => setTimeout(resolve, 800))
+
+    saving.value = false
+    router.push('/admin/zpayments/orders')
 });
 
 </script>
@@ -62,7 +77,10 @@ const onSubmit = handleSubmit(async (values) => {
                 </PageSubtitle>
             </div>
             <div class="flex items-center justify-end gap-2">
-                <ZButton type="submit">
+                <ZButton
+                    type="submit"
+                    :loading="saving"
+                >
                     {{ $t('Create') }}
                 </ZButton>
             </div>
