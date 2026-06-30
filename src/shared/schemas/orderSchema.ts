@@ -39,11 +39,3 @@ export function orderSchema() {
         deleted_at: v.nullish(v.string())
     }))
 }
-
-orderSchema.create = () => validator.create(v => v.pipe(v.pick(orderSchema(), ['user_id', 'purpose', 'currency']), v.transform(payload => ({
-    ...payload,
-    status: 'draft' as const,
-    amount: 0,
-}))))
-
-orderSchema.update = () => validator.create(v => v.partial(v.pick(orderSchema(), ['purpose', 'status', 'amount', 'currency'])))
